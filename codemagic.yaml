@@ -1,1 +1,71 @@
+workflows:
+  ios-workflow:
+    name: SportRoom iOS
 
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+
+    scripts:
+      - name: Unpack Flutter project
+        script: |
+          rm -rf flutter_project
+          mkdir -p flutter_project
+
+          ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
+
+          if [ -z "$ZIP_FILE" ]; then
+            echo "ERROR: ZIP file not found"
+            exit 1
+          fi
+
+          echo "Found ZIP: $ZIP_FILE"
+          unzip -q "$ZIP_FILE" -d flutter_project
+
+      - name: Find Flutter project
+        script: |
+          PROJECT_DIR=$(find flutter_project -name pubspec.yaml -print -quit)
+
+          if [ -z "$PROJECT_DIR" ]; then
+            echo "ERROR: pubspec.yaml not found"
+            exit 1
+          fi
+
+          PROJECT_DIR=$(dirname "$PROJECT_DIR")
+          echo "Flutter project: $PROJECT_DIR"
+
+          cd "$PROJECT_DIR"
+          flutter pub get
+
+      - name: Analyze Flutter project
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+
+          flutter analyze || true
+
+      - name: Build Web
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+
+          flutter build web --release --no-wasm-dry-run
+
+      - name: Build iOS
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+
+          flutter clean
+          flutter pub get
+          flutter build ios --release --no-codesign
+
+    artifacts:
+      - flutter_project/**/build/ios/iphoneos/*.app
+      - flutter_project/**/build/web/**
+
+    publishing:
+      email:
+        recipients:
+          - $CM_BUILD_EMAIL
