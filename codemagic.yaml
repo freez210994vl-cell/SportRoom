@@ -42,6 +42,7 @@ workflows:
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
           flutter create --platforms=ios .
+          flutter pub get
           flutter build ipa --release --no-codesign
     artifacts:
       - flutter_project/**/build/ios/ipa/*.ipa
@@ -77,6 +78,11 @@ workflows:
           sed -i.bak '/^[[:space:]]*flutter_lints:/d' pubspec.yaml
           echo "Fixed pubspec.yaml:"
           cat pubspec.yaml
+      - name: Configure Web
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          flutter create --platforms=web .
       - name: Get Flutter packages
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
