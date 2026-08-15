@@ -7,10 +7,12 @@ workflows:
 
     scripts:
       - name: Unpack Flutter project
-        script: |
-          rm -rf flutter_project
-          mkdir flutter_project
-          unzip -q SportRoom_AppStore_Submission_Pack_v1.0.zip -d flutter_project
+  script: |
+    rm -rf flutter_project
+    mkdir flutter_project
+    ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
+    echo "Found ZIP: $ZIP_FILE"
+    unzip -q "$ZIP_FILE" -d flutter_project
 
       - name: Get Flutter packages
         script: |
