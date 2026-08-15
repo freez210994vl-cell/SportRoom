@@ -24,6 +24,7 @@ workflows:
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+          flutter create --platforms=ios .
           flutter build ipa --release
 
     artifacts:
