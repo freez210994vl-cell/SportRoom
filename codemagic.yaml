@@ -17,6 +17,7 @@ workflows:
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           echo "Flutter project: $PROJECT_DIR"
           cd "$PROJECT_DIR"
+          sed -i '' 's/^flutter_test:/  flutter_test:/' pubspec.yaml
           flutter pub get
 
       - name: Build iOS
