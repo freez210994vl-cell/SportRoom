@@ -9,39 +9,44 @@ workflows:
         script: |
           rm -rf flutter_project
           mkdir -p flutter_project
-          ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -1)
+          ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
           if [ -z "$ZIP_FILE" ]; then
             echo "ERROR: ZIP file not found"
             exit 1
           fi
           echo "Found ZIP: $ZIP_FILE"
           unzip -q "$ZIP_FILE" -d flutter_project
-      - name: Get Flutter packages
+      - name: Find Flutter project
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: Flutter project not found"
+          if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
+            echo "ERROR: pubspec.yaml not found"
             exit 1
           fi
           echo "Flutter project: $PROJECT_DIR"
+      - name: Fix pubspec.yaml
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          echo "Removing flutter_lints..."
+          sed -i.bak '/^[[:space:]]*flutter_lints:/d' pubspec.yaml
+          echo "Fixed pubspec.yaml:"
+          cat pubspec.yaml
+      - name: Get Flutter packages
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
           flutter pub get
       - name: Build iOS
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: Flutter project not found"
-            exit 1
-          fi
           cd "$PROJECT_DIR"
           flutter create --platforms=ios .
-          flutter build ipa --release
+          flutter build ipa --release --no-codesign
     artifacts:
       - flutter_project/**/build/ios/ipa/*.ipa
   web-workflow:
     name: SportRoom Web
-    instance_type: mac_mini_m2
-    max_build_duration: 30
     environment:
       flutter: stable
     scripts:
@@ -49,29 +54,37 @@ workflows:
         script: |
           rm -rf flutter_project
           mkdir -p flutter_project
-          ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -1)
+          ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
           if [ -z "$ZIP_FILE" ]; then
             echo "ERROR: ZIP file not found"
             exit 1
           fi
           echo "Found ZIP: $ZIP_FILE"
           unzip -q "$ZIP_FILE" -d flutter_project
+      - name: Find Flutter project
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
+            echo "ERROR: pubspec.yaml not found"
+            exit 1
+          fi
+          echo "Flutter project: $PROJECT_DIR"
+      - name: Fix pubspec.yaml
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          echo "Removing flutter_lints..."
+          sed -i.bak '/^[[:space:]]*flutter_lints:/d' pubspec.yaml
+          echo "Fixed pubspec.yaml:"
+          cat pubspec.yaml
       - name: Get Flutter packages
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: Flutter project not found"
-            exit 1
-          fi
           cd "$PROJECT_DIR"
           flutter pub get
       - name: Build Web
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
-          if [ -z "$PROJECT_DIR" ]; then
-            echo "ERROR: Flutter project not found"
-            exit 1
-          fi
           cd "$PROJECT_DIR"
           flutter build web --release
     artifacts:
