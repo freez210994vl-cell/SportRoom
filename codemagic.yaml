@@ -1,97 +1,199 @@
 workflows:
   ios-workflow:
     name: SportRoom iOS
+
     environment:
       flutter: stable
       xcode: latest
+
     scripts:
       - name: Unpack Flutter project
         script: |
           rm -rf flutter_project
           mkdir -p flutter_project
+
           ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
+
           if [ -z "$ZIP_FILE" ]; then
             echo "ERROR: ZIP file not found"
             exit 1
           fi
+
           echo "Found ZIP: $ZIP_FILE"
           unzip -q "$ZIP_FILE" -d flutter_project
+
       - name: Find Flutter project
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+
           if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
             echo "ERROR: pubspec.yaml not found"
             exit 1
           fi
+
           echo "Flutter project: $PROJECT_DIR"
+
       - name: Fix pubspec.yaml
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
           echo "Removing flutter_lints..."
           sed -i.bak '/^[[:space:]]*flutter_lints:/d' pubspec.yaml
-          echo "Fixed pubspec.yaml:"
-          cat pubspec.yaml
-      - name: Get Flutter packages
+
+          flutter pub get
+
+      - name: Fix Dart const errors
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
+          if [ -f lib/main.dart ]; then
+            echo "Fixing const errors in lib/main.dart"
+
+            python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("lib/main.dart")
+          text = path.read_text()
+
+          text = text.replace(
+              "? const [OrgHome(), OrgGames(), CreateGame(), OrgProfile()]",
+              "? [OrgHome(), OrgGames(), CreateGame(), OrgProfile()]"
+          )
+
+          text = text.replace(
+              ": const [Home(), Games(), MyGames(), Profile()]",
+              ": [Home(), Games(), MyGames(), Profile()]"
+          )
+
+          text = text.replace(
+              "games.isEmpty?const ListView(children:[EmptyState(",
+              "games.isEmpty?ListView(children:[EmptyState("
+          )
+
+          path.write_text(text)
+          print("Dart fixes applied.")
+          PY
+          fi
+
+      - name: Create iOS project
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+
+          flutter create --platforms=ios .
+
           flutter pub get
+
       - name: Build iOS
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
-          flutter create --platforms=ios .
-          flutter pub get
+
           flutter build ipa --release --no-codesign
+
     artifacts:
       - flutter_project/**/build/ios/ipa/*.ipa
+
+
   web-workflow:
     name: SportRoom Web
+
     environment:
       flutter: stable
+
     scripts:
       - name: Unpack Flutter project
         script: |
           rm -rf flutter_project
           mkdir -p flutter_project
+
           ZIP_FILE=$(find . -maxdepth 2 -type f -name "*.zip" | head -n 1)
+
           if [ -z "$ZIP_FILE" ]; then
             echo "ERROR: ZIP file not found"
             exit 1
           fi
+
           echo "Found ZIP: $ZIP_FILE"
           unzip -q "$ZIP_FILE" -d flutter_project
+
       - name: Find Flutter project
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+
           if [ -z "$PROJECT_DIR" ] || [ "$PROJECT_DIR" = "." ]; then
             echo "ERROR: pubspec.yaml not found"
             exit 1
           fi
+
           echo "Flutter project: $PROJECT_DIR"
+
       - name: Fix pubspec.yaml
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
           echo "Removing flutter_lints..."
           sed -i.bak '/^[[:space:]]*flutter_lints:/d' pubspec.yaml
-          echo "Fixed pubspec.yaml:"
-          cat pubspec.yaml
+
+          flutter pub get
+
+      - name: Fix Dart const errors
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+
+          if [ -f lib/main.dart ]; then
+            echo "Fixing const errors in lib/main.dart"
+
+            python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("lib/main.dart")
+          text = path.read_text()
+
+          text = text.replace(
+              "? const [OrgHome(), OrgGames(), CreateGame(), OrgProfile()]",
+              "? [OrgHome(), OrgGames(), CreateGame(), OrgProfile()]"
+          )
+
+          text = text.replace(
+              ": const [Home(), Games(), MyGames(), Profile()]",
+              ": [Home(), Games(), MyGames(), Profile()]"
+          )
+
+          text = text.replace(
+              "games.isEmpty?const ListView(children:[EmptyState(",
+              "games.isEmpty?ListView(children:[EmptyState("
+          )
+
+          path.write_text(text)
+          print("Dart fixes applied.")
+          PY
+          fi
+
       - name: Configure Web
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
           flutter create --platforms=web .
+
       - name: Get Flutter packages
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
           flutter pub get
+
       - name: Build Web
         script: |
           PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
           cd "$PROJECT_DIR"
+
           flutter build web --release
+
     artifacts:
       - flutter_project/**/build/web/**
