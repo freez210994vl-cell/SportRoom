@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SportRoom</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  color: #111827;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #111827;
+  color: white;
+}
+
+.header {
+  max-width: 1150px;
+  margin: auto;
+  min-height: 70px;
+  padding: 12px 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.logo span {
+  color: #ef4444;
+}
+
+nav {
+  display: flex;
+  gap: 22px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  padding: 11px 16px;
+  border-radius: 10px;
+  font-weight: 800;
+}
+
+.red {
+  background: #ef4444;
+  color: white;
+}
+
+.dark {
+  background: #374151;
+  color: white;
+}
+
+.light {
+  background: white;
+  color: #111827;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 80% 20%, #ef444455, transparent 30%),
+    linear-gradient(135deg, #111827, #263449);
+
+  color: white;
+  padding: 90px 18px;
+}
+
+.hero-inner {
+  max-width: 1150px;
+  margin: auto;
+}
+
+.hero h1 {
+  margin: 0 0 20px;
+  font-size: clamp(48px, 9vw, 82px);
+  line-height: .95;
+}
+
+.hero h1 span {
+  color: #ef4444;
+}
+
+.hero p {
+  max-width: 650px;
+  color: #d1d5db;
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1150px;
+  margin: auto;
+}
+
+section {
+  padding: 65px 18px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.title h2 {
+  margin: 0 0 8px;
+  font-size: 36px;
+}
+
+.title p {
+  color: #6b7280;
+}
+
+
+/* SPORTS */
+
+.tools {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search,
+.filter {
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 11px;
+  padding: 13px;
+  font-size: 16px;
+}
+
+.search {
+  flex: 1;
+}
+
+.sports {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+}
+
+.sport {
+  background: white;
+  border-radius: 17px;
+  padding: 20px 10px;
+  text-align: center;
+
+  box-shadow: 0 4px 18px #0000000d;
+
+  transition: .2s;
+}
+
+.sport:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px #00000015;
+}
+
+.sport-icon {
+  font-size: 38px;
+}
+
+.sport h3 {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.sport p {
+  margin: 0;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+
+/* FEATURES */
+
+.features {
+  background: #111827;
+  color: white;
+}
+
+.features .title p {
+  color: #9ca3af;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.card {
+  padding: 28px;
+  border-radius: 18px;
+  background: #1f2937;
+}
+
+.card-icon {
+  font-size: 35px;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+footer {
+  background: #080d18;
+  color: #9ca3af;
+  text-align: center;
+  padding: 30px;
+}
+
+
+/* PROFILE */
+
+.profile-page {
+  display: none;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      #fee2e2,
+      transparent 35%
+    ),
+    #f4f6f8;
+
+  padding: 45px 18px 70px;
+}
+
+.profile-page.show {
+  display: block;
+}
+
+.profile-container {
+  max-width: 1150px;
+  margin: auto;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.profile-label {
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.profile-header h1 {
+  font-size: 42px;
+  margin: 5px 0;
+}
+
+.profile-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.back-button {
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  font-weight: 800;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 20px;
+}
+
+.profile-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  box-shadow: 0 8px 30px #0000000d;
+}
+
+.user-card {
+  padding: 35px 25px;
+  text-align: center;
+  height: fit-content;
+}
+
+.avatar-wrapper {
+  width: 145px;
+  height: 145px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.avatar {
+  width: 145px;
+  height: 145px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid white;
+
+  box-shadow: 0 5px 25px #00000025;
+}
+
+.avatar-button {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+
+  width: 43px;
+  height: 43px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+
+  cursor: pointer;
+  box-shadow: 0 4px 12px #00000025;
+}
+
+.avatar-button input {
+  display: none;
+}
+
+.user-card h2 {
+  margin: 5px 0;
+  font-size: 25px;
+}
+
+.username {
+  color: #ef4444;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.email-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 11px;
+  border-radius: 10px;
+
+  background: #f3f4f6;
+  color: #4b5563;
+
+  font-size: 13px;
+  word-break: break-word;
+}
+
+.profile-status {
+  margin-top: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.profile-status span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.edit-card {
+  padding: 30px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.card-title h2 {
+  margin: 0 0 5px;
+}
+
+.card-title p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.edit-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #fee2e2;
+  border-radius: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
+.form-grid label,
+.about-label {
+  display: block;
+}
+
+.form-grid span,
+.about-label span {
+  display: block;
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.form-grid input,
+.form-grid select,
+.about-label textarea {
+  width: 100%;
+
+  padding: 13px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: white;
+
+  font-size: 15px;
+  outline: none;
+}
+
+.form-grid input:focus,
+.form-grid select:focus,
+.about-label textarea:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px #ef444422;
+}
+
+.form-grid input:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.about-label {
+  margin-top: 18px;
+}
+
+.about-label textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.about-label small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.save-profile-button {
+  flex: 1;
+  padding: 14px;
+
+  border-radius: 10px;
+
+  background: #ef4444;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.logout-button {
+  padding: 14px 20px;
+
+  border-radius: 10px;
+
+  background: #111827;
+  color: white;
+
+  font-weight: 800;
+}
+
+.cabinet-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 17px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+  background: #f3f4f6;
+
+  font-size: 24px;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 23px;
+}
+
+.stat-card span {
+  display: block;
+  margin-top: 3px;
+
+  color: #6b7280;
+  font-size: 13px;
+}
+
+
+/* MODAL */
+
+.modal-bg {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  padding: 18px;
+
+  background: #000000aa;
+
+  z-index: 100;
+}
+
+.modal-bg.show {
+  display: flex;
+}
+
+.modal {
+  width: min(430px, 100%);
+
+  position: relative;
+
+  padding: 25px;
+
+  border-radius: 20px;
+  background: white;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  width: 35px;
+  height: 35px;
+
+  border-radius: 50%;
+  background: #eee;
+
+  font-size: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 5px;
+
+  margin: 18px 0;
+  padding: 4px;
+
+  border-radius: 10px;
+  background: #f3f4f6;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.tab.active {
+  background: white;
+  font-weight: 800;
+}
+
+.auth-form label {
+  display: block;
+  margin-bottom: 13px;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.auth-form input {
+  width: 100%;
+
+  margin-top: 6px;
+  padding: 12px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  font-size: 16px;
+}
+
+.submit {
+  width: 100%;
+  padding: 13px;
+
+  border-radius: 9px;
+
+  background: #ef4444;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+
+/* TOAST */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+
+  transform: translate(-50%, 100px);
+
+  opacity: 0;
+
+  z-index: 300;
+
+  padding: 13px 18px;
+
+  border-radius: 10px;
+
+  background: #111827;
+  color: white;
+
+  transition: .25s;
+}
+
+.toast.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
+  .sports {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  nav {
+    display: none;
+  }
+
+  .account-email {
+    display: none;
+  }
+
+  .hero {
+    padding: 65px 18px;
+  }
+
+  .sports {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .tools {
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cabinet-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header {
+    align-items: flex-start;
+  }
+
+  .profile-header h1 {
+    font-size: 30px;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="header">
+
+    <div class="logo">
+      Sport<span>Room</span>
+    </div>
+
+    <nav>
+      <a href="#sports">
+        Спорт
+      </a>
+
+      <a
+        href="#profile"
+        onclick="openCabinet()"
+      >
+        Профиль
+      </a>
+    </nav>
+
+    <div
+      id="actions"
+      class="header-actions"
+    >
+
+      <button
+        class="btn red"
+        onclick="openAuth('signup')"
+      >
+        Регистрация
+      </button>
+
+      <button
+        class="btn dark"
+        onclick="openAuth('login')"
+      >
+        Войти
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-inner">
+
+    <h1>
+      Весь спорт<br>
+      в <span>одном месте</span>
+    </h1>
+
+    <p>
+      SportRoom — спортивная платформа
+      для любителей спорта. Создай профиль,
+      выбери любимый спорт и следи за своими
+      спортивными активностями.
+    </p>
+
+    <button
+      class="btn red"
+      onclick="document.getElementById('sports').scrollIntoView()"
+    >
+      Смотреть виды спорта
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- SPORTS -->
+
+<section id="sports">
+
+  <div class="container">
+
+    <div class="title">
+
+      <h2>
+        Виды спорта
+      </h2>
+
+      <p>
+        Выбери свой любимый спорт
+      </p>
+
+    </div>
+
+
+    <div class="tools">
+
+      <input
+        id="search"
+        class="search"
+        placeholder="🔎 Поиск спорта..."
+        oninput="renderSports()"
+      >
+
+
+      <select
+        id="filter"
+        class="filter"
+        onchange="renderSports()"
+      >
+
+        <option value="all">
+          Все виды
+        </option>
+
+        <option value="team">
+          Командные
+        </option>
+
+        <option value="racket">
+          Ракеточные
+        </option>
+
+        <option value="combat">
+          Единоборства
+        </option>
+
+        <option value="winter">
+          Зимние
+        </option>
+
+        <option value="water">
+          Водные
+        </option>
+
+        <option value="motor">
+          Авто и мото
+        </option>
+
+        <option value="athletics">
+          Атлетика
+        </option>
+
+        <option value="other">
+          Другие
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div
+      id="sportsList"
+      class="sports"
+    ></div>
+
+  </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features">
+
+  <div class="container">
+
+    <div class="title">
+
+      <h2>
+        SportRoom
+      </h2>
+
+      <p>
+        Всё для любителей спорта
+      </p>
+
+    </div>
+
+
+    <div class="cards">
+
+      <div class="card">
+
+        <div class="card-icon">
+          🏆
+        </div>
+
+        <h3>
+          Много видов спорта
+        </h3>
+
+        <p>
+          Футбол, баскетбол, хоккей,
+          теннис, бокс, ММА и многие
+          другие дисциплины.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">
+          🔐
+        </div>
+
+        <h3>
+          Личный аккаунт
+        </h3>
+
+        <p>
+          Регистрация и вход через
+          Supabase Auth.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-icon">
+          👤
+        </div>
+
+        <h3>
+          Личный кабинет
+        </h3>
+
+        <p>
+          Управляй профилем, аватаром,
+          любимым спортом и информацией
+          о себе.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section
+  id="profile"
+  class="profile-page"
+>
+
+  <div class="profile-container">
+
+
+    <div class="profile-header">
+
+      <div>
+
+        <div class="profile-label">
+          SPORTROOM
+        </div>
+
+        <h1>
+          Личный кабинет
+        </h1>
+
+        <p>
+          Управляй своим спортивным профилем
+        </p>
+
+      </div>
+
+
+      <button
+        class="back-button"
+        onclick="document.getElementById('sports').scrollIntoView()"
+      >
+        ← К спорту
+      </button>
+
+    </div>
+
+
+    <div class="profile-layout">
+
+
+      <!-- USER CARD -->
+
+      <div class="profile-card user-card">
+
+        <div class="avatar-wrapper">
+
+          <img
+            id="avatarPreview"
+            class="avatar"
+            src="https://ui-avatars.com/api/?name=User&background=ef4444&color=fff&size=256"
+            alt="Аватар"
+          >
+
+          <label class="avatar-button">
+
+            📷
+
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              onchange="uploadAvatar(event)"
+            >
+
+          </label>
+
+        </div>
+
+
+        <h2 id="cabinetName">
+          Пользователь
+        </h2>
+
+
+        <div
+          class="username"
+          id="cabinetUsername"
+        >
+          @username
+        </div>
+
+
+        <div class="email-box">
+
+          ✉️
+
+          <span id="cabinetEmail">
+            email@example.com
+          </span>
+
+        </div>
+
+
+        <div class="profile-status">
+
+          <span></span>
+
+          Аккаунт активен
+
+        </div>
+
+      </div>
+
+
+      <!-- EDIT -->
+
+      <div class="profile-card edit-card">
+
+        <div class="card-title">
+
+          <div>
+
+            <h2>
+              Редактирование профиля
+            </h2>
+
+            <p>
+              Измени информацию о себе
+            </p>
+
+          </div>
+
+          <div class="edit-icon">
+            ✏️
+          </div>
+
+        </div>
+
+
+        <div class="form-grid">
+
+
+          <label>
+
+            <span>
+              Имя
+            </span>
+
+            <input
+              id="cabinetNameInput"
+              type="text"
+              placeholder="Введите имя"
+            >
+
+          </label>
+
+
+          <label>
+
+            <span>
+              Username
+            </span>
+
+            <input
+              id="cabinetUsernameInput"
+              type="text"
+              placeholder="username"
+            >
+
+          </label>
+
+
+          <label>
+
+            <span>
+              Email
+            </span>
+
+            <input
+              id="cabinetEmailInput"
+              type="email"
+              disabled
+            >
+
+          </label>
+
+
+          <label>
+
+            <span>
+              Любимый спорт
+            </span>
+
+            <select id="cabinetSportInput"></select>
+
+          </label>
+
+        </div>
+
+
+        <label class="about-label">
+
+          <span>
+            О себе
+          </span>
+
+          <textarea
+            id="cabinetBioInput"
+            maxlength="300"
+            rows="5"
+            placeholder="Расскажи немного о себе..."
+          ></textarea>
+
+          <small>
+            До 300 символов
+          </small>
+
+        </label>
+
+
+        <div class="profile-actions">
+
+          <button
+            class="save-profile-button"
+            onclick="saveCabinetProfile()"
+          >
+            💾 Сохранить изменения
+          </button>
+
+
+          <button
+            class="logout-button"
+            onclick="logout()"
+          >
+            Выйти
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="cabinet-stats">
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          🏆
+        </div>
+
+        <div>
+
+          <strong>
+            0
+          </strong>
+
+          <span>
+            Мои игры
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ❤️
+        </div>
+
+        <div>
+
+          <strong>
+            0
+          </strong>
+
+          <span>
+            Избранное
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <div class="stat-icon">
+          ⭐
+        </div>
+
+        <div>
+
+          <strong>
+            0
+          </strong>
+
+          <span>
+            Достижения
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+  SportRoom · Спорт в одном месте
+</footer>
+
+
+<!-- AUTH MODAL -->
+
+<div
+  id="modalBg"
+  class="modal-bg"
+>
+
+  <div class="modal">
+
+    <button
+      class="close"
+      onclick="closeAuth()"
+    >
+      ×
+    </button>
+
+
+    <h2 id="authTitle">
+      Регистрация
+    </h2>
+
+
+    <div class="tabs">
+
+      <button
+        id="signupTab"
+        class="tab active"
+        onclick="openAuth('signup')"
+      >
+        Регистрация
+      </button>
+
+      <button
+        id="loginTab"
+        class="tab"
+        onclick="openAuth('login')"
+      >
+        Войти
+      </button>
+
+    </div>
+
+
+    <form
+      class="auth-form"
+      onsubmit="submitAuth(event)"
+    >
+
+
+      <div id="nameField">
+
+        <label>
+
+          Имя
+
+          <input
+            id="name"
+            type="text"
+            placeholder="Ваше имя"
+          >
+
+        </label>
+
+      </div>
+
+
+      <label>
+
+        Email
+
+        <input
+          id="email"
+          type="email"
+          required
+          placeholder="example@mail.com"
+        >
+
+      </label>
+
+
+      <label>
+
+        Пароль
+
+        <input
+          id="password"
+          type="password"
+          minlength="6"
+          required
+          placeholder="Минимум 6 символов"
+        >
+
+      </label>
+
+
+      <button
+        id="submitButton"
+        class="submit"
+      >
+        Создать аккаунт
+      </button>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+
+<!-- SUPABASE -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+  "https://bmcyqfrlkoujcdxicahh.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_9IMcVm29eZxtMbT7K9b6ww_HWBL2Mqy";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+
+/* =====================================
+   SPORTS
+===================================== */
+
+const sports = [
+
+  ["⚽","Футбол","team"],
+  ["🏀","Баскетбол","team"],
+  ["🏈","Американский футбол","team"],
+  ["⚾","Бейсбол","team"],
+  ["🏒","Хоккей","team"],
+  ["🏉","Регби","team"],
+  ["🏐","Волейбол","team"],
+  ["🤾","Гандбол","team"],
+  ["🏑","Хоккей на траве","team"],
+  ["🥍","Лакросс","team"],
+  ["🥅","Флорбол","team"],
+
+  ["🎾","Теннис","racket"],
+  ["🏸","Бадминтон","racket"],
+  ["🏓","Настольный теннис","racket"],
+
+  ["🥊","Бокс","combat"],
+  ["🥋","Дзюдо","combat"],
+  ["🥋","Каратэ","combat"],
+  ["🥊","ММА","combat"],
+  ["🤼","Борьба","combat"],
+  ["🤺","Фехтование","combat"],
+  ["🥋","Тхэквондо","combat"],
+  ["🥋","Самбо","combat"],
+
+  ["⛷️","Горные лыжи","winter"],
+  ["🏂","Сноуборд","winter"],
+  ["⛸️","Фигурное катание","winter"],
+  ["🥌","Кёрлинг","winter"],
+  ["🛷","Бобслей","winter"],
+  ["🎿","Лыжные гонки","winter"],
+  ["🛷","Скелетон","winter"],
+
+  ["🏊","Плавание","water"],
+  ["🤽","Водное поло","water"],
+  ["🤿","Прыжки в воду","water"],
+  ["🚣","Гребля","water"],
+  ["🛶","Каноэ","water"],
+  ["🏄","Сёрфинг","water"],
+  ["🏄","Вейкбординг","water"],
+  ["🤽","Синхронное плавание","water"],
+
+  ["🏎️","Формула-1","motor"],
+  ["🏍️","Мотогонки","motor"],
+  ["🚗","Ралли","motor"],
+  ["🏎️","Картинг","motor"],
+  ["🏁","NASCAR","motor"],
+
+  ["🏃","Лёгкая атлетика","athletics"],
+  ["🤸","Спортивная гимнастика","athletics"],
+  ["🏋️","Тяжёлая атлетика","athletics"],
+  ["🚴","Велоспорт","athletics"],
+  ["🧗","Скалолазание","athletics"],
+  ["🏃","Марафон","athletics"],
+  ["🚵","Маунтинбайк","athletics"],
+
+  ["⛳","Гольф","other"],
+  ["🏇","Конный спорт","other"],
+  ["🎯","Дартс","other"],
+  ["🏹","Стрельба из лука","other"],
+  ["🎱","Бильярд","other"],
+  ["♟️","Шахматы","other"],
+  ["🎮","Киберспорт","other"],
+  ["🪂","Парашютный спорт","other"],
+  ["🥏","Фрисби","other"],
+  ["🎳","Боулинг","other"],
+  ["🏹","Спортивная стрельба","other"]
+
+];
+
+
+/* =====================================
+   TOAST
+===================================== */
+
+function toast(message) {
+
+  const element =
+    document.getElementById("toast");
+
+  element.textContent = message;
+
+  element.classList.add("show");
+
+  setTimeout(() => {
+
+    element.classList.remove("show");
+
+  }, 3000);
+
+}
+
+
+/* =====================================
+   SPORTS RENDER
+===================================== */
+
+function renderSports() {
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase();
+
+  const filter =
+    document
+      .getElementById("filter")
+      .value;
+
+
+  const result =
+    sports.filter(item => {
+
+      const matchesName =
+        item[1]
+          .toLowerCase()
+          .includes(search);
+
+      const matchesFilter =
+        filter === "all" ||
+        item[2] === filter;
+
+      return matchesName &&
+             matchesFilter;
+
+    });
+
+
+  document.getElementById(
+    "sportsList"
+  ).innerHTML = result.map(item => `
+
+    <div class="sport">
+
+      <div class="sport-icon">
+        ${item[0]}
+      </div>
+
+      <h3>
+        ${item[1]}
+      </h3>
+
+      <p>
+        Спортивная дисциплина
+      </p>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =====================================
+   AUTH
+===================================== */
+
+let authMode = "signup";
+
+
+function openAuth(mode) {
+
+  authMode = mode;
+
+  document
+    .getElementById("modalBg")
+    .classList.add("show");
+
+
+  const signup =
+    mode === "signup";
+
+
+  document.getElementById(
+    "authTitle"
+  ).textContent =
+    signup
+      ? "Регистрация"
+      : "Вход";
+
+
+  document.getElementById(
+    "nameField"
+  ).style.display =
+    signup
+      ? "block"
+      : "none";
+
+
+  document.getElementById(
+    "submitButton"
+  ).textContent =
+    signup
+      ? "Создать аккаунт"
+      : "Войти";
+
+
+  document.getElementById(
+    "signupTab"
+  ).classList.toggle(
+    "active",
+    signup
+  );
+
+
+  document.getElementById(
+    "loginTab"
+  ).classList.toggle(
+    "active",
+    !signup
+  );
+
+}
+
+
+function closeAuth() {
+
+  document
+    .getElementById("modalBg")
+    .classList.remove("show");
+
+}
+
+
+/* =====================================
+   AUTH SUBMIT
+===================================== */
+
+async function submitAuth(event) {
+
+  event.preventDefault();
+
+
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("password")
+      .value;
+
+
+  const name =
+    document
+      .getElementById("name")
+      .value
+      .trim();
+
+
+  try {
+
+
+    if (authMode === "signup") {
+
+
+      const result =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password,
+
+          options: {
+
+            data: {
+              full_name: name
+            }
+
+          }
+
+        });
+
+
+      if (result.error) {
+        throw result.error;
+      }
+
+
+      if (result.data.session) {
+
+        toast(
+          "Аккаунт создан!"
+        );
+
+      } else {
+
+        toast(
+          "Аккаунт создан. Проверьте почту."
+        );
+
+      }
+
+
+    } else {
+
+
+      const result =
+        await supabaseClient.auth
+          .signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+      if (result.error) {
+        throw result.error;
+      }
+
+
+      toast(
+        "Вы успешно вошли!"
+      );
+
+    }
+
+
+    closeAuth();
+
+    await refreshUser();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    toast(
+      error.message ||
+      "Ошибка авторизации"
+    );
+
+  }
+
+}
+
+
+/* =====================================
+   REFRESH USER
+===================================== */
+
+async function refreshUser() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+
+  const user =
+    result.data.user;
+
+
+  const actions =
+    document.getElementById("actions");
+
+
+  if (!user) {
+
+
+    actions.innerHTML = `
+
+      <button
+        class="btn red"
+        onclick="openAuth('signup')"
+      >
+        Регистрация
+      </button>
+
+      <button
+        class="btn dark"
+        onclick="openAuth('login')"
+      >
+        Войти
+      </button>
+
+    `;
+
+
+    document
+      .getElementById("profile")
+      .classList.remove("show");
+
+
+    return;
+
+  }
+
+
+  actions.innerHTML = `
+
+    <button
+      class="btn light"
+      onclick="openCabinet()"
+    >
+      👤 Кабинет
+    </button>
+
+    <button
+      class="btn dark"
+      onclick="logout()"
+    >
+      Выйти
+    </button>
+
+  `;
+
+
+  await loadCabinet();
+
+}
+
+
+/* =====================================
+   OPEN CABINET
+===================================== */
+
+async function openCabinet() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+
+  if (!result.data.user) {
+
+    toast(
+      "Сначала войдите в аккаунт"
+    );
+
+    openAuth("login");
+
+    return;
+
+  }
+
+
+  document
+    .getElementById("profile")
+    .classList.add("show");
+
+
+  await loadCabinet();
+
+
+  document
+    .getElementById("profile")
+    .scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+
+/* =====================================
+   LOAD CABINET
+===================================== */
+
+async function loadCabinet() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+
+  const user =
+    result.data.user;
+
+
+  if (!user) return;
+
+
+  const profileResult =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+  if (profileResult.error) {
+
+    console.error(
+      profileResult.error
+    );
+
+  }
+
+
+  const profile =
+    profileResult.data || {};
+
+
+  const name =
+    profile.full_name ||
+    user.user_metadata?.full_name ||
+    "Пользователь";
+
+
+  const username =
+    profile.username ||
+    "username";
+
+
+  document.getElementById(
+    "cabinetName"
+  ).textContent = name;
+
+
+  document.getElementById(
+    "cabinetUsername"
+  ).textContent =
+    username.startsWith("@")
+      ? username
+      : "@" + username;
+
+
+  document.getElementById(
+    "cabinetEmail"
+  ).textContent =
+    user.email || "";
+
+
+  document.getElementById(
+    "cabinetNameInput"
+  ).value =
+    name === "Пользователь"
+      ? ""
+      : name;
+
+
+  document.getElementById(
+    "cabinetUsernameInput"
+  ).value =
+    username === "username"
+      ? ""
+      : username;
+
+
+  document.getElementById(
+    "cabinetEmailInput"
+  ).value =
+    user.email || "";
+
+
+  document.getElementById(
+    "cabinetBioInput"
+  ).value =
+    profile.bio || "";
+
+
+  const sportSelect =
+    document.getElementById(
+      "cabinetSportInput"
+    );
+
+
+  sportSelect.innerHTML =
+    sports.map(item => `
+
+      <option value="${item[1]}">
+        ${item[1]}
+      </option>
+
+    `).join("");
+
+
+  if (profile.favorite_sport) {
+
+    sportSelect.value =
+      profile.favorite_sport;
+
+  }
+
+
+  if (profile.avatar_url) {
+
+    document.getElementById(
+      "avatarPreview"
+    ).src =
+      profile.avatar_url;
+
+  } else {
+
+    document.getElementById(
+      "avatarPreview"
+    ).src =
+      "https://ui-avatars.com/api/?name=" +
+      encodeURIComponent(name) +
+      "&background=ef4444&color=fff&size=256";
+
+  }
+
+}
+
+
+/* =====================================
+   SAVE PROFILE
+===================================== */
+
+async function saveCabinetProfile() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+
+  const user =
+    result.data.user;
+
+
+  if (!user) {
+
+    toast(
+      "Сначала войдите в аккаунт"
+    );
+
+    return;
+
+  }
+
+
+  const fullName =
+    document
+      .getElementById(
+        "cabinetNameInput"
+      )
+      .value
+      .trim();
+
+
+  const username =
+    document
+      .getElementById(
+        "cabinetUsernameInput"
+      )
+      .value
+      .trim()
+      .replace(/^@/, "");
+
+
+  const favoriteSport =
+    document
+      .getElementById(
+        "cabinetSportInput"
+      )
+      .value;
+
+
+  const bio =
+    document
+      .getElementById(
+        "cabinetBioInput"
+      )
+      .value
+      .trim();
+
+
+  const save =
+    await supabaseClient
+      .from("profiles")
+      .upsert({
+
+        id: user.id,
+
+        full_name:
+          fullName || "Пользователь",
+
+        username:
+          username || null,
+
+        favorite_sport:
+          favoriteSport,
+
+        bio:
+          bio,
+
+        updated_at:
+          new Date().toISOString()
+
+      });
+
+
+  if (save.error) {
+
+    console.error(save.error);
+
+    toast(
+      save.error.message
+    );
+
+    return;
+
+  }
+
+
+  await loadCabinet();
+
+
+  toast(
+    "Профиль сохранён!"
+  );
+
+}
+
+
+/* =====================================
+   UPLOAD AVATAR
+===================================== */
+
+async function uploadAvatar(event) {
+
+  const file =
+    event.target.files[0];
+
+
+  if (!file) return;
+
+
+  if (!file.type.startsWith("image/")) {
+
+    toast(
+      "Выберите изображение"
+    );
+
+    return;
+
+  }
+
+
+  if (file.size > 6 * 1024 * 1024) {
+
+    toast(
+      "Фото должно быть меньше 6 МБ"
+    );
+
+    return;
+
+  }
+
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+
+  const user =
+    result.data.user;
+
+
+  if (!user) {
+
+    toast(
+      "Сначала войдите в аккаунт"
+    );
+
+    return;
+
+  }
+
+
+  toast(
+    "Загружаем фото..."
+  );
+
+
+  const extension =
+    file.type === "image/png"
+      ? "png"
+      : file.type === "image/webp"
+        ? "webp"
+        : file.type === "image/gif"
+          ? "gif"
+          : "jpg";
+
+
+  const filePath =
+    user.id +
+    "/avatar." +
+    extension;
+
+
+  const upload =
+    await supabaseClient.storage
+      .from("avatars")
+      .upload(
+        filePath,
+        file,
+        {
+          cacheControl: "3600",
+          upsert: true,
+          contentType: file.type
+        }
+      );
+
+
+  if (upload.error) {
+
+    console.error(
+      upload.error
+    );
+
+    toast(
+      "Не удалось загрузить фото"
+    );
+
+    return;
+
+  }
+
+
+  const publicResult =
+    supabaseClient.storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+
+
+  const publicUrl =
+    publicResult.data.publicUrl;
+
+
+  const avatarUrl =
+    publicUrl +
+    "?v=" +
+    Date.now();
+
+
+  const save =
+    await supabaseClient
+      .from("profiles")
+      .upsert({
+
+        id: user.id,
+
+        avatar_url:
+          avatarUrl,
+
+        updated_at:
+          new Date().toISOString()
+
+      });
+
+
+  if (save.error) {
+
+    console.error(
+      save.error
+    );
+
+    toast(
+      "Фото загружено, но профиль не обновился"
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "avatarPreview"
+  ).src =
+    avatarUrl;
+
+
+  toast(
+    "Аватар сохранён!"
+  );
+
+}
+
+
+/* =====================================
+   LOGOUT
+===================================== */
+
+async function logout() {
+
+  const result =
+    await supabaseClient.auth.signOut();
+
+
+  if (result.error) {
+
+    toast(
+      result.error.message
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById("profile")
+    .classList.remove("show");
+
+
+  toast(
+    "Вы вышли из аккаунта"
+  );
+
+
+  await refreshUser();
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =====================================
+   AUTH STATE
+===================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  (event, session) => {
+
+    setTimeout(
+      refreshUser,
+      0
+    );
+
+  }
+);
+
+
+/* =====================================
+   START
+===================================== */
+
+renderSports();
+
+refreshUser();
+
+</script>
+
+</body>
+</html>
