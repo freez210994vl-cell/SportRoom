@@ -10,7 +10,7 @@ workflows:
         script: |
           rm -rf flutter_project
           mkdir flutter_project
-          SportRoom_AppStore_Submission_Pack_v1.0.zip
+          unzip -q SportRoom_AppStore_Submission_Pack_v1.0.zip -d flutter_project
 
       - name: Get Flutter packages
         script: |
