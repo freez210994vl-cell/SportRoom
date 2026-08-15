@@ -29,3 +29,33 @@ workflows:
 
     artifacts:
       - flutter_project/**/build/ios/ipa/*.ipa
+  web-workflow:
+    name: SportRoom Web
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+
+    environment:
+      flutter: stable
+
+    scripts:
+      - name: Unpack Flutter project
+        script: |
+          rm -rf flutter_project
+          mkdir flutter_project
+          unzip -q SportRoom_AppStore_Submission_Pack_v1.0.0.zip -d flutter_project
+
+      - name: Get Flutter packages
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          flutter pub get
+
+      - name: Build Web
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          flutter config --enable-web
+          flutter build web --release
+
+    artifacts:
+      - flutter_project/**/build/web/**
