@@ -4,10 +4,26 @@ workflows:
     environment:
       flutter: stable
       xcode: latest
+
     scripts:
+      - name: Unpack Flutter project
+        script: |
+          rm -rf flutter_project
+          mkdir flutter_project
+          unzip -q SportRoom_AppStore_Submission_Pack_v1.0.zip -d flutter_project
+
       - name: Get Flutter packages
-        script: flutter pub get
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          echo "Flutter project: $PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          flutter pub get
+
       - name: Build iOS
-        script: flutter build ipa --release
+        script: |
+          PROJECT_DIR=$(dirname "$(find flutter_project -name pubspec.yaml -print -quit)")
+          cd "$PROJECT_DIR"
+          flutter build ipa --release
+
     artifacts:
-      - build/ios/ipa/*.ipa
+      - flutter_project/**/build/ios/ipa/*.ipa
