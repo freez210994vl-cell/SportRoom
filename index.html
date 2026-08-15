@@ -1,0 +1,900 @@
+<!-- =========================
+     ЛИЧНЫЙ КАБИНЕТ
+========================= -->
+
+<section id="profile" class="profile-page">
+
+  <div class="profile-container">
+
+    <div class="profile-header">
+      <div>
+        <div class="profile-label">SPORTROOM</div>
+        <h1>Личный кабинет</h1>
+        <p>Управляй своим спортивным профилем</p>
+      </div>
+
+      <button class="back-button" onclick="location.hash='sports'">
+        ← К спорту
+      </button>
+    </div>
+
+
+    <div class="profile-layout">
+
+      <!-- ЛЕВАЯ КАРТОЧКА -->
+      <div class="profile-card user-card">
+
+        <div class="avatar-wrapper">
+
+          <img
+            id="avatarPreview"
+            class="avatar"
+            src="https://ui-avatars.com/api/?name=User&background=ef4444&color=fff&size=256"
+            alt="Аватар"
+          >
+
+          <label class="avatar-button">
+            📷
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+              onchange="previewAvatar(event)"
+            >
+          </label>
+
+        </div>
+
+        <h2 id="cabinetName">
+          Пользователь
+        </h2>
+
+        <div class="username" id="cabinetUsername">
+          @username
+        </div>
+
+        <div class="email-box">
+          ✉️
+          <span id="cabinetEmail">
+            email@example.com
+          </span>
+        </div>
+
+        <div class="profile-status">
+          <span></span>
+          Аккаунт активен
+        </div>
+
+      </div>
+
+
+      <!-- ПРАВАЯ КАРТОЧКА -->
+      <div class="profile-card edit-card">
+
+        <div class="card-title">
+          <div>
+            <h2>Редактирование профиля</h2>
+            <p>Измени информацию о себе</p>
+          </div>
+
+          <div class="edit-icon">
+            ✏️
+          </div>
+        </div>
+
+
+        <div class="form-grid">
+
+          <label>
+            <span>Имя</span>
+
+            <input
+              id="cabinetNameInput"
+              type="text"
+              placeholder="Введите имя"
+            >
+          </label>
+
+
+          <label>
+            <span>Username</span>
+
+            <input
+              id="cabinetUsernameInput"
+              type="text"
+              placeholder="@username"
+            >
+          </label>
+
+
+          <label>
+            <span>Email</span>
+
+            <input
+              id="cabinetEmailInput"
+              type="email"
+              disabled
+            >
+          </label>
+
+
+          <label>
+            <span>Любимый спорт</span>
+
+            <select id="cabinetSportInput">
+              <option>Футбол</option>
+              <option>Баскетбол</option>
+              <option>Теннис</option>
+              <option>Хоккей</option>
+              <option>Волейбол</option>
+              <option>Бокс</option>
+              <option>ММА</option>
+              <option>Плавание</option>
+              <option>Формула-1</option>
+              <option>Лёгкая атлетика</option>
+              <option>Киберспорт</option>
+            </select>
+          </label>
+
+        </div>
+
+
+        <label class="about-label">
+          <span>О себе</span>
+
+          <textarea
+            id="cabinetBioInput"
+            rows="5"
+            maxlength="300"
+            placeholder="Расскажи немного о себе..."
+          ></textarea>
+
+          <small>
+            До 300 символов
+          </small>
+
+        </label>
+
+
+        <div class="profile-actions">
+
+          <button
+            class="save-profile-button"
+            onclick="saveCabinetProfile()"
+          >
+            💾 Сохранить изменения
+          </button>
+
+          <button
+            class="logout-button"
+            onclick="logout()"
+          >
+            Выйти
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- НИЖНИЕ КАРТОЧКИ -->
+
+    <div class="cabinet-stats">
+
+      <div class="stat-card">
+        <div class="stat-icon">🏆</div>
+        <div>
+          <strong>0</strong>
+          <span>Мои игры</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">❤️</div>
+        <div>
+          <strong>0</strong>
+          <span>Избранное</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div>
+          <strong>0</strong>
+          <span>Достижения</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<style>
+
+/* =========================
+   ЛИЧНЫЙ КАБИНЕТ
+========================= */
+
+.profile-page {
+  display: none;
+  min-height: 100vh;
+  padding: 45px 18px 70px;
+  background:
+    radial-gradient(
+      circle at top right,
+      #fee2e2 0,
+      transparent 35%
+    ),
+    #f4f6f8;
+}
+
+.profile-page.show {
+  display: block;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+
+/* HEADER */
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.profile-label {
+  color: #ef4444;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.profile-header h1 {
+  font-size: 42px;
+  margin: 5px 0;
+}
+
+.profile-header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.back-button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 10px;
+  background: #111827;
+  color: white;
+  font-weight: 700;
+}
+
+
+/* LAYOUT */
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  gap: 20px;
+}
+
+
+/* CARD */
+
+.profile-card {
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 8px 30px #0000000d;
+  border: 1px solid #e5e7eb;
+}
+
+
+/* USER CARD */
+
+.user-card {
+  padding: 35px 25px;
+  text-align: center;
+  height: fit-content;
+}
+
+.avatar-wrapper {
+  width: 145px;
+  height: 145px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.avatar {
+  width: 145px;
+  height: 145px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow:
+    0 5px 25px #00000025;
+}
+
+.avatar-button {
+  position: absolute;
+  right: 2px;
+  bottom: 2px;
+  width: 43px;
+  height: 43px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px #00000025;
+}
+
+.avatar-button input {
+  display: none;
+}
+
+.user-card h2 {
+  margin: 5px 0;
+  font-size: 25px;
+}
+
+.username {
+  color: #ef4444;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.email-box {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  background: #f3f4f6;
+  padding: 11px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #4b5563;
+  word-break: break-word;
+}
+
+.profile-status {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.profile-status span {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+
+/* EDIT CARD */
+
+.edit-card {
+  padding: 30px;
+}
+
+.card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.card-title h2 {
+  margin: 0 0 5px;
+}
+
+.card-title p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.edit-icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fee2e2;
+  border-radius: 12px;
+}
+
+
+/* FORM */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 17px;
+}
+
+.form-grid label,
+.about-label {
+  display: block;
+}
+
+.form-grid span,
+.about-label span {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.form-grid input,
+.form-grid select,
+.about-label textarea {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 15px;
+  background: white;
+  outline: none;
+}
+
+.form-grid input:focus,
+.form-grid select:focus,
+.about-label textarea:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px #ef444422;
+}
+
+.about-label {
+  margin-top: 18px;
+}
+
+.about-label textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.about-label small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+
+/* BUTTONS */
+
+.profile-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.save-profile-button {
+  flex: 1;
+  padding: 14px;
+  background: #ef4444;
+  color: white;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.logout-button {
+  padding: 14px 20px;
+  background: #111827;
+  color: white;
+  border-radius: 10px;
+}
+
+
+/* STATS */
+
+.cabinet-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 17px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 5px 20px #00000008;
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 13px;
+  font-size: 24px;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 23px;
+}
+
+.stat-card span {
+  display: block;
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-header h1 {
+    font-size: 32px;
+  }
+
+}
+
+@media (max-width: 550px) {
+
+  .profile-page {
+    padding: 30px 12px 50px;
+  }
+
+  .profile-header {
+    align-items: flex-start;
+  }
+
+  .profile-header h1 {
+    font-size: 28px;
+  }
+
+  .back-button {
+    padding: 9px 12px;
+  }
+
+  .edit-card {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cabinet-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+  }
+
+}
+
+</style>
+
+
+<script>
+
+/* =========================
+   АВАТАР
+========================= */
+
+function previewAvatar(event) {
+
+  const file =
+    event.target.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+
+    toast("Выберите изображение");
+
+    return;
+  }
+
+  const reader =
+    new FileReader();
+
+  reader.onload = function(e) {
+
+    document.getElementById(
+      "avatarPreview"
+    ).src = e.target.result;
+
+  };
+
+  reader.readAsDataURL(file);
+
+}
+
+
+/* =========================
+   ЗАГРУЗКА ДАННЫХ КАБИНЕТА
+========================= */
+
+async function loadCabinet() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+  const user =
+    result.data.user;
+
+  if (!user) return;
+
+
+  const profileResult =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+
+  const profile =
+    profileResult.data || {};
+
+
+  const name =
+    profile.full_name ||
+    user.user_metadata?.full_name ||
+    "Пользователь";
+
+
+  const username =
+    profile.username ||
+    "username";
+
+
+  document.getElementById(
+    "cabinetName"
+  ).textContent = name;
+
+
+  document.getElementById(
+    "cabinetUsername"
+  ).textContent =
+    username.startsWith("@")
+      ? username
+      : "@" + username;
+
+
+  document.getElementById(
+    "cabinetEmail"
+  ).textContent =
+    user.email || "";
+
+
+  document.getElementById(
+    "cabinetNameInput"
+  ).value = name === "Пользователь"
+    ? ""
+    : name;
+
+
+  document.getElementById(
+    "cabinetUsernameInput"
+  ).value =
+    username === "username"
+      ? ""
+      : username;
+
+
+  document.getElementById(
+    "cabinetEmailInput"
+  ).value =
+    user.email || "";
+
+
+  document.getElementById(
+    "cabinetBioInput"
+  ).value =
+    profile.bio || "";
+
+
+  const sport =
+    profile.favorite_sport;
+
+
+  if (sport) {
+
+    document.getElementById(
+      "cabinetSportInput"
+    ).value = sport;
+
+  }
+
+
+  if (profile.avatar_url) {
+
+    document.getElementById(
+      "avatarPreview"
+    ).src =
+      profile.avatar_url;
+
+  } else {
+
+    document.getElementById(
+      "avatarPreview"
+    ).src =
+      "https://ui-avatars.com/api/?name="
+      + encodeURIComponent(name)
+      + "&background=ef4444&color=fff&size=256";
+
+  }
+
+}
+
+
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
+
+async function saveCabinetProfile() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+  const user =
+    result.data.user;
+
+  if (!user) {
+
+    toast("Сначала войдите в аккаунт");
+
+    return;
+
+  }
+
+
+  const name =
+    document.getElementById(
+      "cabinetNameInput"
+    ).value.trim();
+
+
+  const username =
+    document.getElementById(
+      "cabinetUsernameInput"
+    ).value.trim();
+
+
+  const sport =
+    document.getElementById(
+      "cabinetSportInput"
+    ).value;
+
+
+  const bio =
+    document.getElementById(
+      "cabinetBioInput"
+    ).value.trim();
+
+
+  const resultSave =
+    await supabaseClient
+      .from("profiles")
+      .upsert({
+
+        id: user.id,
+
+        full_name:
+          name || "Пользователь",
+
+        username:
+          username || null,
+
+        favorite_sport:
+          sport,
+
+        bio:
+          bio,
+
+        updated_at:
+          new Date().toISOString()
+
+      });
+
+
+  if (resultSave.error) {
+
+    toast(
+      resultSave.error.message
+    );
+
+    return;
+
+  }
+
+
+  await loadCabinet();
+
+  toast(
+    "Профиль успешно сохранён!"
+  );
+
+}
+
+
+/* =========================
+   ПОКАЗ КАБИНЕТА
+========================= */
+
+async function showCabinet() {
+
+  const result =
+    await supabaseClient.auth.getUser();
+
+  if (!result.data.user) {
+
+    toast(
+      "Сначала войдите в аккаунт"
+    );
+
+    return;
+
+  }
+
+
+  document.getElementById(
+    "profile"
+  ).classList.add("show");
+
+
+  document.getElementById(
+    "profile"
+  ).scrollIntoView({
+    behavior: "smooth"
+  });
+
+
+  await loadCabinet();
+
+}
+
+
+/* =========================
+   АВТОМАТИЧЕСКОЕ ОБНОВЛЕНИЕ
+========================= */
+
+supabaseClient.auth.onAuthStateChange(
+  function(event, session) {
+
+    if (session) {
+
+      setTimeout(
+        showCabinet,
+        100
+      );
+
+    }
+
+  }
+);
+
+</script>
