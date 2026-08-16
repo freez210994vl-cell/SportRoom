@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b0f14"
+  >
+
+  <title>Регистрация — SportRoom</title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --red: #ef4444;
+      --red-dark: #dc2626;
+      --red-light: #fff1f2;
+
+      --dark: #0b0f14;
+      --text: #111827;
+      --muted: #6b7280;
+
+      --border: #e5e7eb;
+
+      --bg: #f5f7fa;
+
+      --shadow:
+        0 25px 70px rgba(0, 0, 0, .10);
+
+      --transition: .2s ease;
+    }
+
+
+    body {
+      min-height: 100vh;
+
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(239, 68, 68, .08),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 90%,
+          rgba(239, 68, 68, .06),
+          transparent 30%
+        ),
+        var(--bg);
+
+      color: var(--text);
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    header {
+      height: 70px;
+
+      background: rgba(255,255,255,.92);
+
+      border-bottom:
+        1px solid var(--border);
+
+      backdrop-filter: blur(15px);
+
+      -webkit-backdrop-filter: blur(15px);
+    }
+
+
+    .header-inner {
+      width:
+        min(
+          1100px,
+          calc(100% - 36px)
+        );
+
+      height: 100%;
+
+      margin: auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+    }
+
+
+    .logo {
+      text-decoration: none;
+
+      color: #111;
+
+      font-size: 25px;
+
+      font-weight: 950;
+
+      letter-spacing: -1px;
+    }
+
+
+    .logo span {
+      color: var(--red);
+    }
+
+
+    .header-login {
+      text-decoration: none;
+
+      color: var(--muted);
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      transition: var(--transition);
+    }
+
+
+    .header-login:hover {
+      color: var(--red);
+    }
+
+
+    /* =====================================================
+       MAIN
+       ===================================================== */
+
+    main {
+      min-height:
+        calc(100vh - 70px);
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 50px 18px 80px;
+    }
+
+
+    .register-wrapper {
+      width: 100%;
+
+      max-width: 520px;
+    }
+
+
+    /* =====================================================
+       CARD
+       ===================================================== */
+
+    .register-card {
+      background: white;
+
+      border:
+        1px solid rgba(0,0,0,.05);
+
+      border-radius: 28px;
+
+      padding: 38px;
+
+      box-shadow: var(--shadow);
+    }
+
+
+    .register-top {
+      text-align: center;
+
+      margin-bottom: 30px;
+    }
+
+
+    .register-icon {
+      width: 70px;
+
+      height: 70px;
+
+      margin:
+        0 auto 18px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ef4444,
+          #b91c1c
+        );
+
+      color: white;
+
+      font-size: 34px;
+
+      box-shadow:
+        0 14px 30px
+        rgba(239,68,68,.25);
+    }
+
+
+    .register-top h1 {
+      font-size: 32px;
+
+      line-height: 1.1;
+
+      letter-spacing: -1.5px;
+
+      font-weight: 950;
+
+      margin-bottom: 9px;
+    }
+
+
+    .register-top p {
+      color: var(--muted);
+
+      font-size: 14px;
+
+      line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       FORM
+       ===================================================== */
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+
+    .form-label {
+      display: block;
+
+      margin-bottom: 8px;
+
+      font-size: 13px;
+
+      font-weight: 850;
+
+      color: #374151;
+    }
+
+
+    .required {
+      color: var(--red);
+    }
+
+
+    .input {
+      width: 100%;
+
+      height: 50px;
+
+      padding:
+        0 15px;
+
+      border:
+        1px solid #d9dde3;
+
+      border-radius: 13px;
+
+      outline: none;
+
+      background: white;
+
+      color: #111827;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      transition: var(--transition);
+    }
+
+
+    .input:focus {
+      border-color: var(--red);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(239,68,68,.08);
+    }
+
+
+    .input::placeholder {
+      color: #9ca3af;
+    }
+
+
+    /* =====================================================
+       NAME GRID
+       ===================================================== */
+
+    .name-grid {
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 12px;
+    }
+
+
+    /* =====================================================
+       PHONE
+       ===================================================== */
+
+    .phone-row {
+      display: grid;
+
+      grid-template-columns:
+        145px 1fr;
+
+      gap: 9px;
+    }
+
+
+    .country-select {
+      width: 100%;
+
+      height: 50px;
+
+      padding:
+        0 10px;
+
+      border:
+        1px solid #d9dde3;
+
+      border-radius: 13px;
+
+      outline: none;
+
+      background: white;
+
+      color: #111827;
+
+      font-family: inherit;
+
+      font-size: 13px;
+
+      cursor: pointer;
+
+      transition: var(--transition);
+    }
+
+
+    .country-select:focus {
+      border-color: var(--red);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(239,68,68,.08);
+    }
+
+
+    .phone-input-wrapper {
+      position: relative;
+    }
+
+
+    .phone-input {
+      padding-left: 15px;
+    }
+
+
+    .phone-hint {
+      margin-top: 7px;
+
+      color: #9ca3af;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+    }
+
+
+    /* =====================================================
+       PASSWORD
+       ===================================================== */
+
+    .password-wrapper {
+      position: relative;
+    }
+
+
+    .password-wrapper .input {
+      padding-right: 48px;
+    }
+
+
+    .password-toggle {
+      position: absolute;
+
+      top: 50%;
+
+      right: 8px;
+
+      transform:
+        translateY(-50%);
+
+      width: 38px;
+
+      height: 38px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: transparent;
+
+      color: #6b7280;
+
+      font-size: 18px;
+
+      cursor: pointer;
+
+      padding: 0;
+    }
+
+
+    .password-toggle:hover {
+      background: #f3f4f6;
+
+      color: #111827;
+    }
+
+
+    /* =====================================================
+       PASSWORD STRENGTH
+       ===================================================== */
+
+    .password-strength {
+      display: none;
+
+      margin-top: 9px;
+    }
+
+
+    .strength-bar {
+      height: 5px;
+
+      overflow: hidden;
+
+      border-radius: 10px;
+
+      background: #e5e7eb;
+    }
+
+
+    .strength-fill {
+      width: 0;
+
+      height: 100%;
+
+      border-radius: 10px;
+
+      transition:
+        width .25s ease,
+        background .25s ease;
+    }
+
+
+    .strength-text {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================================
+       CHECKBOX
+       ===================================================== */
+
+    .terms {
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 10px;
+
+      margin:
+        6px 0 20px;
+    }
+
+
+    .terms input {
+      width: 17px;
+
+      height: 17px;
+
+      margin-top: 1px;
+
+      accent-color: var(--red);
+
+      cursor: pointer;
+
+      flex-shrink: 0;
+    }
+
+
+    .terms label {
+      color: #6b7280;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      cursor: pointer;
+    }
+
+
+    .terms a {
+      color: var(--red);
+
+      text-decoration: none;
+
+      font-weight: 700;
+    }
+
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =====================================================
+       ERROR
+       ===================================================== */
+
+    .error-message {
+      display: none;
+
+      margin-top: 7px;
+
+      color: #dc2626;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+    }
+
+
+    .form-group.error .input,
+    .form-group.error .country-select {
+      border-color: #ef4444;
+
+      background: #fffafa;
+    }
+
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+
+    /* =====================================================
+       SUCCESS
+       ===================================================== */
+
+    .success-message {
+      display: none;
+
+      margin-bottom: 18px;
+
+      padding: 13px 15px;
+
+      border:
+        1px solid #bbf7d0;
+
+      border-radius: 13px;
+
+      background: #f0fdf4;
+
+      color: #166534;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       REGISTER BUTTON
+       ===================================================== */
+
+    .register-button {
+      width: 100%;
+
+      min-height: 52px;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ef4444,
+          #dc2626
+        );
+
+      color: white;
+
+      font-family: inherit;
+
+      font-size: 14px;
+
+      font-weight: 900;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 25px
+        rgba(239,68,68,.20);
+
+      transition: var(--transition);
+    }
+
+
+    .register-button:hover {
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 14px 30px
+        rgba(239,68,68,.28);
+    }
+
+
+    .register-button:active {
+      transform:
+        translateY(0);
+    }
+
+
+    .register-button:disabled {
+      opacity: .65;
+
+      cursor: not-allowed;
+
+      transform: none;
+
+      box-shadow: none;
+    }
+
+
+    /* =====================================================
+       LOGIN
+       ===================================================== */
+
+    .login-text {
+      margin-top: 22px;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    .login-text a {
+      color: var(--red);
+
+      font-weight: 850;
+
+      text-decoration: none;
+    }
+
+
+    .login-text a:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =====================================================
+       SECURITY NOTE
+       ===================================================== */
+
+    .security-note {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      margin-top: 20px;
+
+      color: #9ca3af;
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    footer {
+      padding:
+        25px 15px;
+
+      text-align: center;
+
+      color: #9ca3af;
+
+      font-size: 11px;
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 600px) {
+
+      header {
+        height: 62px;
+      }
+
+
+      .header-inner {
+        width:
+          calc(100% - 24px);
+      }
+
+
+      .logo {
+        font-size: 22px;
+      }
+
+
+      .header-login {
+        font-size: 12px;
+      }
+
+
+      main {
+        min-height:
+          calc(100vh - 62px);
+
+        padding:
+          25px 10px 55px;
+
+        align-items: flex-start;
+      }
+
+
+      .register-card {
+        padding:
+          28px 19px;
+
+        border-radius: 22px;
+      }
+
+
+      .register-icon {
+        width: 62px;
+
+        height: 62px;
+
+        border-radius: 19px;
+
+        font-size: 30px;
+      }
+
+
+      .register-top h1 {
+        font-size: 28px;
+      }
+
+
+      .name-grid {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+      }
+
+
+      .phone-row {
+        grid-template-columns:
+          125px 1fr;
+
+        gap: 7px;
+      }
+
+
+      .country-select {
+        font-size: 12px;
+
+        padding: 0 7px;
+      }
+
+
+      .input {
+        height: 48px;
+      }
+
+
+      .register-button {
+        min-height: 50px;
+      }
+
+    }
+
+
+    @media (max-width: 360px) {
+
+      .phone-row {
+        grid-template-columns:
+          112px 1fr;
+      }
+
+
+      .country-select {
+        font-size: 11px;
+      }
+
+
+      .register-card {
+        padding:
+          25px 16px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header>
+
+  <div class="header-inner">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Sport<span>Room</span>
+    </a>
+
+
+    <a
+      href="login.html"
+      class="header-login"
+    >
+      Уже есть аккаунт? Войти
+    </a>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main>
+
+  <div class="register-wrapper">
+
+    <div class="register-card">
+
+
+      <!-- TOP -->
+
+      <div class="register-top">
+
+        <div class="register-icon">
+          🏆
+        </div>
+
+
+        <h1>
+          Создать аккаунт
+        </h1>
+
+
+        <p>
+          Присоединяйся к SportRoom
+          и следи за любимым спортом
+        </p>
+
+      </div>
+
+
+
+      <!-- SUCCESS -->
+
+      <div
+        id="successMessage"
+        class="success-message"
+      >
+        ✅ Регистрация прошла успешно.
+        Перенаправляем в профиль...
+      </div>
+
+
+
+      <!-- FORM -->
+
+      <form
+        id="registerForm"
+        novalidate
+      >
+
+
+        <!-- NAME -->
+
+        <div class="name-grid">
+
+
+          <div
+            class="form-group"
+            id="nameGroup"
+          >
+
+            <label
+              class="form-label"
+              for="name"
+            >
+              Имя
+              <span class="required">*</span>
+            </label>
+
+
+            <input
+              class="input"
+              id="name"
+              type="text"
+              autocomplete="given-name"
+              placeholder="Введите имя"
+              maxlength="50"
+            >
+
+
+            <div class="error-message">
+              Введите имя.
+            </div>
+
+          </div>
+
+
+
+          <div
+            class="form-group"
+            id="surnameGroup"
+          >
+
+            <label
+              class="form-label"
+              for="surname"
+            >
+              Фамилия
+            </label>
+
+
+            <input
+              class="input"
+              id="surname"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Введите фамилию"
+              maxlength="50"
+            >
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- PHONE -->
+
+        <div
+          class="form-group"
+          id="phoneGroup"
+        >
+
+          <label
+            class="form-label"
+            for="phone"
+          >
+            Номер телефона
+            <span class="required">*</span>
+          </label>
+
+
+          <div class="phone-row">
+
+
+            <select
+              id="country"
+              class="country-select"
+              aria-label="Страна"
+            >
+
+              <option value="+7">
+                🇷🇺 +7
+              </option>
+
+              <option value="+7">
+                🇰🇿 +7
+              </option>
+
+              <option value="+380">
+                🇺🇦 +380
+              </option>
+
+              <option value="+375">
+                🇧🇾 +375
+              </option>
+
+              <option value="+373">
+                🇲🇩 +373
+              </option>
+
+              <option value="+371">
+                🇱🇻 +371
+              </option>
+
+              <option value="+370">
+                🇱🇹 +370
+              </option>
+
+              <option value="+372">
+                🇪🇪 +372
+              </option>
+
+              <option value="+48">
+                🇵🇱 +48
+              </option>
+
+              <option value="+49">
+                🇩🇪 +49
+              </option>
+
+              <option value="+33">
+                🇫🇷 +33
+              </option>
+
+              <option value="+39">
+                🇮🇹 +39
+              </option>
+
+              <option value="+34">
+                🇪🇸 +34
+              </option>
+
+              <option value="+44">
+                🇬🇧 +44
+              </option>
+
+              <option value="+353">
+                🇮🇪 +353
+              </option>
+
+              <option value="+31">
+                🇳🇱 +31
+              </option>
+
+              <option value="+32">
+                🇧🇪 +32
+              </option>
+
+              <option value="+41">
+                🇨🇭 +41
+              </option>
+
+              <option value="+43">
+                🇦🇹 +43
+              </option>
+
+              <option value="+46">
+                🇸🇪 +46
+              </option>
+
+              <option value="+47">
+                🇳🇴 +47
+              </option>
+
+              <option value="+45">
+                🇩🇰 +45
+              </option>
+
+              <option value="+358">
+                🇫🇮 +358
+              </option>
+
+              <option value="+420">
+                🇨🇿 +420
+              </option>
+
+              <option value="+421">
+                🇸🇰 +421
+              </option>
+
+              <option value="+40">
+                🇷🇴 +40
+              </option>
+
+              <option value="+359">
+                🇧🇬 +359
+              </option>
+
+              <option value="+30">
+                🇬🇷 +30
+              </option>
+
+              <option value="+90">
+                🇹🇷 +90
+              </option>
+
+              <option value="+972">
+                🇮🇱 +972
+              </option>
+
+              <option value="+971">
+                🇦🇪 +971
+              </option>
+
+              <option value="+966">
+                🇸🇦 +966
+              </option>
+
+              <option value="+91">
+                🇮🇳 +91
+              </option>
+
+              <option value="+86">
+                🇨🇳 +86
+              </option>
+
+              <option value="+81">
+                🇯🇵 +81
+              </option>
+
+              <option value="+82">
+                🇰🇷 +82
+              </option>
+
+              <option value="+65">
+                🇸🇬 +65
+              </option>
+
+              <option value="+852">
+                🇭🇰 +852
+              </option>
+
+              <option value="+61">
+                🇦🇺 +61
+              </option>
+
+              <option value="+64">
+                🇳🇿 +64
+              </option>
+
+              <option value="+1">
+                🇺🇸 +1
+              </option>
+
+              <option value="+1">
+                🇨🇦 +1
+              </option>
+
+              <option value="+52">
+                🇲🇽 +52
+              </option>
+
+              <option value="+55">
+                🇧🇷 +55
+              </option>
+
+              <option value="+54">
+                🇦🇷 +54
+              </option>
+
+              <option value="+56">
+                🇨🇱 +56
+              </option>
+
+              <option value="+57">
+                🇨🇴 +57
+              </option>
+
+              <option value="+27">
+                🇿🇦 +27
+              </option>
+
+              <option value="+20">
+                🇪🇬 +20
+              </option>
+
+              <option value="+234">
+                🇳🇬 +234
+              </option>
+
+              <option value="+254">
+                🇰🇪 +254
+              </option>
+
+            </select>
+
+
+            <div class="phone-input-wrapper">
+
+              <input
+                class="input phone-input"
+                id="phone"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel-national"
+                placeholder="Номер телефона"
+                maxlength="20"
+              >
+
+            </div>
+
+
+          </div>
+
+
+          <div class="phone-hint">
+            Выбери код страны и введи номер без международного кода.
+          </div>
+
+
+          <div class="error-message">
+            Введите корректный номер телефона.
+          </div>
+
+        </div>
+
+
+
+        <!-- EMAIL -->
+
+        <div
+          class="form-group"
+          id="emailGroup"
+        >
+
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email
+          </label>
+
+
+          <input
+            class="input"
+            id="email"
+            type="email"
+            autocomplete="email"
+            placeholder="example@email.com"
+            maxlength="100"
+          >
+
+
+          <div class="error-message">
+            Введите корректный email.
+          </div>
+
+        </div>
+
+
+
+        <!-- PASSWORD -->
+
+        <div
+          class="form-group"
+          id="passwordGroup"
+        >
+
+          <label
+            class="form-label"
+            for="password"
+          >
+            Пароль
+            <span class="required">*</span>
+          </label>
+
+
+          <div class="password-wrapper">
+
+            <input
+              class="input"
+              id="password"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Минимум 6 символов"
+              maxlength="100"
+            >
+
+
+            <button
+              type="button"
+              class="password-toggle"
+              onclick="togglePassword('password', this)"
+              aria-label="Показать пароль"
+            >
+              👁️
+            </button>
+
+          </div>
+
+
+          <div
+            id="passwordStrength"
+            class="password-strength"
+          >
+
+            <div class="strength-bar">
+
+              <div
+                id="strengthFill"
+                class="strength-fill"
+              ></div>
+
+            </div>
+
+
+            <div
+              id="strengthText"
+              class="strength-text"
+            ></div>
+
+          </div>
+
+
+          <div class="error-message">
+            Пароль должен содержать минимум 6 символов.
+          </div>
+
+        </div>
+
+
+
+        <!-- CONFIRM PASSWORD -->
+
+        <div
+          class="form-group"
+          id="confirmPasswordGroup"
+        >
+
+          <label
+            class="form-label"
+            for="confirmPassword"
+          >
+            Повторите пароль
+            <span class="required">*</span>
+          </label>
+
+
+          <div class="password-wrapper">
+
+            <input
+              class="input"
+              id="confirmPassword"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Повторите пароль"
+              maxlength="100"
+            >
+
+
+            <button
+              type="button"
+              class="password-toggle"
+              onclick="togglePassword('confirmPassword', this)"
+              aria-label="Показать пароль"
+            >
+              👁️
+            </button>
+
+          </div>
+
+
+          <div class="error-message">
+            Пароли не совпадают.
+          </div>
+
+        </div>
+
+
+
+        <!-- TERMS -->
+
+        <div class="terms">
+
+          <input
+            id="terms"
+            type="checkbox"
+          >
+
+
+          <label for="terms">
+
+            Я принимаю условия использования
+            SportRoom и согласен с обработкой
+            моих данных.
+
+          </label>
+
+        </div>
+
+
+
+        <!-- BUTTON -->
+
+        <button
+          type="submit"
+          class="register-button"
+          id="registerButton"
+        >
+          Создать аккаунт
+        </button>
+
+
+      </form>
+
+
+
+      <!-- LOGIN -->
+
+      <div class="login-text">
+
+        Уже есть аккаунт?
+
+        <a href="login.html">
+          Войти
+        </a>
+
+      </div>
+
+
+      <div class="security-note">
+
+        🔒 Ваши данные сохраняются
+        на этом устройстве
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+  © 2026 SportRoom.
+  Спорт в одном месте.
+
+</footer>
+
+
+
+<script>
+
+/* =====================================================
+   ELEMENTS
+   ===================================================== */
+
+const form =
+  document.getElementById(
+    "registerForm"
+  );
+
+const nameInput =
+  document.getElementById(
+    "name"
+  );
+
+const surnameInput =
+  document.getElementById(
+    "surname"
+  );
+
+const countrySelect =
+  document.getElementById(
+    "country"
+  );
+
+const phoneInput =
+  document.getElementById(
+    "phone"
+  );
+
+const emailInput =
+  document.getElementById(
+    "email"
+  );
+
+const passwordInput =
+  document.getElementById(
+    "password"
+  );
+
+const confirmPasswordInput =
+  document.getElementById(
+    "confirmPassword"
+  );
+
+const termsInput =
+  document.getElementById(
+    "terms"
+  );
+
+
+
+/* =====================================================
+   PHONE
+   ===================================================== */
+
+phoneInput.addEventListener(
+  "input",
+  function() {
+
+    this.value =
+      this.value
+        .replace(/\D/g, "")
+        .slice(0, 15);
+
+  }
+);
+
+
+
+/* =====================================================
+   PASSWORD STRENGTH
+   ===================================================== */
+
+passwordInput.addEventListener(
+  "input",
+  updatePasswordStrength
+);
+
+
+function updatePasswordStrength() {
+
+  const password =
+    passwordInput.value;
+
+  const box =
+    document.getElementById(
+      "passwordStrength"
+    );
+
+  const fill =
+    document.getElementById(
+      "strengthFill"
+    );
+
+  const text =
+    document.getElementById(
+      "strengthText"
+    );
+
+
+  if (!password) {
+
+    box.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  let score = 0;
+
+
+  if (password.length >= 6) {
+    score++;
+  }
+
+
+  if (password.length >= 10) {
+    score++;
+  }
+
+
+  if (/[A-ZА-Я]/.test(password)) {
+    score++;
+  }
+
+
+  if (/[0-9]/.test(password)) {
+    score++;
+  }
+
+
+  if (/[^A-Za-zА-Яа-я0-9]/.test(password)) {
+    score++;
+  }
+
+
+  if (score <= 1) {
+
+    fill.style.width =
+      "20%";
+
+    fill.style.background =
+      "#ef4444";
+
+    text.textContent =
+      "Слабый пароль";
+
+  }
+
+  else if (score <= 3) {
+
+    fill.style.width =
+      "55%";
+
+    fill.style.background =
+      "#f59e0b";
+
+    text.textContent =
+      "Средний пароль";
+
+  }
+
+  else {
+
+    fill.style.width =
+      "100%";
+
+    fill.style.background =
+      "#22c55e";
+
+    text.textContent =
+      "Надёжный пароль";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   SHOW PASSWORD
+   ===================================================== */
+
+function togglePassword(
+  inputId,
+  button
+) {
+
+  const input =
+    document.getElementById(
+      inputId
+    );
+
+
+  if (input.type === "password") {
+
+    input.type =
+      "text";
+
+    button.textContent =
+      "🙈";
+
+  } else {
+
+    input.type =
+      "password";
+
+    button.textContent =
+      "👁️";
+
+  }
+
+}
+
+
+
+/* =====================================================
+   VALIDATION HELPERS
+   ===================================================== */
+
+function setError(
+  groupId,
+  hasError
+) {
+
+  const group =
+    document.getElementById(
+      groupId
+    );
+
+
+  if (hasError) {
+
+    group.classList.add(
+      "error"
+    );
+
+  } else {
+
+    group.classList.remove(
+      "error"
+    );
+
+  }
+
+}
+
+
+
+/* =====================================================
+   PHONE NORMALIZATION
+   ===================================================== */
+
+function getFullPhone() {
+
+  const code =
+    countrySelect.value;
+
+  const number =
+    phoneInput.value
+      .replace(/\D/g, "");
+
+
+  return code + number;
+
+}
+
+
+
+/* =====================================================
+   VALIDATE PHONE
+   ===================================================== */
+
+function isValidPhone() {
+
+  const number =
+    phoneInput.value
+      .replace(/\D/g, "");
+
+
+  /*
+    Общая проверка для
+    международных номеров.
+
+    Разные страны имеют
+    разную длину номера,
+    поэтому здесь не используется
+    жёсткая маска одной страны.
+  */
+
+  return (
+    number.length >= 6 &&
+    number.length <= 15
+  );
+
+}
+
+
+
+/* =====================================================
+   EMAIL
+   ===================================================== */
+
+function isValidEmail(
+  email
+) {
+
+  if (!email) {
+    return true;
+  }
+
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    .test(email);
+
+}
+
+
+
+/* =====================================================
+   EXISTING USERS
+   ===================================================== */
+
+function getUsers() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "sportroom_users"
+      ) || "[]"
+    );
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+
+/* =====================================================
+   SAVE USER
+   ===================================================== */
+
+function saveUser(
+  user
+) {
+
+  const users =
+    getUsers();
+
+
+  users.push(
+    user
+  );
+
+
+  localStorage.setItem(
+    "sportroom_users",
+    JSON.stringify(users)
+  );
+
+}
+
+
+
+/* =====================================================
+   REGISTER
+   ===================================================== */
+
+form.addEventListener(
+  "submit",
+  function(event) {
+
+    event.preventDefault();
+
+
+    const name =
+      nameInput.value.trim();
+
+    const surname =
+      surnameInput.value.trim();
+
+    const email =
+      emailInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+    const confirmPassword =
+      confirmPasswordInput.value;
+
+    const phone =
+      getFullPhone();
+
+
+    let valid = true;
+
+
+
+    /* NAME */
+
+    if (name.length < 2) {
+
+      setError(
+        "nameGroup",
+        true
+      );
+
+      valid = false;
+
+    } else {
+
+      setError(
+        "nameGroup",
+        false
+      );
+
+    }
+
+
+
+    /* PHONE */
+
+    if (!isValidPhone()) {
+
+      setError(
+        "phoneGroup",
+        true
+      );
+
+      valid = false;
+
+    } else {
+
+      setError(
+        "phoneGroup",
+        false
+      );
+
+    }
+
+
+
+    /* EMAIL */
+
+    if (!isValidEmail(email)) {
+
+      setError(
+        "emailGroup",
+        true
+      );
+
+      valid = false;
+
+    } else {
+
+      setError(
+        "emailGroup",
+        false
+      );
+
+    }
+
+
+
+    /* PASSWORD */
+
+    if (password.length < 6) {
+
+      setError(
+        "passwordGroup",
+        true
+      );
+
+      valid = false;
+
+    } else {
+
+      setError(
+        "passwordGroup",
+        false
+      );
+
+    }
+
+
+
+    /* CONFIRM PASSWORD */
+
+    if (
+      confirmPassword !== password ||
+      !confirmPassword
+    ) {
+
+      setError(
+        "confirmPasswordGroup",
+        true
+      );
+
+      valid = false;
+
+    } else {
+
+      setError(
+        "confirmPasswordGroup",
+        false
+      );
+
+    }
+
+
+
+    /* TERMS */
+
+    if (!termsInput.checked) {
+
+      alert(
+        "Пожалуйста, примите условия использования."
+      );
+
+      valid = false;
+
+    }
+
+
+
+    if (!valid) {
+      return;
+    }
+
+
+
+    /* =================================================
+       CHECK EXISTING USER
+       ================================================= */
+
+    const users =
+      getUsers();
+
+
+    const phoneExists =
+      users.some(
+        user =>
+          user.phone === phone
+      );
+
+
+    if (phoneExists) {
+
+      alert(
+        "Этот номер телефона уже зарегистрирован."
+      );
+
+      return;
+
+    }
+
+
+
+    /* =================================================
+       EMAIL DUPLICATE
+       ================================================= */
+
+    if (email) {
+
+      const emailExists =
+        users.some(
+          user =>
+            user.email &&
+            user.email.toLowerCase() ===
+            email.toLowerCase()
+        );
+
+
+      if (emailExists) {
+
+        alert(
+          "Этот email уже используется."
+        );
+
+        return;
+
+      }
+
+    }
+
+
+
+    /* =================================================
+       CREATE USER
+       ================================================= */
+
+    const user = {
+
+      id:
+        Date.now().toString(),
+
+      name:
+        name,
+
+      surname:
+        surname,
+
+      email:
+        email,
+
+      phone:
+        phone,
+
+      countryCode:
+        countrySelect.value,
+
+      password:
+        password,
+
+      sport:
+        "Футбол",
+
+      about:
+        "",
+
+      city:
+        "",
+
+      points:
+        0,
+
+      level:
+        1,
+
+      avatar:
+        "",
+
+      createdAt:
+        new Date().toISOString()
+
+    };
+
+
+
+    /* SAVE */
+
+    saveUser(
+      user
+    );
+
+
+
+    /* =================================================
+       SAVE CURRENT PROFILE
+       ================================================= */
+
+    const profile = {
+
+      id:
+        user.id,
+
+      name:
+        user.name,
+
+      surname:
+        user.surname,
+
+      email:
+        user.email,
+
+      phone:
+        user.phone,
+
+      countryCode:
+        user.countryCode,
+
+      sport:
+        user.sport,
+
+      about:
+        user.about,
+
+      city:
+        user.city,
+
+      points:
+        user.points,
+
+      level:
+        user.level,
+
+      avatar:
+        user.avatar
+
+    };
+
+
+    localStorage.setItem(
+      "sportroom_profile",
+      JSON.stringify(profile)
+    );
+
+
+    /* =================================================
+       COMPATIBILITY
+       ================================================= */
+
+    localStorage.setItem(
+      "name",
+      user.name
+    );
+
+    localStorage.setItem(
+      "surname",
+      user.surname
+    );
+
+    localStorage.setItem(
+      "email",
+      user.email
+    );
+
+    localStorage.setItem(
+      "phone",
+      user.phone
+    );
+
+    localStorage.setItem(
+      "city",
+      ""
+    );
+
+
+    /* =================================================
+       LOGIN STATUS
+       ================================================= */
+
+    localStorage.setItem(
+      "sportroom_logged_in",
+      "true"
+    );
+
+
+    /* =================================================
+       SUCCESS
+       ================================================= */
+
+    document.getElementById(
+      "successMessage"
+    ).style.display =
+      "block";
+
+
+    document.getElementById(
+      "registerButton"
+    ).disabled =
+      true;
+
+
+    document.getElementById(
+      "registerButton"
+    ).textContent =
+      "Аккаунт создан ✓";
+
+
+    /*
+      Небольшая задержка,
+      чтобы пользователь увидел
+      сообщение об успешной регистрации.
+    */
+
+    setTimeout(
+      function() {
+
+        window.location.href =
+          "profile.html";
+
+      },
+      900
+    );
+
+  }
+);
+
+
+
+/* =====================================================
+   CLEAR ERRORS WHILE TYPING
+   ===================================================== */
+
+nameInput.addEventListener(
+  "input",
+  function() {
+
+    if (this.value.trim().length >= 2) {
+
+      setError(
+        "nameGroup",
+        false
+      );
+
+    }
+
+  }
+);
+
+
+phoneInput.addEventListener(
+  "input",
+  function() {
+
+    if (isValidPhone()) {
+
+      setError(
+        "phoneGroup",
+        false
+      );
+
+    }
+
+  }
+);
+
+
+emailInput.addEventListener(
+  "input",
+  function() {
+
+    if (isValidEmail(
+      this.value.trim()
+    )) {
+
+      setError(
+        "emailGroup",
+        false
+      );
+
+    }
+
+  }
+);
+
+
+passwordInput.addEventListener(
+  "input",
+  function() {
+
+    if (this.value.length >= 6) {
+
+      setError(
+        "passwordGroup",
+        false
+      );
+
+    }
+
+  }
+);
+
+
+confirmPasswordInput.addEventListener(
+  "input",
+  function() {
+
+    if (
+      this.value &&
+      this.value ===
+      passwordInput.value
+    ) {
+
+      setError(
+        "confirmPasswordGroup",
+        false
+      );
+
+    }
+
+  }
+);
+
+
+
+/* =====================================================
+   AUTO FOCUS
+   ===================================================== */
+
+window.addEventListener(
+  "load",
+  function() {
+
+    nameInput.focus();
+
+  }
+);
+
+</script>
+
+
+</body>
+</html>
