@@ -1,1 +1,970 @@
-
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportRoom — Личный кабинет</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .profile-page {
+      min-height: 100vh;
+      padding: 55px 0 90px;
+      background: #f5f7fa;
+    }
+    .profile-container {
+      width: min(1000px, calc(100% - 36px));
+      margin: auto;
+    }
+    .profile-header {
+      margin-bottom: 30px;
+    }
+    .profile-header h1 {
+      margin: 0 0 8px;
+      font-size: clamp(36px, 6vw, 52px);
+      letter-spacing: -2px;
+    }
+    .profile-header p {
+      margin: 0;
+      color: #6b7280;
+    }
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+    .profile-card,
+    .profile-content-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.05);
+    }
+    .profile-card {
+      padding: 30px 20px;
+      text-align: center;
+    }
+    .avatar-wrapper {
+      position: relative;
+      width: 115px;
+      height: 115px;
+      margin: 0 auto 18px;
+    }
+    .profile-avatar {
+      width: 115px;
+      height: 115px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 50%;
+      background: #fff1f2;
+      border: 4px solid white;
+      box-shadow: 0 8px 25px rgba(0,0,0,.1);
+      color: #ef4444;
+      font-size: 52px;
+      font-weight: 900;
+    }
+    .profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .avatar-edit {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid white;
+      border-radius: 50%;
+      background: #ef4444;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    #avatarInput {
+      display: none;
+    }
+    .profile-name {
+      margin: 0 0 5px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+    .profile-email {
+      margin: 0;
+      color: #9ca3af;
+      font-size: 13px;
+      word-break: break-word;
+    }
+    .profile-menu {
+      margin-top: 25px;
+      display: grid;
+      gap: 8px;
+    }
+    .profile-menu button {
+      width: 100%;
+      padding: 12px 15px;
+      border: 0;
+      border-radius: 11px;
+      background: transparent;
+      color: #4b5563;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .profile-menu button:hover,
+    .profile-menu button.active {
+      background: #fff1f2;
+      color: #dc2626;
+    }
+    .logout-button {
+      margin-top: 8px !important;
+      color: #dc2626 !important;
+    }
+    .profile-content-card {
+      padding: 32px;
+    }
+    .content-section {
+      display: none;
+    }
+    .content-section.active {
+      display: block;
+    }
+    .content-section h2 {
+      margin: 0 0 8px;
+      font-size: 26px;
+      letter-spacing: -.8px;
+    }
+    .content-description {
+      margin: 0 0 25px;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #374151;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      background: white;
+      color: #111827;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239,68,68,.1);
+    }
+    .save-button {
+      min-height: 48px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 11px;
+      background: #ef4444;
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .save-button:hover {
+      background: #dc2626;
+    }
+    .message {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+    .message.success {
+      display: block;
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .message.error {
+      display: block;
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .favorite-empty {
+      padding: 35px 20px;
+      border: 1px dashed #d1d5db;
+      border-radius: 15px;
+      text-align: center;
+      color: #6b7280;
+    }
+    .favorite-empty-icon {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+    .favorite-list {
+      display: grid;
+      gap: 10px;
+    }
+    .favorite-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+    }
+    .favorite-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 13px;
+      background: #fff1f2;
+      font-size: 25px;
+    }
+    .favorite-item strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+    .favorite-item span {
+      color: #9ca3af;
+      font-size: 12px;
+    }
+    @media (max-width: 800px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+      .profile-card {
+        padding: 25px 20px;
+      }
+      .profile-menu {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .logout-button {
+        grid-column: 1 / -1;
+      }
+    }
+    @media (max-width: 500px) {
+      .profile-page {
+        padding: 35px 0 60px;
+      }
+      .profile-container {
+        width: min(100% - 24px, 1000px);
+      }
+      .profile-content-card {
+        padding: 23px 18px;
+      }
+      .profile-menu {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      Sport<span>Room</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">
+        Главная
+      </a>
+      <a href="sports.html">
+        Спорт
+      </a>
+      <a href="profile.html" class="active">
+        Профиль
+      </a>
+    </nav>
+    <div class="header-buttons">
+      <a href="login.html" class="button button-dark">
+        Войти
+      </a>
+      <a href="register.html" class="button button-red">
+        Регистрация
+      </a>
+    </div>
+  </div>
+</header>
+<main class="profile-page">
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="section-label">
+        SPORTROOM
+      </div>
+      <h1>
+        Личный кабинет
+      </h1>
+      <p>
+        Управляй своим профилем и любимыми видами спорта.
+      </p>
+    </div>
+    <div class="profile-layout">
+      <!-- LEFT CARD -->
+      <aside class="profile-card">
+        <div class="avatar-wrapper">
+          <div
+            id="profileAvatar"
+            class="profile-avatar"
+          >
+            👤
+          </div>
+          <label
+            for="avatarInput"
+            class="avatar-edit"
+            title="Изменить аватар"
+          >
+            ✏️
+          </label>
+          <input
+            id="avatarInput"
+            type="file"
+            accept="image/*"
+          >
+        </div>
+        <h2
+          id="profileName"
+          class="profile-name"
+        >
+          Твой профиль
+        </h2>
+        <p
+          id="profileEmail"
+          class="profile-email"
+        >
+          Войди в аккаунт
+        </p>
+        <div class="profile-menu">
+          <button
+            class="profile-tab active"
+            data-section="personal"
+          >
+            👤 Мои данные
+          </button>
+          <button
+            class="profile-tab"
+            data-section="favorites"
+          >
+            ❤️ Избранное
+          </button>
+          <button
+            class="profile-tab"
+            data-section="security"
+          >
+            🔒 Безопасность
+          </button>
+          <button
+            id="logoutButton"
+            class="logout-button"
+          >
+            🚪 Выйти
+          </button>
+        </div>
+      </aside>
+      <!-- RIGHT CONTENT -->
+      <section class="profile-content-card">
+        <!-- PERSONAL -->
+        <div
+          id="personal"
+          class="content-section active"
+        >
+          <h2>
+            Мои данные
+          </h2>
+          <p class="content-description">
+            Здесь можно изменить информацию,
+            которая отображается в твоём профиле.
+          </p>
+          <div
+            id="profileMessage"
+            class="message"
+          ></div>
+          <form id="profileForm">
+            <div class="form-group">
+              <label
+                class="form-label"
+                for="nameInput"
+              >
+                Имя
+              </label>
+              <input
+                id="nameInput"
+                class="form-input"
+                type="text"
+                maxlength="50"
+                placeholder="Твоё имя"
+              >
+            </div>
+            <div class="form-group">
+              <label
+                class="form-label"
+                for="emailInput"
+              >
+                Email
+              </label>
+              <input
+                id="emailInput"
+                class="form-input"
+                type="email"
+                placeholder="example@email.com"
+              >
+            </div>
+            <div class="form-group">
+              <label
+                class="form-label"
+                for="sportInput"
+              >
+                Любимый вид спорта
+              </label>
+              <select
+                id="sportInput"
+                class="form-select"
+              >
+                <option value="">
+                  Не выбран
+                </option>
+                <option>Футбол</option>
+                <option>Баскетбол</option>
+                <option>Хоккей</option>
+                <option>Теннис</option>
+                <option>Бокс</option>
+                <option>ММА</option>
+                <option>Плавание</option>
+                <option>Волейбол</option>
+                <option>Формула-1</option>
+                <option>Велоспорт</option>
+                <option>Гольф</option>
+                <option>Шахматы</option>
+                <option>Киберспорт</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label
+                class="form-label"
+                for="bioInput"
+              >
+                О себе
+              </label>
+              <textarea
+                id="bioInput"
+                class="form-textarea"
+                maxlength="300"
+                placeholder="Расскажи немного о себе..."
+              ></textarea>
+            </div>
+            <button
+              class="save-button"
+              type="submit"
+            >
+              Сохранить изменения
+            </button>
+          </form>
+        </div>
+        <!-- FAVORITES -->
+        <div
+          id="favorites"
+          class="content-section"
+        >
+          <h2>
+            Избранное
+          </h2>
+          <p class="content-description">
+            Виды спорта, которые ты добавил в избранное.
+          </p>
+          <div id="favoriteContent"></div>
+        </div>
+        <!-- SECURITY -->
+        <div
+          id="security"
+          class="content-section"
+        >
+          <h2>
+            Безопасность
+          </h2>
+          <p class="content-description">
+            Настройки безопасности аккаунта.
+          </p>
+          <div class="form-group">
+            <label
+              class="form-label"
+              for="oldPassword"
+            >
+              Текущий пароль
+            </label>
+            <input
+              id="oldPassword"
+              class="form-input"
+              type="password"
+              placeholder="Текущий пароль"
+            >
+          </div>
+          <div class="form-group">
+            <label
+              class="form-label"
+              for="newPassword"
+            >
+              Новый пароль
+            </label>
+            <input
+              id="newPassword"
+              class="form-input"
+              type="password"
+              placeholder="Новый пароль"
+            >
+          </div>
+          <button
+            class="save-button"
+            type="button"
+            id="passwordButton"
+          >
+            Изменить пароль
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="logo">
+      Sport<span>Room</span>
+    </div>
+    <p>
+      © 2026 SportRoom. Спорт в одном месте.
+    </p>
+  </div>
+</footer>
+<script>
+/*
+=========================================
+  ЛОКАЛЬНЫЙ ПРОФИЛЬ
+=========================================
+Пока Supabase не подключён,
+данные сохраняются в localStorage.
+Позже заменим это на настоящую
+базу данных и авторизацию.
+*/
+const defaultProfile = {
+  name: "Твой профиль",
+  email: "Войди в аккаунт",
+  sport: "",
+  bio: "",
+  avatar: ""
+};
+function getProfile() {
+  const saved =
+    localStorage.getItem(
+      "sportroom_profile"
+    );
+  if (!saved) {
+    return {
+      ...defaultProfile
+    };
+  }
+  try {
+    return {
+      ...defaultProfile,
+      ...JSON.parse(saved)
+    };
+  } catch {
+    return {
+      ...defaultProfile
+    };
+  }
+}
+function saveProfile(profile) {
+  localStorage.setItem(
+    "sportroom_profile",
+    JSON.stringify(profile)
+  );
+}
+let profile =
+  getProfile();
+/*
+=========================================
+  DISPLAY PROFILE
+=========================================
+*/
+function renderProfile() {
+  document.getElementById(
+    "profileName"
+  ).textContent =
+    profile.name || "Твой профиль";
+  document.getElementById(
+    "profileEmail"
+  ).textContent =
+    profile.email || "Email не указан";
+  document.getElementById(
+    "nameInput"
+  ).value =
+    profile.name === "Твой профиль"
+      ? ""
+      : profile.name;
+  document.getElementById(
+    "emailInput"
+  ).value =
+    profile.email === "Войди в аккаунт"
+      ? ""
+      : profile.email;
+  document.getElementById(
+    "sportInput"
+  ).value =
+    profile.sport || "";
+  document.getElementById(
+    "bioInput"
+  ).value =
+    profile.bio || "";
+  const avatar =
+    document.getElementById(
+      "profileAvatar"
+    );
+  if (profile.avatar) {
+    avatar.innerHTML =
+      `<img src="${profile.avatar}" alt="Аватар">`;
+  } else {
+    avatar.textContent =
+      "👤";
+  }
+}
+renderProfile();
+/*
+=========================================
+  SAVE PROFILE
+=========================================
+*/
+document
+  .getElementById("profileForm")
+  .addEventListener(
+    "submit",
+    function(event) {
+      event.preventDefault();
+      const name =
+        document
+          .getElementById("nameInput")
+          .value
+          .trim();
+      const email =
+        document
+          .getElementById("emailInput")
+          .value
+          .trim();
+      const sport =
+        document
+          .getElementById("sportInput")
+          .value;
+      const bio =
+        document
+          .getElementById("bioInput")
+          .value
+          .trim();
+      if (!name) {
+        showMessage(
+          "Введите имя.",
+          "error"
+        );
+        return;
+      }
+      profile.name =
+        name;
+      profile.email =
+        email || "Email не указан";
+      profile.sport =
+        sport;
+      profile.bio =
+        bio;
+      saveProfile(
+        profile
+      );
+      renderProfile();
+      showMessage(
+        "Профиль успешно сохранён.",
+        "success"
+      );
+    }
+  );
+/*
+=========================================
+  MESSAGE
+=========================================
+*/
+function showMessage(
+  text,
+  type
+) {
+  const message =
+    document.getElementById(
+      "profileMessage"
+    );
+  message.textContent =
+    text;
+  message.className =
+    "message " + type;
+  setTimeout(
+    function() {
+      message.className =
+        "message";
+    },
+    3000
+  );
+}
+/*
+=========================================
+  AVATAR
+=========================================
+*/
+document
+  .getElementById("avatarInput")
+  .addEventListener(
+    "change",
+    function() {
+      const file =
+        this.files[0];
+      if (!file) {
+        return;
+      }
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+        showMessage(
+          "Выбери изображение.",
+          "error"
+        );
+        return;
+      }
+      if (
+        file.size >
+        3 * 1024 * 1024
+      ) {
+        showMessage(
+          "Размер изображения должен быть меньше 3 МБ.",
+          "error"
+        );
+        return;
+      }
+      const reader =
+        new FileReader();
+      reader.onload =
+        function(event) {
+          profile.avatar =
+            event.target.result;
+          saveProfile(
+            profile
+          );
+          renderProfile();
+          showMessage(
+            "Аватар изменён.",
+            "success"
+          );
+        };
+      reader.readAsDataURL(
+        file
+      );
+    }
+  );
+/*
+=========================================
+  TABS
+=========================================
+*/
+document
+  .querySelectorAll(".profile-tab")
+  .forEach(
+    function(button) {
+      button.addEventListener(
+        "click",
+        function() {
+          const section =
+            this.dataset.section;
+          document
+            .querySelectorAll(
+              ".profile-tab"
+            )
+            .forEach(
+              item => {
+                item.classList.remove(
+                  "active"
+                );
+              }
+            );
+          document
+            .querySelectorAll(
+              ".content-section"
+            )
+            .forEach(
+              item => {
+                item.classList.remove(
+                  "active"
+                );
+              }
+            );
+          this.classList.add(
+            "active"
+          );
+          document
+            .getElementById(
+              section
+            )
+            .classList.add(
+              "active"
+            );
+          if (
+            section ===
+            "favorites"
+          ) {
+            renderFavorites();
+          }
+        }
+      );
+    }
+  );
+/*
+=========================================
+  FAVORITES
+=========================================
+*/
+const favoriteSports = [
+  ["⚽", "Футбол"],
+  ["🏀", "Баскетбол"],
+  ["🏒", "Хоккей"],
+  ["🎾", "Теннис"],
+  ["🥊", "Бокс"],
+  ["🏊", "Плавание"],
+  ["🏎️", "Формула-1"],
+  ["🎮", "Киберспорт"]
+];
+function renderFavorites() {
+  const container =
+    document.getElementById(
+      "favoriteContent"
+    );
+  const favorites =
+    favoriteSports.filter(
+      sport => {
+        return (
+          localStorage.getItem(
+            "sportroom_favorite_" +
+            sport[1]
+          ) === "true"
+        );
+      }
+    );
+  if (!favorites.length) {
+    container.innerHTML = `
+      <div class="favorite-empty">
+        <div class="favorite-empty-icon">
+          ❤️
+        </div>
+        <strong>
+          Пока ничего нет
+        </strong>
+        <p>
+          Открой любой вид спорта
+          и добавь его в избранное.
+        </p>
+        <a
+          href="sports.html"
+          class="button button-red"
+        >
+          Найти спорт
+        </a>
+      </div>
+    `;
+    return;
+  }
+  container.innerHTML = `
+    <div class="favorite-list">
+      ${favorites.map(
+        sport => `
+          <a
+            href="sport.html?sport=${encodeURIComponent(sport[1])}"
+            class="favorite-item"
+          >
+            <div class="favorite-icon">
+              ${sport[0]}
+            </div>
+            <div>
+              <strong>
+                ${sport[1]}
+              </strong>
+              <span>
+                Добавлено в избранное
+              </span>
+            </div>
+          </a>
+        `
+      ).join("")}
+    </div>
+  `;
+}
+/*
+=========================================
+  CHANGE PASSWORD
+=========================================
+*/
+document
+  .getElementById("passwordButton")
+  .addEventListener(
+    "click",
+    function() {
+      showMessage(
+        "Изменение пароля подключим вместе с настоящей авторизацией Supabase.",
+        "success"
+      );
+    }
+  );
+/*
+=========================================
+  LOGOUT
+=========================================
+*/
+document
+  .getElementById("logoutButton")
+  .addEventListener(
+    "click",
+    function() {
+      const confirmed =
+        confirm(
+          "Выйти из аккаунта?"
+        );
+      if (!confirmed) {
+        return;
+      }
+      /*
+        Пока просто очищаем
+        локальную сессию.
+      */
+      localStorage.removeItem(
+        "sportroom_session"
+      );
+      window.location.href =
+        "index.html";
+    }
+  );
+</script>
+</body>
+</html>
