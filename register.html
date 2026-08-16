@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+  <title>SportRoom — Регистрация</title>
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+  <style>
+    /* =====================================
+       REGISTER PAGE
+    ===================================== */
+    .auth-page {
+      min-height: calc(100vh - 72px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 18px;
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(239,68,68,.12),
+          transparent 30%
+        ),
+        #f5f7fa;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 470px;
+    }
+    .auth-card {
+      padding: 38px;
+      border-radius: 24px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.08);
+    }
+    .auth-logo {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      border-radius: 18px;
+      background: #fff1f2;
+      font-size: 30px;
+    }
+    .auth-title {
+      margin: 0;
+      text-align: center;
+      font-size: 32px;
+      letter-spacing: -1px;
+    }
+    .auth-subtitle {
+      margin: 10px 0 30px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #374151;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .form-input {
+      width: 100%;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      outline: none;
+      background: white;
+      color: #111827;
+      font-size: 14px;
+      transition: .2s;
+    }
+    .form-input:focus {
+      border-color: #ef4444;
+      box-shadow:
+        0 0 0 3px rgba(239,68,68,.10);
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .password-wrapper .form-input {
+      padding-right: 50px;
+    }
+    .password-toggle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background: transparent;
+      color: #6b7280;
+      font-size: 18px;
+    }
+    .password-toggle:hover {
+      color: #111827;
+    }
+    .terms {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 20px 0;
+      color: #6b7280;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .terms input {
+      margin-top: 3px;
+      accent-color: #ef4444;
+    }
+    .terms a {
+      color: #ef4444;
+      font-weight: 700;
+    }
+    .register-button {
+      width: 100%;
+      height: 52px;
+      border: 0;
+      border-radius: 12px;
+      background: #ef4444;
+      color: white;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .register-button:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+    .register-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .form-message {
+      display: none;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .form-message.error {
+      display: block;
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    .form-message.success {
+      display: block;
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+    .auth-bottom {
+      margin-top: 25px;
+      padding-top: 22px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      color: #6b7280;
+      font-size: 13px;
+    }
+    .auth-bottom a {
+      color: #ef4444;
+      font-weight: 800;
+    }
+    .back-home {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #6b7280;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .back-home:hover {
+      color: #ef4444;
+    }
+    @media (max-width: 600px) {
+      .auth-page {
+        padding: 25px 12px;
+      }
+      .auth-card {
+        padding: 28px 20px;
+        border-radius: 20px;
+      }
+      .auth-title {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- =====================================
+     HEADER
+===================================== -->
+<header class="header">
+  <div class="header-inner">
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Sport<span>Room</span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">
+        Главная
+      </a>
+      <a href="sports.html">
+        Спорт
+      </a>
+      <a href="profile.html">
+        Профиль
+      </a>
+    </nav>
+    <div class="header-buttons">
+      <a
+        href="login.html"
+        class="button button-dark"
+      >
+        Войти
+      </a>
+    </div>
+  </div>
+</header>
+<!-- =====================================
+     REGISTER
+===================================== -->
+<main class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">
+        🏆
+      </div>
+      <h1 class="auth-title">
+        Создать аккаунт
+      </h1>
+      <p class="auth-subtitle">
+        Присоединяйся к SportRoom
+        и создай свой спортивный профиль.
+      </p>
+      <div
+        id="formMessage"
+        class="form-message"
+      ></div>
+      <form
+        id="registerForm"
+        novalidate
+      >
+        <!-- NAME -->
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="name"
+          >
+            Имя
+          </label>
+          <input
+            id="name"
+            class="form-input"
+            type="text"
+            placeholder="Твоё имя"
+            autocomplete="name"
+            maxlength="50"
+            required
+          >
+        </div>
+        <!-- EMAIL -->
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="email"
+          >
+            Email
+          </label>
+          <input
+            id="email"
+            class="form-input"
+            type="email"
+            placeholder="example@email.com"
+            autocomplete="email"
+            required
+          >
+        </div>
+        <!-- PASSWORD -->
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="password"
+          >
+            Пароль
+          </label>
+          <div class="password-wrapper">
+            <input
+              id="password"
+              class="form-input"
+              type="password"
+              placeholder="Минимум 6 символов"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Показать пароль"
+            >
+              👁
+            </button>
+          </div>
+        </div>
+        <!-- PASSWORD CONFIRM -->
+        <div class="form-group">
+          <label
+            class="form-label"
+            for="passwordConfirm"
+          >
+            Повтори пароль
+          </label>
+          <div class="password-wrapper">
+            <input
+              id="passwordConfirm"
+              class="form-input"
+              type="password"
+              placeholder="Повтори пароль"
+              autocomplete="new-password"
+              minlength="6"
+              required
+            >
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordConfirmToggle"
+              aria-label="Показать пароль"
+            >
+              👁
+            </button>
+          </div>
+        </div>
+        <!-- TERMS -->
+        <label class="terms">
+          <input
+            id="terms"
+            type="checkbox"
+            required
+          >
+          <span>
+            Я согласен с правилами
+            использования SportRoom.
+          </span>
+        </label>
+        <!-- SUBMIT -->
+        <button
+          id="registerButton"
+          class="register-button"
+          type="submit"
+        >
+          Создать аккаунт
+        </button>
+      </form>
+      <!-- LOGIN -->
+      <div class="auth-bottom">
+        Уже есть аккаунт?
+        <a href="login.html">
+          Войти
+        </a>
+      </div>
+    </div>
+    <a
+      href="index.html"
+      class="back-home"
+    >
+      ← Вернуться на главную
+    </a>
+  </div>
+</main>
+<!-- =====================================
+     JAVASCRIPT
+===================================== -->
+<script>
+/* =====================================
+   PASSWORD VISIBILITY
+===================================== */
+function setupPasswordToggle(
+  buttonId,
+  inputId
+) {
+  const button =
+    document.getElementById(buttonId);
+  const input =
+    document.getElementById(inputId);
+  button.addEventListener(
+    "click",
+    function() {
+      if (
+        input.type === "password"
+      ) {
+        input.type = "text";
+        button.textContent = "🙈";
+      } else {
+        input.type = "password";
+        button.textContent = "👁";
+      }
+    }
+  );
+}
+setupPasswordToggle(
+  "passwordToggle",
+  "password"
+);
+setupPasswordToggle(
+  "passwordConfirmToggle",
+  "passwordConfirm"
+);
+/* =====================================
+   MESSAGE
+===================================== */
+function showMessage(
+  message,
+  type
+) {
+  const box =
+    document.getElementById(
+      "formMessage"
+    );
+  box.textContent =
+    message;
+  box.className =
+    "form-message " + type;
+}
+/* =====================================
+   REGISTER FORM
+===================================== */
+const form =
+  document.getElementById(
+    "registerForm"
+  );
+form.addEventListener(
+  "submit",
+  function(event) {
+    event.preventDefault();
+    const name =
+      document.getElementById(
+        "name"
+      ).value.trim();
+    const email =
+      document.getElementById(
+        "email"
+      ).value.trim();
+    const password =
+      document.getElementById(
+        "password"
+      ).value;
+    const passwordConfirm =
+      document.getElementById(
+        "passwordConfirm"
+      ).value;
+    const terms =
+      document.getElementById(
+        "terms"
+      ).checked;
+    /* NAME */
+    if (!name) {
+      showMessage(
+        "Введи своё имя.",
+        "error"
+      );
+      return;
+    }
+    /* EMAIL */
+    if (!email) {
+      showMessage(
+        "Введи email.",
+        "error"
+      );
+      return;
+    }
+    /* PASSWORD */
+    if (password.length < 6) {
+      showMessage(
+        "Пароль должен содержать минимум 6 символов.",
+        "error"
+      );
+      return;
+    }
+    /* PASSWORD CONFIRM */
+    if (
+      password !==
+      passwordConfirm
+    ) {
+      showMessage(
+        "Пароли не совпадают.",
+        "error"
+      );
+      return;
+    }
+    /* TERMS */
+    if (!terms) {
+      showMessage(
+        "Подтверди согласие с правилами.",
+        "error"
+      );
+      return;
+    }
+    /*
+      ВАЖНО:
+      Пока Supabase Auth не подключён.
+      Поэтому здесь мы только
+      проверяем форму.
+    */
+    showMessage(
+      "Форма заполнена правильно. Следующим шагом подключим настоящую регистрацию через Supabase.",
+      "success"
+    );
+  }
+);
+</script>
+</body>
+</html>
