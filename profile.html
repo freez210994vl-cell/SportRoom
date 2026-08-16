@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Профиль — SportRoom</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f4f6f8;
+      color: #17191c;
+      min-height: 100vh;
+    }
+    /* HEADER */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      height: 70px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      text-decoration: none;
+      color: #111;
+      font-size: 25px;
+      font-weight: 800;
+    }
+    .logo span {
+      color: #2f80ed;
+    }
+    nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    nav a {
+      text-decoration: none;
+      color: #555;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 15px;
+    }
+    nav a:hover {
+      background: #f1f3f5;
+      color: #111;
+    }
+    .menu-btn {
+      display: none;
+      border: 0;
+      background: transparent;
+      font-size: 27px;
+      cursor: pointer;
+    }
+    /* MAIN */
+    main {
+      max-width: 1000px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+    .page-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+    .profile-card {
+      background: white;
+      border-radius: 22px;
+      padding: 30px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+      margin-bottom: 22px;
+    }
+    /* PROFILE TOP */
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid #eee;
+    }
+    .avatar-wrapper {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      flex-shrink: 0;
+    }
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: linear-gradient(135deg, #2f80ed, #56ccf2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 48px;
+      font-weight: 700;
+    }
+    .avatar-upload {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #2f80ed;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 4px solid white;
+      font-size: 17px;
+    }
+    .avatar-upload input {
+      display: none;
+    }
+    .user-info h2 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+    .user-info p {
+      color: #73777d;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+    .online {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #20a45a !important;
+      font-weight: 600;
+    }
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: #20a45a;
+      border-radius: 50%;
+    }
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 25px;
+    }
+    .stat {
+      background: #f6f8fa;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 27px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+    .stat-label {
+      color: #777;
+      font-size: 14px;
+    }
+    /* SECTIONS */
+    .section-title {
+      font-size: 21px;
+      font-weight: 750;
+      margin-bottom: 20px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .info-item {
+      background: #f7f8fa;
+      border-radius: 14px;
+      padding: 17px;
+    }
+    .info-label {
+      font-size: 13px;
+      color: #777;
+      margin-bottom: 6px;
+    }
+    .info-value {
+      font-size: 16px;
+      font-weight: 600;
+      min-height: 20px;
+    }
+    /* SPORT */
+    .favorite-sport {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: linear-gradient(135deg, #eef6ff, #f7fbff);
+      border: 1px solid #dcecff;
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .sport-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: #2f80ed;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+    .sport-name {
+      font-weight: 750;
+      font-size: 18px;
+    }
+    .sport-description {
+      color: #777;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+    /* BUTTONS */
+    .buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+    }
+    button {
+      border: 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 650;
+      border-radius: 12px;
+      padding: 13px 20px;
+    }
+    .primary {
+      background: #2f80ed;
+      color: white;
+    }
+    .primary:hover {
+      background: #246dcc;
+    }
+    .secondary {
+      background: #eef0f2;
+      color: #222;
+    }
+    .danger {
+      background: #fff0f0;
+      color: #d93030;
+    }
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-box {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+    .modal-header h2 {
+      font-size: 24px;
+    }
+    .close {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      padding: 0;
+      background: #f1f2f4;
+      font-size: 22px;
+    }
+    .form-group {
+      margin-bottom: 17px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 650;
+      margin-bottom: 7px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d9dde2;
+      border-radius: 11px;
+      outline: none;
+      font-family: inherit;
+      font-size: 15px;
+      background: white;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: #2f80ed;
+      box-shadow: 0 0 0 3px rgba(47,128,237,0.1);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+    .modal-buttons button {
+      flex: 1;
+    }
+    /* FOOTER */
+    footer {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      padding: 30px 15px;
+    }
+    /* MOBILE */
+    @media (max-width: 650px) {
+      .header-inner {
+        height: 60px;
+      }
+      nav {
+        display: none;
+      }
+      .menu-btn {
+        display: block;
+      }
+      main {
+        margin-top: 22px;
+      }
+      .page-title {
+        font-size: 27px;
+      }
+      .profile-card {
+        padding: 20px;
+        border-radius: 18px;
+      }
+      .profile-top {
+        flex-direction: column;
+        text-align: center;
+      }
+      .avatar-wrapper,
+      .avatar {
+        width: 105px;
+        height: 105px;
+      }
+      .avatar {
+        font-size: 40px;
+      }
+      .user-info h2 {
+        font-size: 24px;
+      }
+      .stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+      .stat {
+        padding: 14px 5px;
+      }
+      .stat-number {
+        font-size: 22px;
+      }
+      .stat-label {
+        font-size: 11px;
+      }
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .buttons {
+        flex-direction: column;
+      }
+      .buttons button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        Sport<span>Room</span>
+      </a>
+      <nav>
+        <a href="index.html">Главная</a>
+        <a href="sports.html">Виды спорта</a>
+        <a href="sport.html">Спорт</a>
+        <a href="profile.html">Профиль</a>
+      </nav>
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+    </div>
+  </header>
+  <!-- MAIN -->
+  <main>
+    <h1 class="page-title">Личный кабинет</h1>
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="avatar-wrapper">
+          <img
+            id="avatarImage"
+            class="avatar"
+            src=""
+            alt="Аватар"
+            style="display:none;"
+          >
+          <div id="avatarLetter" class="avatar">
+            U
+          </div>
+          <label class="avatar-upload" title="Изменить аватар">
+            📷
+            <input
+              type="file"
+              id="avatarInput"
+              accept="image/*"
+            >
+          </label>
+        </div>
+        <div class="user-info">
+          <h2 id="profileName">Пользователь</h2>
+          <p id="profileEmail">
+            user@example.com
+          </p>
+          <p class="online">
+            <span class="online-dot"></span>
+            Онлайн
+          </p>
+        </div>
+      </div>
+      <!-- STATISTICS -->
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number" id="sportCount">0</div>
+          <div class="stat-label">Виды спорта</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="profilePoints">0</div>
+          <div class="stat-label">Очки</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" id="profileLevel">1</div>
+          <div class="stat-label">Уровень</div>
+        </div>
+      </div>
+    </div>
+    <!-- PERSONAL DATA -->
+    <div class="profile-card">
+      <h2 class="section-title">
+        Личная информация
+      </h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">
+            Имя
+          </div>
+          <div class="info-value" id="infoName">
+            Не указано
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            Фамилия
+          </div>
+          <div class="info-value" id="infoSurname">
+            Не указана
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            Email
+          </div>
+          <div class="info-value" id="infoEmail">
+            Не указан
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">
+            Город
+          </div>
+          <div class="info-value" id="infoCity">
+            Не указан
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button
+          class="primary"
+          onclick="openEditModal()"
+        >
+          ✏️ Редактировать профиль
+        </button>
+        <button
+          class="danger"
+          onclick="logout()"
+        >
+          🚪 Выйти
+        </button>
+      </div>
+    </div>
+    <!-- FAVORITE SPORT -->
+    <div class="profile-card">
+      <h2 class="section-title">
+        🏆 Мой любимый спорт
+      </h2>
+      <div class="favorite-sport">
+        <div class="sport-icon" id="sportIcon">
+          ⚽
+        </div>
+        <div>
+          <div
+            class="sport-name"
+            id="favoriteSport"
+          >
+            Футбол
+          </div>
+          <div class="sport-description">
+            Ваш любимый вид спорта
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ABOUT -->
+    <div class="profile-card">
+      <h2 class="section-title">
+        О себе
+      </h2>
+      <p
+        id="aboutText"
+        style="color:#666; line-height:1.6;"
+      >
+        Расскажите немного о себе.
+      </p>
+    </div>
+  </main>
+  <footer>
+    © 2026 SportRoom. Все права защищены.
+  </footer>
+  <!-- EDIT MODAL -->
+  <div
+    class="modal"
+    id="editModal"
+  >
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          Редактировать профиль
+        </h2>
+        <button
+          class="close"
+          onclick="closeEditModal()"
+        >
+          ×
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="editName">
+          Имя
+        </label>
+        <input
+          id="editName"
+          type="text"
+          placeholder="Введите имя"
+        >
+      </div>
+      <div class="form-group">
+        <label for="editSurname">
+          Фамилия
+        </label>
+        <input
+          id="editSurname"
+          type="text"
+          placeholder="Введите фамилию"
+        >
+      </div>
+      <div class="form-group">
+        <label for="editEmail">
+          Email
+        </label>
+        <input
+          id="editEmail"
+          type="email"
+          placeholder="Введите email"
+        >
+      </div>
+      <div class="form-group">
+        <label for="editCity">
+          Город
+        </label>
+        <input
+          id="editCity"
+          type="text"
+          placeholder="Например: Auckland"
+        >
+      </div>
+      <div class="form-group">
+        <label for="editSport">
+          Любимый вид спорта
+        </label>
+        <select id="editSport">
+          <option value="Футбол">⚽ Футбол</option>
+          <option value="Баскетбол">🏀 Баскетбол</option>
+          <option value="Теннис">🎾 Теннис</option>
+          <option value="Хоккей">🏒 Хоккей</option>
+          <option value="Волейбол">🏐 Волейбол</option>
+          <option value="Бокс">🥊 Бокс</option>
+          <option value="MMA">🥋 MMA</option>
+          <option value="Плавание">🏊 Плавание</option>
+          <option value="Лёгкая атлетика">🏃 Лёгкая атлетика</option>
+          <option value="Гимнастика">🤸 Гимнастика</option>
+          <option value="Формула-1">🏎️ Формула-1</option>
+          <option value="Велоспорт">🚴 Велоспорт</option>
+          <option value="Гольф">⛳ Гольф</option>
+          <option value="Регби">🏉 Регби</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editAbout">
+          О себе
+        </label>
+        <textarea
+          id="editAbout"
+          placeholder="Напишите несколько слов о себе..."
+        ></textarea>
+      </div>
+      <div class="modal-buttons">
+        <button
+          class="secondary"
+          onclick="closeEditModal()"
+        >
+          Отмена
+        </button>
+        <button
+          class="primary"
+          onclick="saveProfile()"
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    /* =========================
+       PROFILE DATA
+    ========================= */
+    let profile = JSON.parse(
+      localStorage.getItem("sportroom_profile") || "{}"
+    );
+    /*
+      Если пользователь зарегистрировался
+      через register.html, попробуем взять
+      данные оттуда.
+    */
+    if (!profile.name) {
+      profile.name =
+        localStorage.getItem("name") ||
+        localStorage.getItem("username") ||
+        "Пользователь";
+    }
+    if (!profile.surname) {
+      profile.surname =
+        localStorage.getItem("surname") ||
+        "";
+    }
+    if (!profile.email) {
+      profile.email =
+        localStorage.getItem("email") ||
+        "user@example.com";
+    }
+    if (!profile.city) {
+      profile.city =
+        localStorage.getItem("city") ||
+        "";
+    }
+    if (!profile.sport) {
+      profile.sport = "Футбол";
+    }
+    if (!profile.about) {
+      profile.about =
+        "Расскажите немного о себе.";
+    }
+    if (!profile.points) {
+      profile.points = 0;
+    }
+    if (!profile.level) {
+      profile.level = 1;
+    }
+    /* =========================
+       DISPLAY PROFILE
+    ========================= */
+    function displayProfile() {
+      const fullName =
+        ((profile.name || "") + " " + (profile.surname || ""))
+        .trim() || "Пользователь";
+      document.getElementById("profileName").textContent =
+        fullName;
+      document.getElementById("profileEmail").textContent =
+        profile.email || "Email не указан";
+      document.getElementById("infoName").textContent =
+        profile.name || "Не указано";
+      document.getElementById("infoSurname").textContent =
+        profile.surname || "Не указана";
+      document.getElementById("infoEmail").textContent =
+        profile.email || "Не указан";
+      document.getElementById("infoCity").textContent =
+        profile.city || "Не указан";
+      document.getElementById("favoriteSport").textContent =
+        profile.sport || "Футбол";
+      document.getElementById("profilePoints").textContent =
+        profile.points || 0;
+      document.getElementById("profileLevel").textContent =
+        profile.level || 1;
+      document.getElementById("aboutText").textContent =
+        profile.about || "Расскажите немного о себе.";
+      /*
+        Количество выбранных видов спорта.
+        Пока показываем 1.
+      */
+      document.getElementById("sportCount").textContent = 1;
+      /*
+        Буква аватара
+      */
+      const letter =
+        (profile.name || "U")
+        .charAt(0)
+        .toUpperCase();
+      document.getElementById("avatarLetter").textContent =
+        letter;
+      /*
+        Если есть сохранённый аватар
+      */
+      if (profile.avatar) {
+        document.getElementById("avatarImage").src =
+          profile.avatar;
+        document.getElementById("avatarImage").style.display =
+          "block";
+        document.getElementById("avatarLetter").style.display =
+          "none";
+      } else {
+        document.getElementById("avatarImage").style.display =
+          "none";
+        document.getElementById("avatarLetter").style.display =
+          "flex";
+      }
+      /*
+        Иконка спорта
+      */
+      const icons = {
+        "Футбол": "⚽",
+        "Баскетбол": "🏀",
+        "Теннис": "🎾",
+        "Хоккей": "🏒",
+        "Волейбол": "🏐",
+        "Бокс": "🥊",
+        "MMA": "🥋",
+        "Плавание": "🏊",
+        "Лёгкая атлетика": "🏃",
+        "Гимнастика": "🤸",
+        "Формула-1": "🏎️",
+        "Велоспорт": "🚴",
+        "Гольф": "⛳",
+        "Регби": "🏉"
+      };
+      document.getElementById("sportIcon").textContent =
+        icons[profile.sport] || "🏆";
+    }
+    /* =========================
+       SAVE PROFILE
+    ========================= */
+    function saveProfile() {
+      profile.name =
+        document.getElementById("editName").value.trim();
+      profile.surname =
+        document.getElementById("editSurname").value.trim();
+      profile.email =
+        document.getElementById("editEmail").value.trim();
+      profile.city =
+        document.getElementById("editCity").value.trim();
+      profile.sport =
+        document.getElementById("editSport").value;
+      profile.about =
+        document.getElementById("editAbout").value.trim();
+      if (!profile.name) {
+        profile.name = "Пользователь";
+      }
+      /*
+        Сохраняем профиль
+      */
+      localStorage.setItem(
+        "sportroom_profile",
+        JSON.stringify(profile)
+      );
+      /*
+        Дополнительно сохраняем отдельные значения,
+        чтобы они были доступны другим страницам.
+      */
+      localStorage.setItem(
+        "name",
+        profile.name
+      );
+      localStorage.setItem(
+        "surname",
+        profile.surname
+      );
+      localStorage.setItem(
+        "email",
+        profile.email
+      );
+      localStorage.setItem(
+        "city",
+        profile.city
+      );
+      displayProfile();
+      closeEditModal();
+    }
+    /* =========================
+       EDIT MODAL
+    ========================= */
+    function openEditModal() {
+      document.getElementById("editName").value =
+        profile.name || "";
+      document.getElementById("editSurname").value =
+        profile.surname || "";
+      document.getElementById("editEmail").value =
+        profile.email || "";
+      document.getElementById("editCity").value =
+        profile.city || "";
+      document.getElementById("editSport").value =
+        profile.sport || "Футбол";
+      document.getElementById("editAbout").value =
+        profile.about || "";
+      document.getElementById("editModal")
+        .classList.add("active");
+    }
+    function closeEditModal() {
+      document.getElementById("editModal")
+        .classList.remove("active");
+    }
+    /*
+      Закрытие по нажатию вне окна
+    */
+    document.getElementById("editModal")
+      .addEventListener("click", function(event) {
+        if (event.target === this) {
+          closeEditModal();
+        }
+      });
+    /* =========================
+       AVATAR
+    ========================= */
+    document.getElementById("avatarInput")
+      .addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        /*
+          Ограничение размера
+        */
+        if (file.size > 5 * 1024 * 1024) {
+          alert(
+            "Аватар должен быть меньше 5 МБ."
+          );
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          profile.avatar =
+            e.target.result;
+          localStorage.setItem(
+            "sportroom_profile",
+            JSON.stringify(profile)
+          );
+          displayProfile();
+        };
+        reader.readAsDataURL(file);
+      });
+    /* =========================
+       LOGOUT
+    ========================= */
+    function logout() {
+      const confirmLogout =
+        confirm(
+          "Вы действительно хотите выйти?"
+        );
+      if (!confirmLogout) return;
+      /*
+        Не удаляем профиль полностью.
+        Просто отмечаем, что пользователь вышел.
+      */
+      localStorage.setItem(
+        "sportroom_logged_in",
+        "false"
+      );
+      /*
+        Переходим на страницу входа.
+      */
+      window.location.href =
+        "login.html";
+    }
+    /* =========================
+       MOBILE MENU
+    ========================= */
+    function toggleMenu() {
+      const nav =
+        document.querySelector("nav");
+      if (nav.style.display === "flex") {
+        nav.style.display = "";
+      } else {
+        nav.style.display = "flex";
+        nav.style.position = "absolute";
+        nav.style.top = "60px";
+        nav.style.left = "0";
+        nav.style.right = "0";
+        nav.style.background = "#fff";
+        nav.style.padding = "12px 18px";
+        nav.style.flexDirection = "column";
+        nav.style.borderBottom = "1px solid #eee";
+      }
+    }
+    /* =========================
+       START
+    ========================= */
+    displayProfile();
+  </script>
+</body>
+</html>
