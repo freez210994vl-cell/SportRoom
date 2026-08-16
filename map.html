@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b0f14"
+  >
+
+  <title>Карта — SportRoom</title>
+
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  >
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --red: #ef4444;
+      --red-dark: #dc2626;
+      --red-light: #fff1f2;
+      --dark: #0b0f14;
+      --text: #17191c;
+      --muted: #73777d;
+      --border: #e5e7eb;
+      --white: #ffffff;
+      --shadow: 0 10px 35px rgba(0,0,0,.12);
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+      background: #f4f6f8;
+      color: var(--text);
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 70px;
+
+      z-index: 2000;
+
+      background: rgba(255,255,255,.96);
+
+      border-bottom: 1px solid var(--border);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .header-inner {
+      width: min(1200px, calc(100% - 30px));
+
+      height: 100%;
+
+      margin: auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+    .logo {
+      text-decoration: none;
+
+      color: #111;
+
+      font-size: 25px;
+
+      font-weight: 900;
+
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: var(--red);
+    }
+
+    .nav {
+      display: flex;
+
+      align-items: center;
+
+      gap: 5px;
+    }
+
+    .nav a {
+      text-decoration: none;
+
+      color: #555;
+
+      padding: 10px 13px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      font-weight: 700;
+
+      transition: .2s;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: var(--red-light);
+
+      color: var(--red);
+    }
+
+    .header-buttons {
+      display: flex;
+
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      min-height: 40px;
+
+      padding: 0 15px;
+
+      border-radius: 10px;
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    .button-dark {
+      background: var(--dark);
+
+      color: white;
+    }
+
+    .button-red {
+      background: var(--red);
+
+      color: white;
+    }
+
+
+    /* =====================================================
+       MAP
+       ===================================================== */
+
+    #map {
+      position: fixed;
+
+      top: 70px;
+
+      left: 0;
+
+      right: 0;
+
+      bottom: 0;
+
+      z-index: 1;
+    }
+
+
+    /* =====================================================
+       TOP SEARCH
+       ===================================================== */
+
+    .map-controls {
+      position: fixed;
+
+      top: 88px;
+
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: min(900px, calc(100% - 30px));
+
+      z-index: 1500;
+    }
+
+    .search-box {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 7px;
+
+      background: white;
+
+      border: 1px solid rgba(0,0,0,.08);
+
+      border-radius: 15px;
+
+      box-shadow: var(--shadow);
+    }
+
+    .search-icon {
+      width: 42px;
+
+      height: 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 20px;
+    }
+
+    #searchInput {
+      flex: 1;
+
+      min-width: 0;
+
+      height: 42px;
+
+      border: 0;
+
+      outline: none;
+
+      font-family: inherit;
+
+      font-size: 15px;
+    }
+
+    .search-button {
+      height: 42px;
+
+      padding: 0 16px;
+
+      border: 0;
+
+      border-radius: 10px;
+
+      background: var(--red);
+
+      color: white;
+
+      font-family: inherit;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+    .search-button:hover {
+      background: var(--red-dark);
+    }
+
+
+    /* =====================================================
+       FILTERS
+       ===================================================== */
+
+    .filters {
+      display: flex;
+
+      gap: 8px;
+
+      overflow-x: auto;
+
+      margin-top: 10px;
+
+      padding: 3px 2px 7px;
+
+      scrollbar-width: none;
+    }
+
+    .filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter {
+      flex-shrink: 0;
+
+      border: 1px solid rgba(0,0,0,.08);
+
+      background: white;
+
+      color: #555;
+
+      border-radius: 20px;
+
+      padding: 9px 13px;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+
+      transition: .2s;
+    }
+
+    .filter:hover {
+      transform: translateY(-1px);
+    }
+
+    .filter.active {
+      background: var(--red);
+
+      border-color: var(--red);
+
+      color: white;
+    }
+
+
+    /* =====================================================
+       LOCATION BUTTON
+       ===================================================== */
+
+    .location-button {
+      position: fixed;
+
+      right: 20px;
+
+      bottom: 90px;
+
+      z-index: 1500;
+
+      width: 50px;
+
+      height: 50px;
+
+      border: 0;
+
+      border-radius: 15px;
+
+      background: white;
+
+      color: #222;
+
+      font-size: 21px;
+
+      cursor: pointer;
+
+      box-shadow: var(--shadow);
+
+      transition: .2s;
+    }
+
+    .location-button:hover {
+      transform: translateY(-2px);
+    }
+
+    .location-button.loading {
+      opacity: .6;
+
+      pointer-events: none;
+    }
+
+
+    /* =====================================================
+       RESULT COUNTER
+       ===================================================== */
+
+    .result-counter {
+      position: fixed;
+
+      left: 20px;
+
+      bottom: 20px;
+
+      z-index: 1500;
+
+      padding: 11px 15px;
+
+      background: rgba(255,255,255,.95);
+
+      border: 1px solid rgba(0,0,0,.08);
+
+      border-radius: 12px;
+
+      box-shadow: 0 8px 25px rgba(0,0,0,.10);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      color: #444;
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    .loading-box {
+      position: fixed;
+
+      top: 50%;
+
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+
+      z-index: 3000;
+
+      display: none;
+
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 15px 19px;
+
+      background: white;
+
+      border-radius: 14px;
+
+      box-shadow: var(--shadow);
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    .loading-box.active {
+      display: flex;
+    }
+
+    .spinner {
+      width: 20px;
+
+      height: 20px;
+
+      border: 3px solid #eee;
+
+      border-top-color: var(--red);
+
+      border-radius: 50%;
+
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    /* =====================================================
+       ERROR
+       ===================================================== */
+
+    .toast {
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 25px;
+
+      transform:
+        translate(-50%, 100px);
+
+      z-index: 4000;
+
+      max-width: calc(100% - 30px);
+
+      padding: 13px 17px;
+
+      background: #111827;
+
+      color: white;
+
+      border-radius: 12px;
+
+      box-shadow: var(--shadow);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      transition: .3s;
+    }
+
+    .toast.show {
+      transform: translate(-50%, 0);
+    }
+
+
+    /* =====================================================
+       CUSTOM MARKER
+       ===================================================== */
+
+    .sport-marker {
+      width: 42px;
+
+      height: 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: var(--red);
+
+      border: 3px solid white;
+
+      box-shadow:
+        0 5px 16px rgba(0,0,0,.25);
+
+      font-size: 20px;
+    }
+
+    .user-marker {
+      width: 20px;
+
+      height: 20px;
+
+      border-radius: 50%;
+
+      background: #2f80ed;
+
+      border: 4px solid white;
+
+      box-shadow:
+        0 0 0 5px rgba(47,128,237,.25),
+        0 4px 12px rgba(0,0,0,.25);
+    }
+
+
+    /* =====================================================
+       POPUP
+       ===================================================== */
+
+    .popup-card {
+      min-width: 235px;
+
+      max-width: 290px;
+    }
+
+    .popup-title {
+      font-size: 17px;
+
+      font-weight: 900;
+
+      margin-bottom: 7px;
+    }
+
+    .popup-type {
+      display: inline-block;
+
+      margin-bottom: 9px;
+
+      padding: 5px 8px;
+
+      background: var(--red-light);
+
+      color: var(--red);
+
+      border-radius: 7px;
+
+      font-size: 10px;
+
+      font-weight: 900;
+    }
+
+    .popup-address {
+      color: #666;
+
+      font-size: 12px;
+
+      line-height: 1.5;
+
+      margin-bottom: 12px;
+    }
+
+    .popup-distance {
+      font-size: 12px;
+
+      color: #555;
+
+      margin-bottom: 12px;
+    }
+
+    .route-button {
+      width: 100%;
+
+      height: 38px;
+
+      border: 0;
+
+      border-radius: 9px;
+
+      background: var(--red);
+
+      color: white;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+    }
+
+
+    /* =====================================================
+       LEAFLET
+       ===================================================== */
+
+    .leaflet-control-zoom {
+      margin-top: 145px !important;
+    }
+
+    .leaflet-control-attribution {
+      font-size: 9px;
+    }
+
+
+    /* =====================================================
+       MOBILE
+       ===================================================== */
+
+    @media (max-width: 700px) {
+
+      .header {
+        height: 60px;
+      }
+
+      .header-inner {
+        width: calc(100% - 20px);
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .header-buttons {
+        display: none;
+      }
+
+      .logo {
+        font-size: 23px;
+      }
+
+      #map {
+        top: 60px;
+      }
+
+      .map-controls {
+        top: 72px;
+
+        width: calc(100% - 20px);
+      }
+
+      .search-box {
+        border-radius: 13px;
+      }
+
+      .search-icon {
+        width: 35px;
+      }
+
+      #searchInput {
+        font-size: 14px;
+      }
+
+      .search-button {
+        padding: 0 12px;
+      }
+
+      .filters {
+        margin-top: 7px;
+      }
+
+      .filter {
+        padding: 8px 11px;
+      }
+
+      .location-button {
+        right: 15px;
+
+        bottom: 75px;
+      }
+
+      .result-counter {
+        left: 10px;
+
+        bottom: 15px;
+      }
+
+      .leaflet-control-zoom {
+        margin-top: 145px !important;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Sport<span>Room</span>
+    </a>
+
+
+    <nav class="nav">
+
+      <a href="index.html">
+        Главная
+      </a>
+
+      <a href="sports.html">
+        Виды спорта
+      </a>
+
+      <a
+        href="map.html"
+        class="active"
+      >
+        🗺️ Карта
+      </a>
+
+      <a href="profile.html">
+        Профиль
+      </a>
+
+    </nav>
+
+
+    <div class="header-buttons">
+
+      <a
+        href="login.html"
+        class="button button-dark"
+      >
+        Войти
+      </a>
+
+      <a
+        href="register.html"
+        class="button button-red"
+      >
+        Регистрация
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     MAP
+     ===================================================== -->
+
+<div id="map"></div>
+
+
+<!-- =====================================================
+     CONTROLS
+     ===================================================== -->
+
+<div class="map-controls">
+
+  <div class="search-box">
+
+    <div class="search-icon">
+      🔎
+    </div>
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Найти спортивный объект..."
+      autocomplete="off"
+    >
+
+    <button
+      class="search-button"
+      id="searchButton"
+    >
+      Найти
+    </button>
+
+  </div>
+
+
+  <div class="filters">
+
+    <button
+      class="filter active"
+      data-filter="all"
+    >
+      🏟️ Все
+    </button>
+
+    <button
+      class="filter"
+      data-filter="football"
+    >
+      ⚽ Футбол
+    </button>
+
+    <button
+      class="filter"
+      data-filter="basketball"
+    >
+      🏀 Баскетбол
+    </button>
+
+    <button
+      class="filter"
+      data-filter="tennis"
+    >
+      🎾 Теннис
+    </button>
+
+    <button
+      class="filter"
+      data-filter="swimming"
+    >
+      🏊 Бассейны
+    </button>
+
+    <button
+      class="filter"
+      data-filter="fitness"
+    >
+      🏋️ Фитнес
+    </button>
+
+    <button
+      class="filter"
+      data-filter="martial"
+    >
+      🥊 Единоборства
+    </button>
+
+    <button
+      class="filter"
+      data-filter="other"
+    >
+      🏃 Другое
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     LOCATION
+     ===================================================== -->
+
+<button
+  class="location-button"
+  id="locationButton"
+  title="Моё местоположение"
+>
+  📍
+</button>
+
+
+<!-- =====================================================
+     COUNTER
+     ===================================================== -->
+
+<div
+  class="result-counter"
+  id="resultCounter"
+>
+  Загружаем объекты...
+</div>
+
+
+<!-- =====================================================
+     LOADING
+     ===================================================== -->
+
+<div
+  class="loading-box"
+  id="loadingBox"
+>
+
+  <div class="spinner"></div>
+
+  <span>
+    Загружаем спортивные объекты...
+  </span>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST
+     ===================================================== -->
+
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<!-- =====================================================
+     LEAFLET
+     ===================================================== -->
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  crossorigin=""
+></script>
+
+
+<script>
+
+  /* =====================================================
+     CONFIG
+     ===================================================== */
+
+  const DEFAULT_LAT = -36.8485;
+  const DEFAULT_LNG = 174.7633;
+
+  const SEARCH_RADIUS = 10000;
+
+  let currentFilter = "all";
+
+  let currentSearch = "";
+
+  let userLocation = null;
+
+  let userMarker = null;
+
+  let sportMarkers = [];
+
+  let sportObjects = [];
+
+  let map;
+
+
+  /* =====================================================
+     SPORT TYPES
+     ===================================================== */
+
+  const sportIcons = {
+
+    football: "⚽",
+
+    basketball: "🏀",
+
+    tennis: "🎾",
+
+    swimming: "🏊",
+
+    fitness: "🏋️",
+
+    martial: "🥊",
+
+    hockey: "🏒",
+
+    golf: "⛳",
+
+    cycling: "🚴",
+
+    volleyball: "🏐",
+
+    athletics: "🏃",
+
+    sports_centre: "🏟️",
+
+    other: "🏆"
+
+  };
+
+
+  /* =====================================================
+     INIT MAP
+     ===================================================== */
+
+  function initMap() {
+
+    map = L.map("map", {
+      zoomControl: true
+    }).setView(
+      [DEFAULT_LAT, DEFAULT_LNG],
+      13
+    );
+
+
+    L.tileLayer(
+      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      {
+        maxZoom: 19,
+
+        attribution:
+          '&copy; OpenStreetMap contributors'
+      }
+    ).addTo(map);
+
+
+    loadSports(
+      DEFAULT_LAT,
+      DEFAULT_LNG
+    );
+
+
+    locateUser();
+
+  }
+
+
+  /* =====================================================
+     FIND USER
+     ===================================================== */
+
+  function locateUser() {
+
+    const button =
+      document.getElementById(
+        "locationButton"
+      );
+
+    button.classList.add(
+      "loading"
+    );
+
+
+    if (!navigator.geolocation) {
+
+      button.classList.remove(
+        "loading"
+      );
+
+      showToast(
+        "Ваш браузер не поддерживает геолокацию."
+      );
+
+      return;
+
+    }
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      function(position) {
+
+        const lat =
+          position.coords.latitude;
+
+        const lng =
+          position.coords.longitude;
+
+
+        userLocation = {
+          lat,
+          lng
+        };
+
+
+        showUserLocation(
+          lat,
+          lng
+        );
+
+
+        map.setView(
+          [lat, lng],
+          14
+        );
+
+
+        loadSports(
+          lat,
+          lng
+        );
+
+
+        button.classList.remove(
+          "loading"
+        );
+
+      },
+
+
+      function() {
+
+        button.classList.remove(
+          "loading"
+        );
+
+        showToast(
+          "Не удалось определить местоположение. Используем карту по умолчанию."
+        );
+
+      },
+
+      {
+        enableHighAccuracy: true,
+
+        timeout: 10000,
+
+        maximumAge: 60000
+      }
+
+    );
+
+  }
+
+
+  /* =====================================================
+     USER MARKER
+     ===================================================== */
+
+  function showUserLocation(
+    lat,
+    lng
+  ) {
+
+    if (userMarker) {
+
+      userMarker.setLatLng(
+        [lat, lng]
+      );
+
+      return;
+
+    }
+
+
+    const icon =
+      L.divIcon({
+
+        className: "",
+
+        html:
+          '<div class="user-marker"></div>',
+
+        iconSize: [
+          20,
+          20
+        ],
+
+        iconAnchor: [
+          10,
+          10
+        ]
+
+      });
+
+
+    userMarker =
+      L.marker(
+        [lat, lng],
+        {
+          icon,
+          zIndexOffset: 1000
+        }
+      )
+      .addTo(map)
+      .bindTooltip(
+        "Вы здесь"
+      );
+
+  }
+
+
+  /* =====================================================
+     LOAD SPORTS
+     ===================================================== */
+
+  async function loadSports(
+    lat,
+    lng
+  ) {
+
+    showLoading(true);
+
+
+    const query = `
+
+      [out:json][timeout:25];
+
+      (
+        nwr["leisure"="sports_centre"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["leisure"="stadium"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["leisure"="pitch"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["leisure"="fitness_centre"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["sport"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["leisure"="swimming_pool"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["amenity"="gym"](around:${SEARCH_RADIUS},${lat},${lng});
+
+        nwr["amenity"="sports_centre"](around:${SEARCH_RADIUS},${lat},${lng});
+      );
+
+      out center tags;
+
+    `;
+
+
+    try {
+
+      const response =
+        await fetch(
+          "https://overpass-api.de/api/interpreter",
+          {
+            method: "POST",
+
+            body: query
+          }
+        );
+
+
+      if (!response.ok) {
+        throw new Error(
+          "Overpass error"
+        );
+      }
+
+
+      const data =
+        await response.json();
+
+
+      sportObjects =
+        data.elements
+          .map(
+            normalizeSport
+          )
+          .filter(Boolean);
+
+
+      renderSports();
+
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        "Не удалось загрузить спортивные объекты. Попробуйте ещё раз."
+      );
+
+    }
+
+
+    showLoading(false);
+
+  }
+
+
+  /* =====================================================
+     NORMALIZE
+     ===================================================== */
+
+  function normalizeSport(
+    element
+  ) {
+
+    const tags =
+      element.tags || {};
+
+
+    let lat =
+      element.lat;
+
+    let lng =
+      element.lon;
+
+
+    if (
+      lat === undefined &&
+      element.center
+    ) {
+
+      lat =
+        element.center.lat;
+
+      lng =
+        element.center.lon;
+
+    }
+
+
+    if (
+      lat === undefined ||
+      lng === undefined
+    ) {
+
+      return null;
+
+    }
+
+
+    const name =
+      tags.name ||
+      tags["name:ru"] ||
+      tags["name:en"] ||
+      "Спортивный объект";
+
+
+    const sportValue =
+      String(
+        tags.sport ||
+        tags.leisure ||
+        tags.amenity ||
+        ""
+      ).toLowerCase();
+
+
+    const category =
+      detectCategory(
+        sportValue,
+        tags
+      );
+
+
+    const address =
+      buildAddress(
+        tags
+      );
+
+
+    return {
+
+      id:
+        element.type +
+        "_" +
+        element.id,
+
+      lat,
+
+      lng,
+
+      name,
+
+      category,
+
+      sportValue,
+
+      address,
+
+      tags
+
+    };
+
+  }
+
+
+  /* =====================================================
+     CATEGORY
+     ===================================================== */
+
+  function detectCategory(
+    value,
+    tags
+  ) {
+
+    const text =
+      (
+        value +
+        " " +
+        JSON.stringify(tags)
+      )
+      .toLowerCase();
+
+
+    if (
+      text.includes("football") ||
+      text.includes("soccer") ||
+      text.includes("футбол")
+    ) {
+
+      return "football";
+
+    }
+
+
+    if (
+      text.includes("basketball")
+    ) {
+
+      return "basketball";
+
+    }
+
+
+    if (
+      text.includes("tennis")
+    ) {
+
+      return "tennis";
+
+    }
+
+
+    if (
+      text.includes("swim") ||
+      text.includes("pool")
+    ) {
+
+      return "swimming";
+
+    }
+
+
+    if (
+      text.includes("fitness") ||
+      text.includes("gym")
+    ) {
+
+      return "fitness";
+
+    }
+
+
+    if (
+      text.includes("boxing") ||
+      text.includes("martial") ||
+      text.includes("karate") ||
+      text.includes("judo") ||
+      text.includes("mma")
+    ) {
+
+      return "martial";
+
+    }
+
+
+    if (
+      text.includes("hockey")
+    ) {
+
+      return "hockey";
+
+    }
+
+
+    if (
+      text.includes("golf")
+    ) {
+
+      return "golf";
+
+    }
+
+
+    if (
+      text.includes("cycling") ||
+      text.includes("velodrome")
+    ) {
+
+      return "cycling";
+
+    }
+
+
+    if (
+      text.includes("volleyball")
+    ) {
+
+      return "volleyball";
+
+    }
+
+
+    if (
+      text.includes("athletics") ||
+      text.includes("running")
+    ) {
+
+      return "athletics";
+
+    }
+
+
+    if (
+      text.includes("sports_centre") ||
+      text.includes("stadium") ||
+      text.includes("sports")
+    ) {
+
+      return "sports_centre";
+
+    }
+
+
+    return "other";
+
+  }
+
+
+  /* =====================================================
+     ADDRESS
+     ===================================================== */
+
+  function buildAddress(
+    tags
+  ) {
+
+    const parts = [];
+
+
+    if (tags["addr:housenumber"]) {
+
+      parts.push(
+        tags["addr:housenumber"]
+      );
+
+    }
+
+
+    if (tags["addr:street"]) {
+
+      parts.push(
+        tags["addr:street"]
+      );
+
+    }
+
+
+    if (tags["addr:city"]) {
+
+      parts.push(
+        tags["addr:city"]
+      );
+
+    }
+
+
+    if (parts.length) {
+
+      return parts.join(", ");
+
+    }
+
+
+    if (tags["addr:full"]) {
+
+      return tags["addr:full"];
+
+    }
+
+
+    return "Адрес не указан";
+
+  }
+
+
+  /* =====================================================
+     RENDER
+     ===================================================== */
+
+  function renderSports() {
+
+    clearMarkers();
+
+
+    const search =
+      currentSearch
+        .trim()
+        .toLowerCase();
+
+
+    let visible =
+      sportObjects.filter(
+        object => {
+
+          const filterMatch =
+            currentFilter === "all" ||
+            object.category === currentFilter;
+
+
+          const searchMatch =
+            !search ||
+            object.name
+              .toLowerCase()
+              .includes(search) ||
+            object.address
+              .toLowerCase()
+              .includes(search) ||
+            object.sportValue
+              .toLowerCase()
+              .includes(search);
+
+
+          return (
+            filterMatch &&
+            searchMatch
+          );
+
+        }
+      );
+
+
+    visible.forEach(
+      addSportMarker
+    );
+
+
+    document.getElementById(
+      "resultCounter"
+    ).textContent =
+      `Найдено объектов: ${visible.length}`;
+
+
+    if (
+      visible.length === 0
+    ) {
+
+      showToast(
+        "Спортивных объектов по вашему запросу не найдено."
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     ADD MARKER
+     ===================================================== */
+
+  function addSportMarker(
+    object
+  ) {
+
+    const icon =
+      L.divIcon({
+
+        className: "",
+
+        html:
+          `
+          <div class="sport-marker">
+            ${sportIcons[object.category] || "🏆"}
+          </div>
+          `,
+
+        iconSize: [
+          42,
+          42
+        ],
+
+        iconAnchor: [
+          21,
+          21
+        ]
+
+      });
+
+
+    const marker =
+      L.marker(
+        [
+          object.lat,
+          object.lng
+        ],
+        {
+          icon
+        }
+      );
+
+
+    const distance =
+      userLocation
+        ? formatDistance(
+            calculateDistance(
+              userLocation.lat,
+              userLocation.lng,
+              object.lat,
+              object.lng
+            )
+          )
+        : "";
+
+
+    const categoryName =
+      getCategoryName(
+        object.category
+      );
+
+
+    const routeUrl =
+      createRouteUrl(
+        object.lat,
+        object.lng
+      );
+
+
+    marker.bindPopup(
+
+      `
+      <div class="popup-card">
+
+        <div class="popup-title">
+          ${escapeHtml(object.name)}
+        </div>
+
+        <div class="popup-type">
+          ${sportIcons[object.category] || "🏆"}
+          ${categoryName}
+        </div>
+
+        <div class="popup-address">
+          📍 ${escapeHtml(object.address)}
+        </div>
+
+        ${
+          distance
+            ? `
+              <div class="popup-distance">
+                📏 ${distance} от вас
+              </div>
+            `
+            : ""
+        }
+
+        <button
+          class="route-button"
+          onclick="window.open('${routeUrl}', '_blank')"
+        >
+          📍 Построить маршрут
+        </button>
+
+      </div>
+      `
+
+    );
+
+
+    marker.addTo(map);
+
+
+    sportMarkers.push(
+      marker
+    );
+
+  }
+
+
+  /* =====================================================
+     CLEAR MARKERS
+     ===================================================== */
+
+  function clearMarkers() {
+
+    sportMarkers.forEach(
+      marker => {
+
+        map.removeLayer(
+          marker
+        );
+
+      }
+    );
+
+
+    sportMarkers = [];
+
+  }
+
+
+  /* =====================================================
+     FILTERS
+     ===================================================== */
+
+  document
+    .querySelectorAll(".filter")
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          function() {
+
+            document
+              .querySelectorAll(".filter")
+              .forEach(
+                item =>
+                  item.classList.remove(
+                    "active"
+                  )
+              );
+
+
+            this.classList.add(
+              "active"
+            );
+
+
+            currentFilter =
+              this.dataset.filter;
+
+
+            renderSports();
+
+          }
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     SEARCH
+     ===================================================== */
+
+  function performSearch() {
+
+    currentSearch =
+      document
+        .getElementById(
+          "searchInput"
+        )
+        .value;
+
+
+    renderSports();
+
+  }
+
+
+  document
+    .getElementById(
+      "searchButton"
+    )
+    .addEventListener(
+      "click",
+      performSearch
+    );
+
+
+  document
+    .getElementById(
+      "searchInput"
+    )
+    .addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          performSearch();
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     LOCATION BUTTON
+     ===================================================== */
+
+  document
+    .getElementById(
+      "locationButton"
+    )
+    .addEventListener(
+      "click",
+      locateUser
+    );
+
+
+  /* =====================================================
+     DISTANCE
+     ===================================================== */
+
+  function calculateDistance(
+    lat1,
+    lon1,
+    lat2,
+    lon2
+  ) {
+
+    const R =
+      6371;
+
+
+    const dLat =
+      toRadians(
+        lat2 - lat1
+      );
+
+
+    const dLon =
+      toRadians(
+        lon2 - lon1
+      );
+
+
+    const a =
+      Math.sin(dLat / 2) *
+      Math.sin(dLat / 2) +
+
+      Math.cos(
+        toRadians(lat1)
+      ) *
+
+      Math.cos(
+        toRadians(lat2)
+      ) *
+
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+
+    const c =
+      2 *
+      Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+      );
+
+
+    return R * c;
+
+  }
+
+
+  function toRadians(
+    degrees
+  ) {
+
+    return degrees *
+      Math.PI /
+      180;
+
+  }
+
+
+  function formatDistance(
+    distance
+  ) {
+
+    if (
+      distance < 1
+    ) {
+
+      return (
+        Math.round(
+          distance * 1000
+        ) +
+        " м"
+      );
+
+    }
+
+
+    return (
+      distance.toFixed(1) +
+      " км"
+    );
+
+  }
+
+
+  /* =====================================================
+     ROUTE
+     ===================================================== */
+
+  function createRouteUrl(
+    lat,
+    lng
+  ) {
+
+    if (userLocation) {
+
+      return (
+        "https://www.google.com/maps/dir/" +
+        userLocation.lat +
+        "," +
+        userLocation.lng +
+        "/" +
+        lat +
+        "," +
+        lng
+      );
+
+    }
+
+
+    return (
+      "https://www.google.com/maps/search/?api=1&query=" +
+      lat +
+      "," +
+      lng
+    );
+
+  }
+
+
+  /* =====================================================
+     CATEGORY NAME
+     ===================================================== */
+
+  function getCategoryName(
+    category
+  ) {
+
+    const names = {
+
+      football:
+        "Футбол",
+
+      basketball:
+        "Баскетбол",
+
+      tennis:
+        "Теннис",
+
+      swimming:
+        "Бассейн",
+
+      fitness:
+        "Фитнес",
+
+      martial:
+        "Единоборства",
+
+      hockey:
+        "Хоккей",
+
+      golf:
+        "Гольф",
+
+      cycling:
+        "Велоспорт",
+
+      volleyball:
+        "Волейбол",
+
+      athletics:
+        "Атлетика",
+
+      sports_centre:
+        "Спортивный комплекс",
+
+      other:
+        "Спорт"
+
+    };
+
+
+    return (
+      names[category] ||
+      "Спортивный объект"
+    );
+
+  }
+
+
+  /* =====================================================
+     ESCAPE HTML
+     ===================================================== */
+
+  function escapeHtml(
+    text
+  ) {
+
+    return String(text)
+      .replace(
+        /&/g,
+        "&amp;"
+      )
+      .replace(
+        /</g,
+        "&lt;"
+      )
+      .replace(
+        />/g,
+        "&gt;"
+      )
+      .replace(
+        /"/g,
+        "&quot;"
+      )
+      .replace(
+        /'/g,
+        "&#039;"
+      );
+
+  }
+
+
+  /* =====================================================
+     LOADING
+     ===================================================== */
+
+  function showLoading(
+    show
+  ) {
+
+    const box =
+      document.getElementById(
+        "loadingBox"
+      );
+
+
+    if (show) {
+
+      box.classList.add(
+        "active"
+      );
+
+    } else {
+
+      box.classList.remove(
+        "active"
+      );
+
+    }
+
+  }
+
+
+  /* =====================================================
+     TOAST
+     ===================================================== */
+
+  let toastTimer;
+
+
+  function showToast(
+    message
+  ) {
+
+    const toast =
+      document.getElementById(
+        "toast"
+      );
+
+
+    toast.textContent =
+      message;
+
+
+    toast.classList.add(
+      "show"
+    );
+
+
+    clearTimeout(
+      toastTimer
+    );
+
+
+    toastTimer =
+      setTimeout(
+        () => {
+
+          toast.classList.remove(
+            "show"
+          );
+
+        },
+        3500
+      );
+
+  }
+
+
+  /* =====================================================
+     MAP MOVE
+     ===================================================== */
+
+  let moveTimer;
+
+
+  map = null;
+
+
+  function reloadAfterMove() {
+
+    if (!map) {
+      return;
+    }
+
+
+    clearTimeout(
+      moveTimer
+    );
+
+
+    moveTimer =
+      setTimeout(
+        function() {
+
+          const center =
+            map.getCenter();
+
+
+          loadSports(
+            center.lat,
+            center.lng
+          );
+
+        },
+        900
+      );
+
+  }
+
+
+  /* =====================================================
+     START
+     ===================================================== */
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+      initMap();
+
+    }
+  );
+
+
+  /*
+    После инициализации добавляем
+    обработчик движения карты.
+  */
+
+  setTimeout(
+    function() {
+
+      if (map) {
+
+        map.on(
+          "moveend",
+          reloadAfterMove
+        );
+
+      }
+
+    },
+    1000
+  );
+
+
+</script>
+
+</body>
+</html>
