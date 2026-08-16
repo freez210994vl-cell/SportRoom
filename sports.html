@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta
+    name="theme-color"
+    content="#0b0f14"
+  >
+
+  <title>SportRoom — Виды спорта</title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Sport<span>Room</span>
+    </a>
+
+
+    <nav class="nav">
+
+      <a href="index.html">
+        Главная
+      </a>
+
+      <a
+        href="sports.html"
+        class="active"
+      >
+        Спорт
+      </a>
+
+      <a href="profile.html">
+        Профиль
+      </a>
+
+    </nav>
+
+
+    <div class="header-buttons">
+
+      <a
+        href="login.html"
+        class="button button-dark"
+      >
+        Войти
+      </a>
+
+      <a
+        href="register.html"
+        class="button button-red"
+      >
+        Регистрация
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     SPORTS PAGE
+     ===================================================== -->
+
+<main class="sports-page">
+
+
+  <div class="sports-page-inner">
+
+
+    <!-- PAGE HEADER -->
+
+    <section class="sports-page-header">
+
+      <div class="section-label">
+        SPORTROOM
+      </div>
+
+      <h1>
+        Все виды спорта
+      </h1>
+
+      <p>
+        Найди свой любимый спорт
+        среди множества спортивных
+        дисциплин.
+      </p>
+
+    </section>
+
+
+
+    <!-- SEARCH / FILTER -->
+
+    <section class="sports-tools">
+
+      <div class="sports-search-wrapper">
+
+        <span class="sports-search-icon">
+          🔎
+        </span>
+
+        <input
+          id="sportsSearch"
+          class="sports-search"
+          type="search"
+          placeholder="Поиск вида спорта..."
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <select
+        id="sportsFilter"
+        class="sports-filter"
+      >
+
+        <option value="all">
+          Все категории
+        </option>
+
+        <option value="team">
+          Командные
+        </option>
+
+        <option value="racket">
+          Ракеточные
+        </option>
+
+        <option value="combat">
+          Единоборства
+        </option>
+
+        <option value="winter">
+          Зимние
+        </option>
+
+        <option value="water">
+          Водные
+        </option>
+
+        <option value="motor">
+          Авто и мотоспорт
+        </option>
+
+        <option value="athletics">
+          Атлетика
+        </option>
+
+        <option value="other">
+          Другие
+        </option>
+
+      </select>
+
+    </section>
+
+
+
+    <!-- CATEGORY BUTTONS -->
+
+    <div class="category-buttons">
+
+      <button
+        type="button"
+        class="category-button active"
+        data-category="all"
+      >
+        Все
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="team"
+      >
+        Командные
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="racket"
+      >
+        Ракеточные
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="combat"
+      >
+        Единоборства
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="winter"
+      >
+        Зимние
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="water"
+      >
+        Водные
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="motor"
+      >
+        Авто и мото
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="athletics"
+      >
+        Атлетика
+      </button>
+
+      <button
+        type="button"
+        class="category-button"
+        data-category="other"
+      >
+        Другие
+      </button>
+
+    </div>
+
+
+
+    <!-- RESULT -->
+
+    <div
+      id="sportsResult"
+      class="sports-result"
+    ></div>
+
+
+
+    <!-- SPORTS GRID -->
+
+    <div
+      id="sportsGrid"
+      class="sports-grid"
+    ></div>
+
+
+  </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="footer">
+
+  <div class="footer-inner">
+
+    <div class="logo">
+      Sport<span>Room</span>
+    </div>
+
+    <p>
+      © 2026 SportRoom. Спорт в одном месте.
+    </p>
+
+  </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     MOBILE NAVIGATION
+     ===================================================== -->
+
+<nav class="mobile-nav">
+
+  <a href="index.html">
+
+    <span>
+      🏠
+    </span>
+
+    Главная
+
+  </a>
+
+
+  <a
+    href="sports.html"
+    class="active"
+  >
+
+    <span>
+      ⚽
+    </span>
+
+    Спорт
+
+  </a>
+
+
+  <a href="profile.html">
+
+    <span>
+      👤
+    </span>
+
+    Профиль
+
+  </a>
+
+
+  <a href="login.html">
+
+    <span>
+      🔐
+    </span>
+
+    Войти
+
+  </a>
+
+</nav>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script>
+
+const sports = [
+
+  ["⚽", "Футбол", "team"],
+  ["🏀", "Баскетбол", "team"],
+  ["🏈", "Американский футбол", "team"],
+  ["⚾", "Бейсбол", "team"],
+  ["🏒", "Хоккей", "team"],
+  ["🏉", "Регби", "team"],
+  ["🏐", "Волейбол", "team"],
+  ["🤾", "Гандбол", "team"],
+  ["🏑", "Хоккей на траве", "team"],
+  ["🥍", "Лакросс", "team"],
+  ["🥅", "Флорбол", "team"],
+
+  ["🎾", "Теннис", "racket"],
+  ["🏸", "Бадминтон", "racket"],
+  ["🏓", "Настольный теннис", "racket"],
+
+  ["🥊", "Бокс", "combat"],
+  ["🥋", "Дзюдо", "combat"],
+  ["🥋", "Каратэ", "combat"],
+  ["🥊", "ММА", "combat"],
+  ["🤼", "Борьба", "combat"],
+  ["🤺", "Фехтование", "combat"],
+  ["🥋", "Тхэквондо", "combat"],
+  ["🥋", "Самбо", "combat"],
+
+  ["⛷️", "Горные лыжи", "winter"],
+  ["🏂", "Сноуборд", "winter"],
+  ["⛸️", "Фигурное катание", "winter"],
+  ["🥌", "Кёрлинг", "winter"],
+  ["🛷", "Бобслей", "winter"],
+  ["🎿", "Лыжные гонки", "winter"],
+  ["🛷", "Скелетон", "winter"],
+
+  ["🏊", "Плавание", "water"],
+  ["🤽", "Водное поло", "water"],
+  ["🤿", "Прыжки в воду", "water"],
+  ["🚣", "Гребля", "water"],
+  ["🛶", "Каноэ", "water"],
+  ["🏄", "Сёрфинг", "water"],
+  ["🏄", "Вейкбординг", "water"],
+  ["🤽", "Синхронное плавание", "water"],
+
+  ["🏎️", "Формула-1", "motor"],
+  ["🏍️", "Мотогонки", "motor"],
+  ["🚗", "Ралли", "motor"],
+  ["🏎️", "Картинг", "motor"],
+  ["🏁", "NASCAR", "motor"],
+
+  ["🏃", "Лёгкая атлетика", "athletics"],
+  ["🤸", "Спортивная гимнастика", "athletics"],
+  ["🏋️", "Тяжёлая атлетика", "athletics"],
+  ["🚴", "Велоспорт", "athletics"],
+  ["🧗", "Скалолазание", "athletics"],
+  ["🏃", "Марафон", "athletics"],
+  ["🚵", "Маунтинбайк", "athletics"],
+
+  ["⛳", "Гольф", "other"],
+  ["🏇", "Конный спорт", "other"],
+  ["🎯", "Дартс", "other"],
+  ["🏹", "Стрельба из лука", "other"],
+  ["🎱", "Бильярд", "other"],
+  ["♟️", "Шахматы", "other"],
+  ["🎮", "Киберспорт", "other"],
+  ["🪂", "Парашютный спорт", "other"],
+  ["🥏", "Фрисби", "other"],
+  ["🎳", "Боулинг", "other"],
+  ["🏹", "Спортивная стрельба", "other"]
+
+];
+
+
+const categoryNames = {
+
+  all: "Все категории",
+
+  team: "Командный спорт",
+
+  racket: "Ракеточный спорт",
+
+  combat: "Единоборства",
+
+  winter: "Зимний спорт",
+
+  water: "Водный спорт",
+
+  motor: "Авто и мотоспорт",
+
+  athletics: "Атлетика",
+
+  other: "Другие дисциплины"
+
+};
+
+
+let currentCategory = "all";
+
+
+const searchInput =
+  document.getElementById(
+    "sportsSearch"
+  );
+
+
+const filter =
+  document.getElementById(
+    "sportsFilter"
+  );
+
+
+const grid =
+  document.getElementById(
+    "sportsGrid"
+  );
+
+
+const result =
+  document.getElementById(
+    "sportsResult"
+  );
+
+
+
+/* =====================================================
+   RENDER SPORTS
+   ===================================================== */
+
+function renderSports() {
+
+  const search =
+    searchInput.value
+      .trim()
+      .toLowerCase();
+
+
+  const selectedCategory =
+    currentCategory !== "all"
+      ? currentCategory
+      : filter.value;
+
+
+  const filtered =
+    sports.filter(
+      sport => {
+
+        const name =
+          sport[1].toLowerCase();
+
+
+        const matchesSearch =
+          name.includes(search);
+
+
+        const matchesCategory =
+          selectedCategory === "all" ||
+          sport[2] === selectedCategory;
+
+
+        return (
+          matchesSearch &&
+          matchesCategory
+        );
+
+      }
+    );
+
+
+  result.textContent =
+    `Найдено видов спорта: ${filtered.length}`;
+
+
+  if (!filtered.length) {
+
+    grid.innerHTML = `
+
+      <div class="empty-sports">
+
+        <div class="empty-sports-icon">
+          🔎
+        </div>
+
+        <h3>
+          Ничего не найдено
+        </h3>
+
+        <p>
+          Попробуй изменить поисковый запрос
+          или выбрать другую категорию.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    filtered
+      .map(
+        sport => `
+
+          <a
+            class="sport-item"
+            href="sport.html?sport=${encodeURIComponent(
+              sport[1]
+            )}"
+          >
+
+            <div class="sport-item-icon">
+              ${sport[0]}
+            </div>
+
+            <h3>
+              ${sport[1]}
+            </h3>
+
+            <p>
+              ${categoryNames[sport[2]]}
+            </p>
+
+          </a>
+
+        `
+      )
+      .join("");
+
+}
+
+
+
+/* =====================================================
+   SEARCH
+   ===================================================== */
+
+searchInput.addEventListener(
+  "input",
+  renderSports
+);
+
+
+
+/* =====================================================
+   SELECT FILTER
+   ===================================================== */
+
+filter.addEventListener(
+  "change",
+  function() {
+
+    currentCategory = "all";
+
+
+    document
+      .querySelectorAll(
+        ".category-button"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.category === "all"
+          );
+
+        }
+      );
+
+
+    renderSports();
+
+  }
+);
+
+
+
+/* =====================================================
+   CATEGORY BUTTONS
+   ===================================================== */
+
+document
+  .querySelectorAll(
+    ".category-button"
+  )
+  .forEach(
+    button => {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          currentCategory =
+            this.dataset.category;
+
+
+          filter.value =
+            "all";
+
+
+          document
+            .querySelectorAll(
+              ".category-button"
+            )
+            .forEach(
+              item => {
+
+                item.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+          this.classList.add(
+            "active"
+          );
+
+
+          renderSports();
+
+        }
+      );
+
+    }
+  );
+
+
+
+/* =====================================================
+   URL SPORT
+   ===================================================== */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const sportFromUrl =
+  params.get("sport");
+
+
+if (sportFromUrl) {
+
+  searchInput.value =
+    sportFromUrl;
+
+}
+
+
+
+/* =====================================================
+   INITIAL RENDER
+   ===================================================== */
+
+renderSports();
+
+</script>
+
+
+</body>
+</html>
