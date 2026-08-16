@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>SportRoom — Карта</title>
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+  <!-- Leaflet -->
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  ></script>
+
+
+  <style>
+
+    /* =========================
+       MAP PAGE
+    ========================= */
+
+    .map-page {
+
+      min-height: 100vh;
+
+      padding: 35px 0 70px;
+
+      background: #f8fafc;
+
+    }
+
+
+    .map-page-inner {
+
+      width:
+        min(
+          1200px,
+          calc(100% - 36px)
+        );
+
+      margin: 0 auto;
+
+    }
+
+
+    /* =========================
+       TITLE
+    ========================= */
+
+    .map-header {
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .map-label {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-bottom: 10px;
+
+      color: #ef4444;
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      letter-spacing: 1.5px;
+
+    }
+
+
+    .map-header h1 {
+
+      margin: 0 0 10px;
+
+      font-size:
+        clamp(
+          36px,
+          6vw,
+          58px
+        );
+
+      letter-spacing: -2px;
+
+    }
+
+
+    .map-header p {
+
+      margin: 0;
+
+      color: #64748b;
+
+      font-size: 16px;
+
+    }
+
+
+    /* =========================
+       MAP CONTAINER
+    ========================= */
+
+    .map-card {
+
+      position: relative;
+
+      overflow: hidden;
+
+      height: 620px;
+
+      border-radius: 25px;
+
+      background: white;
+
+      border:
+        1px solid #e2e8f0;
+
+      box-shadow:
+        0 15px 45px
+        rgba(15,23,42,.08);
+
+    }
+
+
+    #map {
+
+      width: 100%;
+
+      height: 100%;
+
+    }
+
+
+    /* =========================
+       MAP BUTTONS
+    ========================= */
+
+    .map-controls {
+
+      position: absolute;
+
+      z-index: 1000;
+
+      top: 20px;
+
+      right: 20px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 10px;
+
+    }
+
+
+    .map-control-button {
+
+      min-height: 48px;
+
+      padding:
+        0 16px;
+
+      border: none;
+
+      border-radius: 13px;
+
+      background: white;
+
+      color: #111827;
+
+      font-size: 14px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 5px 20px
+        rgba(15,23,42,.15);
+
+      transition: .2s;
+
+    }
+
+
+    .map-control-button:hover {
+
+      transform:
+        translateY(-2px);
+
+      box-shadow:
+        0 8px 25px
+        rgba(15,23,42,.2);
+
+    }
+
+
+    .map-control-button.location {
+
+      background: #ef4444;
+
+      color: white;
+
+    }
+
+
+    /* =========================
+       LOCATION STATUS
+    ========================= */
+
+    .location-status {
+
+      position: absolute;
+
+      z-index: 1000;
+
+      left: 20px;
+
+      bottom: 20px;
+
+      max-width: 340px;
+
+      padding: 14px 17px;
+
+      border-radius: 14px;
+
+      background: white;
+
+      color: #475569;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      box-shadow:
+        0 5px 20px
+        rgba(15,23,42,.15);
+
+    }
+
+
+    .location-status.success {
+
+      color: #15803d;
+
+    }
+
+
+    .location-status.error {
+
+      color: #dc2626;
+
+    }
+
+
+    /* =========================
+       INFO CARDS
+    ========================= */
+
+    .map-info {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 15px;
+
+      margin-top: 20px;
+
+    }
+
+
+    .map-info-card {
+
+      padding: 22px;
+
+      border:
+        1px solid #e2e8f0;
+
+      border-radius: 18px;
+
+      background: white;
+
+    }
+
+
+    .map-info-icon {
+
+      width: 48px;
+
+      height: 48px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin-bottom: 12px;
+
+      border-radius: 14px;
+
+      background: #fff1f2;
+
+      font-size: 24px;
+
+    }
+
+
+    .map-info-card h3 {
+
+      margin: 0 0 6px;
+
+      font-size: 16px;
+
+    }
+
+
+    .map-info-card p {
+
+      margin: 0;
+
+      color: #64748b;
+
+      font-size: 13px;
+
+      line-height: 1.5;
+
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      .map-page {
+
+        padding:
+          30px 0 50px;
+
+      }
+
+
+      .map-page-inner {
+
+        width:
+          calc(100% - 24px);
+
+      }
+
+
+      .map-card {
+
+        height: 520px;
+
+        border-radius: 20px;
+
+      }
+
+
+      .map-controls {
+
+        top: 12px;
+
+        right: 12px;
+
+      }
+
+
+      .map-control-button {
+
+        min-height: 44px;
+
+        padding:
+          0 13px;
+
+        font-size: 12px;
+
+      }
+
+
+      .location-status {
+
+        left: 12px;
+
+        right: 12px;
+
+        bottom: 12px;
+
+        max-width: none;
+
+      }
+
+
+      .map-info {
+
+        grid-template-columns: 1fr;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+  <div class="header-inner">
+
+    <a
+      href="index.html"
+      class="logo"
+    >
+      Sport<span>Room</span>
+    </a>
+
+
+    <nav class="nav">
+
+      <a href="index.html">
+        Главная
+      </a>
+
+      <a href="sports.html">
+        Спорт
+      </a>
+
+      <a
+        href="map.html"
+        class="active"
+      >
+        Карта
+      </a>
+
+      <a href="profile.html">
+        Профиль
+      </a>
+
+    </nav>
+
+
+    <div class="header-buttons">
+
+      <a
+        href="login.html"
+        class="button button-dark"
+      >
+        Войти
+      </a>
+
+      <a
+        href="register.html"
+        class="button button-red"
+      >
+        Регистрация
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+<!-- =========================
+     CONTENT
+========================= -->
+
+<main class="map-page">
+
+  <div class="map-page-inner">
+
+
+    <div class="map-header">
+
+      <div class="map-label">
+        📍 SPORTROOM
+      </div>
+
+      <h1>
+        Спорт рядом с тобой
+      </h1>
+
+      <p>
+        Используй геопозицию, чтобы
+        определить своё местоположение.
+      </p>
+
+    </div>
+
+
+    <!-- MAP -->
+
+    <div class="map-card">
+
+      <div id="map"></div>
+
+
+      <div class="map-controls">
+
+        <button
+          id="locationButton"
+          class="map-control-button location"
+          type="button"
+        >
+          📍 Моя геопозиция
+        </button>
+
+        <button
+          id="zoomButton"
+          class="map-control-button"
+          type="button"
+        >
+          ⊕ Центр карты
+        </button>
+
+      </div>
+
+
+      <div
+        id="locationStatus"
+        class="location-status"
+      >
+        📍 Нажми «Моя геопозиция»,
+        чтобы определить местоположение.
+      </div>
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <div class="map-info">
+
+      <div class="map-info-card">
+
+        <div class="map-info-icon">
+          📍
+        </div>
+
+        <h3>
+          Геопозиция
+        </h3>
+
+        <p>
+          Определи своё текущее
+          местоположение на карте.
+        </p>
+
+      </div>
+
+
+      <div class="map-info-card">
+
+        <div class="map-info-icon">
+          🏟️
+        </div>
+
+        <h3>
+          Спортивные места
+        </h3>
+
+        <p>
+          В будущем здесь появятся
+          спортивные объекты рядом с тобой.
+        </p>
+
+      </div>
+
+
+      <div class="map-info-card">
+
+        <div class="map-info-icon">
+          🧭
+        </div>
+
+        <h3>
+          Навигация
+        </h3>
+
+        <p>
+          Можно будет находить спортивные
+          площадки и прокладывать маршрут.
+        </p>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+  <div class="footer-inner">
+
+    <div class="logo">
+      Sport<span>Room</span>
+    </div>
+
+    <p>
+      © 2026 SportRoom.
+      Спорт в одном месте.
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+  /* =========================
+     INITIAL MAP
+  ========================= */
+
+  const defaultLocation = [
+    -36.8509,
+    174.7645
+  ];
+
+
+  const map = L.map(
+    "map"
+  ).setView(
+    defaultLocation,
+    12
+  );
+
+
+  /* =========================
+     OPEN STREET MAP
+  ========================= */
+
+  L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {
+      maxZoom: 19,
+
+      attribution:
+        '&copy; OpenStreetMap contributors'
+    }
+  ).addTo(map);
+
+
+  /* =========================
+     VARIABLES
+  ========================= */
+
+  let userMarker = null;
+
+  let userCircle = null;
+
+
+  const locationButton =
+    document.getElementById(
+      "locationButton"
+    );
+
+
+  const zoomButton =
+    document.getElementById(
+      "zoomButton"
+    );
+
+
+  const status =
+    document.getElementById(
+      "locationStatus"
+    );
+
+
+  /* =========================
+     LOCATION
+  ========================= */
+
+  function locateUser() {
+
+    if (
+      !navigator.geolocation
+    ) {
+
+      status.textContent =
+        "❌ Геолокация не поддерживается этим браузером.";
+
+      status.classList.add(
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    status.textContent =
+      "📍 Определяем твоё местоположение...";
+
+
+    status.classList.remove(
+      "success",
+      "error"
+    );
+
+
+    navigator.geolocation.getCurrentPosition(
+
+      function(position) {
+
+        const latitude =
+          position.coords.latitude;
+
+        const longitude =
+          position.coords.longitude;
+
+        const accuracy =
+          position.coords.accuracy;
+
+
+        /* CENTER MAP */
+
+        map.setView(
+          [
+            latitude,
+            longitude
+          ],
+          15
+        );
+
+
+        /* REMOVE OLD MARKER */
+
+        if (userMarker) {
+
+          map.removeLayer(
+            userMarker
+          );
+
+        }
+
+
+        if (userCircle) {
+
+          map.removeLayer(
+            userCircle
+          );
+
+        }
+
+
+        /* USER MARKER */
+
+        userMarker =
+          L.marker(
+            [
+              latitude,
+              longitude
+            ]
+          )
+          .addTo(map)
+          .bindPopup(
+            "<b>📍 Ты здесь</b><br>" +
+            "SportRoom определил твою геопозицию."
+          )
+          .openPopup();
+
+
+        /* ACCURACY CIRCLE */
+
+        userCircle =
+          L.circle(
+            [
+              latitude,
+              longitude
+            ],
+            {
+              radius: accuracy,
+
+              color: "#ef4444",
+
+              fillColor: "#ef4444",
+
+              fillOpacity: 0.12,
+
+              weight: 2
+            }
+          )
+          .addTo(map);
+
+
+        /* STATUS */
+
+        status.textContent =
+          "✅ Геопозиция определена.";
+
+
+        status.classList.add(
+          "success"
+        );
+
+
+        console.log(
+          "Latitude:",
+          latitude
+        );
+
+        console.log(
+          "Longitude:",
+          longitude
+        );
+
+        console.log(
+          "Accuracy:",
+          accuracy
+        );
+
+      },
+
+
+      function(error) {
+
+        status.classList.remove(
+          "success"
+        );
+
+        status.classList.add(
+          "error"
+        );
+
+
+        if (
+          error.code ===
+          error.PERMISSION_DENIED
+        ) {
+
+          status.textContent =
+            "❌ Доступ к геопозиции запрещён. Разреши доступ в настройках браузера.";
+
+        }
+
+        else if (
+          error.code ===
+          error.POSITION_UNAVAILABLE
+        ) {
+
+          status.textContent =
+            "❌ Не удалось определить местоположение.";
+
+        }
+
+        else if (
+          error.code ===
+          error.TIMEOUT
+        ) {
+
+          status.textContent =
+            "❌ Время ожидания геолокации истекло.";
+
+        }
+
+        else {
+
+          status.textContent =
+            "❌ Произошла ошибка геолокации.";
+
+        }
+
+      },
+
+      {
+        enableHighAccuracy: true,
+
+        timeout: 10000,
+
+        maximumAge: 0
+
+      }
+
+    );
+
+  }
+
+
+  /* =========================
+     BUTTONS
+  ========================= */
+
+  locationButton.addEventListener(
+    "click",
+    locateUser
+  );
+
+
+  zoomButton.addEventListener(
+    "click",
+    function() {
+
+      map.setView(
+        defaultLocation,
+        12
+      );
+
+    }
+  );
+
+
+</script>
+
+
+</body>
+
+</html>
