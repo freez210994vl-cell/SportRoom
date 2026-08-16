@@ -787,3 +787,1324 @@ textarea::placeholder {
   }
 
 }
+/* =========================================================
+   SPORTROOM — HOME PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  position: relative;
+
+  width: min(
+    var(--container),
+    calc(100% - 40px)
+  );
+
+  min-height: 650px;
+
+  margin: 35px auto 0;
+
+  padding: 80px 65px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(360px, .95fr);
+
+  align-items: center;
+
+  gap: 40px;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(239, 68, 68, .24),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 20% 90%,
+      rgba(239, 68, 68, .10),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #080b10,
+      #111827 65%,
+      #171d29
+    );
+
+  box-shadow: var(--shadow-lg);
+
+  color: white;
+}
+
+
+/* subtle grid */
+
+.hero::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  opacity: .045;
+
+  background-image:
+    linear-gradient(
+      rgba(255,255,255,.5) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,.5) 1px,
+      transparent 1px
+    );
+
+  background-size: 45px 45px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
+
+.hero-content {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 620px;
+}
+
+.hero-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 22px;
+
+  padding: 8px 12px;
+
+  border: 1px solid rgba(255,255,255,.1);
+
+  border-radius: 30px;
+
+  background: rgba(255,255,255,.06);
+
+  color: #fca5a5;
+
+  font-size: 11px;
+
+  font-weight: 950;
+
+  letter-spacing: 1.5px;
+}
+
+.hero-badge span {
+  font-size: 16px;
+}
+
+
+.hero h1 {
+  margin: 0;
+
+  max-width: 700px;
+
+  font-size: clamp(
+    48px,
+    6vw,
+    78px
+  );
+
+  line-height: .98;
+
+  letter-spacing: -4px;
+
+  font-weight: 950;
+}
+
+.hero h1 span {
+  display: block;
+
+  color: var(--red);
+}
+
+
+.hero-description {
+  max-width: 560px;
+
+  margin: 28px 0 0;
+
+  color: #aeb8c7;
+
+  font-size: 17px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   HERO BUTTONS
+   ========================================================= */
+
+.hero-buttons {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 32px;
+}
+
+.button-large {
+  min-height: 52px;
+
+  padding: 0 21px;
+
+  border-radius: 13px;
+
+  font-size: 14px;
+}
+
+.button-large span {
+  margin-left: 8px;
+
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   HERO STATS
+   ========================================================= */
+
+.hero-stats {
+  display: flex;
+
+  align-items: center;
+
+  gap: 30px;
+
+  margin-top: 42px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.hero-stat {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.hero-stat strong {
+  font-size: 20px;
+
+  line-height: 1;
+
+  font-weight: 900;
+}
+
+.hero-stat span {
+  color: #8e99aa;
+
+  font-size: 11px;
+
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   HERO VISUAL
+   ========================================================= */
+
+.hero-visual {
+  position: relative;
+
+  min-height: 450px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 2;
+}
+
+
+.hero-glow {
+  position: absolute;
+
+  width: 300px;
+
+  height: 300px;
+
+  border-radius: 50%;
+
+  background: rgba(239,68,68,.18);
+
+  filter: blur(55px);
+}
+
+
+/* =========================================================
+   HERO CIRCLES
+   ========================================================= */
+
+.hero-circle {
+  position: absolute;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,.07);
+}
+
+.hero-circle-one {
+  width: 370px;
+
+  height: 370px;
+}
+
+.hero-circle-two {
+  width: 500px;
+
+  height: 500px;
+
+  border-color: rgba(255,255,255,.035);
+}
+
+
+/* =========================================================
+   HERO MAIN CARD
+   ========================================================= */
+
+.hero-main-card {
+  position: relative;
+
+  z-index: 3;
+
+  width: min(
+    310px,
+    80%
+  );
+
+  min-height: 330px;
+
+  padding: 35px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  border: 1px solid rgba(255,255,255,.13);
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.13),
+      rgba(255,255,255,.035)
+    );
+
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.35);
+
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+
+  transform: rotate(-4deg);
+
+  transition: .35s ease;
+}
+
+.hero-main-card:hover {
+  transform:
+    rotate(0deg)
+    translateY(-6px);
+}
+
+
+.hero-main-icon {
+  width: 145px;
+
+  height: 145px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 35px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(239,68,68,.3),
+      rgba(239,68,68,.06)
+    );
+
+  border: 1px solid rgba(255,255,255,.12);
+
+  font-size: 82px;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.25);
+}
+
+
+.hero-main-text {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+
+  margin-top: 25px;
+}
+
+.hero-main-text span {
+  color: #8e99aa;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+}
+
+.hero-main-text strong {
+  font-size: 28px;
+
+  font-weight: 900;
+}
+
+.hero-main-text small {
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   FLOATING CARDS
+   ========================================================= */
+
+.floating-card {
+  position: absolute;
+
+  z-index: 5;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(255,255,255,.1);
+
+  border-radius: 14px;
+
+  background: rgba(17,24,39,.85);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.3);
+
+  backdrop-filter: blur(12px);
+
+  -webkit-backdrop-filter: blur(12px);
+
+  white-space: nowrap;
+}
+
+.floating-card > span {
+  width: 35px;
+
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: rgba(255,255,255,.08);
+
+  font-size: 18px;
+}
+
+.floating-card div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 1px;
+}
+
+.floating-card strong {
+  color: white;
+
+  font-size: 12px;
+}
+
+.floating-card small {
+  color: #8e99aa;
+
+  font-size: 9px;
+}
+
+.card-one {
+  top: 60px;
+
+  right: 10px;
+
+  animation:
+    sportroomFloat 4s ease-in-out infinite;
+}
+
+.card-two {
+  bottom: 70px;
+
+  left: 0;
+
+  animation:
+    sportroomFloat 4s ease-in-out infinite 1s;
+}
+
+
+@keyframes sportroomFloat {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-9px);
+  }
+
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.section {
+  width: min(
+    var(--container),
+    calc(100% - 40px)
+  );
+
+  margin: 100px auto 0;
+}
+
+.section-title {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 30px;
+}
+
+.section-title h2 {
+  margin-top: 4px;
+
+  font-size: clamp(
+    30px,
+    4vw,
+    42px
+  );
+
+  line-height: 1.05;
+
+  letter-spacing: -1.8px;
+
+  font-weight: 950;
+}
+
+.section-description {
+  max-width: 520px;
+
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  font-size: 14px;
+}
+
+
+.view-all {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  flex-shrink: 0;
+
+  color: var(--text);
+
+  font-size: 13px;
+
+  font-weight: 850;
+
+  transition: var(--transition);
+}
+
+.view-all span {
+  color: var(--red);
+
+  font-size: 17px;
+
+  transition: var(--transition);
+}
+
+.view-all:hover {
+  color: var(--red);
+}
+
+.view-all:hover span {
+  transform: translateX(4px);
+}
+
+
+/* =========================================================
+   SPORTS GRID
+   ========================================================= */
+
+.sport-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 16px;
+}
+
+
+/* =========================================================
+   SPORT CARD
+   ========================================================= */
+
+.sport-card {
+  position: relative;
+
+  min-height: 205px;
+
+  padding: 23px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+
+  border-radius: 20px;
+
+  background: white;
+
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+
+.sport-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 120px;
+
+  height: 120px;
+
+  right: -55px;
+
+  bottom: -55px;
+
+  border-radius: 50%;
+
+  background: var(--red-light);
+
+  transition: .3s ease;
+}
+
+.sport-card:hover {
+  transform: translateY(-6px);
+
+  border-color: #fecaca;
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.08);
+}
+
+.sport-card:hover::before {
+  width: 170px;
+
+  height: 170px;
+}
+
+
+.sport-card-top {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+}
+
+
+.sport-card-icon {
+  width: 58px;
+
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: var(--red-light);
+
+  font-size: 29px;
+
+  transition: .3s ease;
+}
+
+.sport-card:hover .sport-card-icon {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+
+.sport-arrow {
+  width: 30px;
+
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--bg);
+
+  color: var(--muted);
+
+  font-size: 15px;
+
+  transition: var(--transition);
+}
+
+.sport-card:hover .sport-arrow {
+  background: var(--red);
+
+  color: white;
+
+  transform: rotate(8deg);
+}
+
+
+.sport-card-content {
+  position: relative;
+
+  z-index: 2;
+}
+
+.sport-card h3 {
+  margin-bottom: 3px;
+
+  font-size: 20px;
+
+  font-weight: 900;
+
+  letter-spacing: -.4px;
+}
+
+.sport-card p {
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   ABOUT SECTION
+   ========================================================= */
+
+.about-section {
+  width: min(
+    var(--container),
+    calc(100% - 40px)
+  );
+
+  margin: 100px auto 0;
+
+  padding: 65px;
+
+  border-radius: var(--radius-xl);
+
+  background:
+    radial-gradient(
+      circle at 90% 20%,
+      rgba(239,68,68,.16),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #111827,
+      #0b0f14
+    );
+
+  color: white;
+
+  box-shadow: var(--shadow-lg);
+}
+
+.about-content {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 80px;
+
+  align-items: center;
+}
+
+
+.about-text {
+  max-width: 560px;
+}
+
+.about-text h2 {
+  margin: 8px 0 18px;
+
+  font-size: clamp(
+    34px,
+    4vw,
+    48px
+  );
+
+  line-height: 1;
+
+  letter-spacing: -2px;
+
+  font-weight: 950;
+}
+
+.about-text p {
+  margin-bottom: 27px;
+
+  color: #aeb8c7;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   FEATURES
+   ========================================================= */
+
+.about-features {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 13px;
+}
+
+.feature {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 18px;
+
+  border: 1px solid rgba(255,255,255,.08);
+
+  border-radius: 17px;
+
+  background: rgba(255,255,255,.045);
+
+  transition: var(--transition);
+}
+
+.feature:hover {
+  background: rgba(255,255,255,.075);
+
+  transform: translateX(4px);
+}
+
+.feature-icon {
+  flex-shrink: 0;
+
+  width: 48px;
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: rgba(239,68,68,.13);
+
+  font-size: 22px;
+}
+
+.feature h3 {
+  margin-bottom: 2px;
+
+  font-size: 15px;
+
+  font-weight: 850;
+}
+
+.feature p {
+  color: #8994a5;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.cta {
+  width: min(
+    var(--container),
+    calc(100% - 40px)
+  );
+
+  margin: 35px auto 100px;
+
+  padding: 30px 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 30px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f7,
+      #ffffff
+    );
+}
+
+.cta-content {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+}
+
+.cta-icon {
+  width: 52px;
+
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  background: var(--red-light);
+
+  font-size: 25px;
+}
+
+.cta h2 {
+  margin-bottom: 3px;
+
+  font-size: 23px;
+
+  font-weight: 900;
+}
+
+.cta p {
+  color: var(--muted);
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   HOME RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .hero {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+
+    padding: 60px 50px;
+  }
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .hero-visual {
+    min-height: 390px;
+  }
+
+  .sport-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+
+  .about-content {
+    gap: 45px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .hero {
+    width: calc(100% - 20px);
+
+    margin-top: 10px;
+
+    padding: 45px 24px 35px;
+
+    border-radius: 24px;
+  }
+
+  .hero h1 {
+    font-size: clamp(
+      43px,
+      14vw,
+      62px
+    );
+
+    letter-spacing: -3px;
+  }
+
+  .hero-description {
+    margin-top: 20px;
+
+    font-size: 14px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+
+    margin-top: 25px;
+  }
+
+  .hero-buttons .button {
+    width: 100%;
+  }
+
+  .hero-stats {
+    gap: 18px;
+
+    margin-top: 30px;
+  }
+
+  .hero-stat strong {
+    font-size: 17px;
+  }
+
+  .hero-stat span {
+    font-size: 9px;
+  }
+
+  .hero-visual {
+    min-height: 340px;
+
+    margin-top: 5px;
+  }
+
+  .hero-circle-one {
+    width: 260px;
+
+    height: 260px;
+  }
+
+  .hero-circle-two {
+    width: 350px;
+
+    height: 350px;
+  }
+
+  .hero-main-card {
+    width: 245px;
+
+    min-height: 270px;
+
+    padding: 25px;
+
+    border-radius: 25px;
+  }
+
+  .hero-main-icon {
+    width: 105px;
+
+    height: 105px;
+
+    font-size: 58px;
+
+    border-radius: 27px;
+  }
+
+  .hero-main-text {
+    margin-top: 18px;
+  }
+
+  .hero-main-text strong {
+    font-size: 23px;
+  }
+
+  .floating-card {
+    padding: 9px;
+
+    border-radius: 11px;
+  }
+
+  .floating-card > span {
+    width: 29px;
+
+    height: 29px;
+
+    font-size: 15px;
+  }
+
+  .floating-card strong {
+    font-size: 10px;
+  }
+
+  .floating-card small {
+    font-size: 8px;
+  }
+
+  .card-one {
+    top: 25px;
+
+    right: -3px;
+  }
+
+  .card-two {
+    bottom: 25px;
+
+    left: -3px;
+  }
+
+
+  .section {
+    width: calc(100% - 28px);
+
+    margin-top: 65px;
+  }
+
+  .section-title {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+  }
+
+  .section-title h2 {
+    font-size: 30px;
+  }
+
+  .section-description {
+    font-size: 13px;
+  }
+
+  .sport-grid {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+  .sport-card {
+    min-height: 150px;
+
+    padding: 19px;
+
+    border-radius: 17px;
+  }
+
+  .sport-card-icon {
+    width: 50px;
+
+    height: 50px;
+
+    font-size: 25px;
+  }
+
+  .sport-card h3 {
+    font-size: 18px;
+  }
+
+
+  .about-section {
+    width: calc(100% - 20px);
+
+    margin-top: 65px;
+
+    padding: 35px 22px;
+
+    border-radius: 24px;
+  }
+
+  .about-content {
+    grid-template-columns: 1fr;
+
+    gap: 35px;
+  }
+
+  .about-text h2 {
+    font-size: 35px;
+  }
+
+  .about-text p {
+    font-size: 14px;
+  }
+
+
+  .cta {
+    width: calc(100% - 28px);
+
+    margin: 20px auto 65px;
+
+    padding: 22px;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 20px;
+
+    border-radius: 18px;
+  }
+
+  .cta-content {
+    align-items: flex-start;
+  }
+
+  .cta h2 {
+    font-size: 20px;
+  }
+
+  .cta p {
+    font-size: 12px;
+  }
+
+  .cta .button {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 390px) {
+
+  .hero {
+    padding-inline: 18px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  .hero-stats {
+    gap: 13px;
+  }
+
+  .hero-visual {
+    min-height: 310px;
+  }
+
+  .hero-main-card {
+    width: 220px;
+
+    min-height: 250px;
+  }
+
+  .floating-card {
+    transform: scale(.9);
+  }
+
+}
