@@ -1,0 +1,3091 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#ffffff">
+
+  <meta
+    name="description"
+    content="SportRoom — спортивные места рядом с вами"
+  >
+
+  <title>Карта — SportRoom</title>
+
+  <!-- =====================================================
+       YANDEX MAPS API 3.0
+       ===================================================== -->
+
+  <script
+    src="https://api-maps.yandex.ru/v3/?apikey=ВСТАВЬ_ЯНДЕКС_API_KEY&lang=ru_RU"
+  ></script>
+
+
+  <style>
+
+    :root {
+      --red: #ef4444;
+      --red-dark: #dc2626;
+      --red-light: #fff1f2;
+
+      --text: #17191c;
+      --muted: #73777d;
+      --border: #e5e7eb;
+
+      --white: #ffffff;
+      --bg: #f5f6f8;
+
+      --shadow:
+        0 8px 30px rgba(0, 0, 0, .10);
+
+      --shadow-lg:
+        0 18px 55px rgba(0, 0, 0, .18);
+
+      --radius: 18px;
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+
+    body {
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+    }
+
+
+    button,
+    input {
+      font: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    .header {
+      position: fixed;
+
+      top: 0;
+      left: 0;
+      right: 0;
+
+      height: 68px;
+
+      z-index: 1000;
+
+      background:
+        rgba(255, 255, 255, .94);
+
+      border-bottom:
+        1px solid rgba(229, 231, 235, .9);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+    }
+
+
+    .header-inner {
+      width:
+        min(1200px, calc(100% - 30px));
+
+      height: 100%;
+
+      margin: auto;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 20px;
+    }
+
+
+    .logo {
+      color: #111827;
+
+      text-decoration: none;
+
+      font-size: 25px;
+
+      font-weight: 950;
+
+      letter-spacing: -1.2px;
+
+      white-space: nowrap;
+    }
+
+
+    .logo span {
+      color: var(--red);
+    }
+
+
+    .nav {
+      display: flex;
+
+      align-items: center;
+
+      gap: 4px;
+    }
+
+
+    .nav a {
+      color: #555b63;
+
+      text-decoration: none;
+
+      padding: 9px 12px;
+
+      border-radius: 10px;
+
+      font-size: 14px;
+
+      font-weight: 750;
+    }
+
+
+    .nav a:hover,
+    .nav a.active {
+      color: var(--red);
+
+      background: var(--red-light);
+    }
+
+
+    .header-actions {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+
+    .header-button {
+      border:
+        1px solid var(--border);
+
+      background: white;
+
+      color: #333;
+
+      padding: 9px 13px;
+
+      border-radius: 10px;
+
+      font-size: 13px;
+
+      font-weight: 800;
+
+      text-decoration: none;
+    }
+
+
+    .header-button.red {
+      background: var(--red);
+
+      color: white;
+
+      border-color: var(--red);
+    }
+
+
+    /* =====================================================
+       MAP
+       ===================================================== */
+
+    #map {
+      position: fixed;
+
+      top: 68px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background: #e9edf1;
+    }
+
+
+    /* =====================================================
+       SEARCH PANEL
+       ===================================================== */
+
+    .map-top {
+      position: fixed;
+
+      top: 84px;
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 900;
+
+      width:
+        min(720px, calc(100% - 30px));
+    }
+
+
+    .search-box {
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      padding: 7px;
+
+      background: white;
+
+      border:
+        1px solid rgba(0, 0, 0, .08);
+
+      border-radius: 17px;
+
+      box-shadow:
+        var(--shadow-lg);
+    }
+
+
+    .search-icon {
+      width: 42px;
+      height: 42px;
+
+      flex:
+        0 0 42px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      font-size: 19px;
+
+      color: #666;
+    }
+
+
+    #searchInput {
+      flex: 1;
+
+      min-width: 0;
+
+      height: 42px;
+
+      border: 0;
+
+      outline: 0;
+
+      background: transparent;
+
+      color: #111;
+
+      font-size: 15px;
+
+      font-weight: 600;
+    }
+
+
+    #searchInput::placeholder {
+      color: #92979e;
+    }
+
+
+    .search-button {
+      height: 42px;
+
+      padding:
+        0 17px;
+
+      border: 0;
+
+      border-radius: 11px;
+
+      background: var(--red);
+
+      color: white;
+
+      font-size: 13px;
+
+      font-weight: 850;
+    }
+
+
+    .search-button:hover {
+      background:
+        var(--red-dark);
+    }
+
+
+    /* =====================================================
+       CATEGORIES
+       ===================================================== */
+
+    .categories {
+      display: flex;
+
+      gap: 7px;
+
+      overflow-x: auto;
+
+      padding: 9px 2px;
+
+      scrollbar-width: none;
+    }
+
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+
+    .category {
+      flex:
+        0 0 auto;
+
+      border:
+        1px solid rgba(0, 0, 0, .08);
+
+      background:
+        rgba(255, 255, 255, .96);
+
+      color: #4c5158;
+
+      border-radius: 999px;
+
+      padding:
+        9px 13px;
+
+      box-shadow:
+        0 5px 18px rgba(0, 0, 0, .08);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      white-space: nowrap;
+
+      transition:
+        .18s ease;
+    }
+
+
+    .category:hover {
+      transform:
+        translateY(-1px);
+    }
+
+
+    .category.active {
+      background:
+        var(--red);
+
+      border-color:
+        var(--red);
+
+      color:
+        white;
+    }
+
+
+    /* =====================================================
+       CONTROLS
+       ===================================================== */
+
+    .map-controls {
+      position: fixed;
+
+      right: 18px;
+
+      bottom: 28px;
+
+      z-index: 800;
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 9px;
+    }
+
+
+    .map-control {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 0;
+
+      border-radius: 14px;
+
+      background: white;
+
+      box-shadow:
+        var(--shadow);
+
+      font-size: 20px;
+
+      color: #333;
+    }
+
+
+    .map-control:hover {
+      background: #f8f8f8;
+    }
+
+
+    .map-control.location {
+      color: var(--red);
+    }
+
+
+    /* =====================================================
+       RESULT
+       ===================================================== */
+
+    .result-counter {
+      position: fixed;
+
+      left: 18px;
+
+      bottom: 28px;
+
+      z-index: 800;
+
+      background:
+        rgba(255, 255, 255, .96);
+
+      border:
+        1px solid rgba(0, 0, 0, .07);
+
+      border-radius: 13px;
+
+      padding:
+        11px 14px;
+
+      box-shadow:
+        var(--shadow);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      color: #555;
+    }
+
+
+    /* =====================================================
+       PLACE CARD
+       ===================================================== */
+
+    .place-card {
+      position: fixed;
+
+      left: 50%;
+
+      bottom: 25px;
+
+      transform:
+        translate(-50%, 25px);
+
+      z-index: 950;
+
+      width:
+        min(470px, calc(100% - 30px));
+
+      background: white;
+
+      border-radius: 22px;
+
+      box-shadow:
+        var(--shadow-lg);
+
+      border:
+        1px solid rgba(0, 0, 0, .08);
+
+      padding: 18px;
+
+      opacity: 0;
+
+      visibility: hidden;
+
+      transition:
+        opacity .22s ease,
+        transform .22s ease,
+        visibility .22s ease;
+    }
+
+
+    .place-card.show {
+      opacity: 1;
+
+      visibility: visible;
+
+      transform:
+        translate(-50%, 0);
+    }
+
+
+    .place-close {
+      position: absolute;
+
+      top: 11px;
+      right: 11px;
+
+      width: 32px;
+      height: 32px;
+
+      border: 0;
+
+      border-radius: 50%;
+
+      background: #f2f3f5;
+
+      color: #555;
+
+      font-size: 19px;
+    }
+
+
+    .place-main {
+      display: flex;
+
+      gap: 13px;
+
+      padding-right: 35px;
+    }
+
+
+    .place-icon {
+      width: 53px;
+      height: 53px;
+
+      flex:
+        0 0 53px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 15px;
+
+      background:
+        var(--red-light);
+
+      font-size: 27px;
+    }
+
+
+    .place-info {
+      min-width: 0;
+    }
+
+
+    .place-name {
+      margin-bottom: 4px;
+
+      font-size: 17px;
+
+      font-weight: 900;
+
+      line-height: 1.2;
+    }
+
+
+    .place-address {
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.4;
+    }
+
+
+    .place-rating {
+      margin-top: 7px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 6px;
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .stars {
+      color: #f59e0b;
+
+      letter-spacing: 1px;
+    }
+
+
+    .place-actions {
+      display: flex;
+
+      gap: 8px;
+
+      margin-top: 15px;
+    }
+
+
+    .place-action {
+      flex: 1;
+
+      min-height: 42px;
+
+      border-radius: 11px;
+
+      border:
+        1px solid var(--border);
+
+      background: white;
+
+      color: #333;
+
+      font-size: 12px;
+
+      font-weight: 850;
+    }
+
+
+    .place-action.primary {
+      background: var(--red);
+
+      color: white;
+
+      border-color:
+        var(--red);
+    }
+
+
+    .place-action.favorite.active {
+      background:
+        var(--red-light);
+
+      color:
+        var(--red);
+
+      border-color:
+        #fecaca;
+    }
+
+
+    /* =====================================================
+       LOADING
+       ===================================================== */
+
+    .loading {
+      position: fixed;
+
+      top: 155px;
+
+      left: 50%;
+
+      transform:
+        translateX(-50%);
+
+      z-index: 850;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      background:
+        rgba(255, 255, 255, .96);
+
+      padding:
+        10px 14px;
+
+      border-radius: 12px;
+
+      box-shadow:
+        var(--shadow);
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      color: #555;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity .2s ease;
+    }
+
+
+    .loading.show {
+      opacity: 1;
+    }
+
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+
+      border:
+        2px solid #ddd;
+
+      border-top-color:
+        var(--red);
+
+      border-radius: 50%;
+
+      animation:
+        spin .7s linear infinite;
+    }
+
+
+    @keyframes spin {
+      to {
+        transform:
+          rotate(360deg);
+      }
+    }
+
+
+    /* =====================================================
+       ERROR
+       ===================================================== */
+
+    .error-box {
+      position: fixed;
+
+      left: 50%;
+      top: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      z-index: 2000;
+
+      width:
+        min(450px, calc(100% - 30px));
+
+      background: white;
+
+      border-radius: 20px;
+
+      box-shadow:
+        var(--shadow-lg);
+
+      padding: 25px;
+
+      display: none;
+
+      text-align: center;
+    }
+
+
+    .error-box.show {
+      display: block;
+    }
+
+
+    .error-icon {
+      font-size: 42px;
+
+      margin-bottom: 12px;
+    }
+
+
+    .error-box h2 {
+      margin-bottom: 8px;
+
+      font-size: 21px;
+    }
+
+
+    .error-box p {
+      color: var(--muted);
+
+      font-size: 13px;
+
+      line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       MOBILE NAV
+       ===================================================== */
+
+    .mobile-nav {
+      display: none;
+    }
+
+
+    @media (max-width: 700px) {
+
+      .header {
+        height: 58px;
+      }
+
+
+      .header-inner {
+        width:
+          calc(100% - 20px);
+      }
+
+
+      .logo {
+        font-size: 22px;
+      }
+
+
+      .nav {
+        display: none;
+      }
+
+
+      .header-actions
+      .header-button {
+        padding:
+          8px 10px;
+
+        font-size: 11px;
+      }
+
+
+      .header-actions
+      .header-button:first-child {
+        display: none;
+      }
+
+
+      #map {
+        top: 58px;
+
+        bottom: 66px;
+      }
+
+
+      .map-top {
+        top: 70px;
+
+        width:
+          calc(100% - 16px);
+      }
+
+
+      .search-box {
+        padding: 5px;
+
+        border-radius: 15px;
+      }
+
+
+      .search-icon {
+        width: 38px;
+        height: 38px;
+
+        flex-basis: 38px;
+      }
+
+
+      #searchInput {
+        height: 38px;
+
+        font-size: 14px;
+      }
+
+
+      .search-button {
+        height: 38px;
+
+        padding:
+          0 13px;
+      }
+
+
+      .categories {
+        padding-top: 7px;
+      }
+
+
+      .category {
+        padding:
+          8px 11px;
+
+        font-size: 11px;
+      }
+
+
+      .map-controls {
+        right: 12px;
+
+        bottom: 80px;
+      }
+
+
+      .map-control {
+        width: 45px;
+        height: 45px;
+      }
+
+
+      .result-counter {
+        left: 12px;
+
+        bottom: 80px;
+      }
+
+
+      .place-card {
+        bottom: 76px;
+
+        width:
+          calc(100% - 18px);
+
+        border-radius: 20px;
+
+        padding: 15px;
+      }
+
+
+      .place-actions {
+        gap: 7px;
+      }
+
+
+      .place-action {
+        min-height: 40px;
+
+        font-size: 11px;
+      }
+
+
+      .loading {
+        top: 148px;
+      }
+
+
+      .mobile-nav {
+        position: fixed;
+
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        height: 66px;
+
+        z-index: 1200;
+
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        background:
+          rgba(255, 255, 255, .97);
+
+        border-top:
+          1px solid var(--border);
+
+        backdrop-filter:
+          blur(15px);
+
+        -webkit-backdrop-filter:
+          blur(15px);
+
+        padding-bottom:
+          env(safe-area-inset-bottom);
+      }
+
+
+      .mobile-nav a {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 3px;
+
+        color: #70757c;
+
+        text-decoration: none;
+
+        font-size: 10px;
+
+        font-weight: 800;
+      }
+
+
+      .mobile-nav a span {
+        font-size: 20px;
+      }
+
+
+      .mobile-nav a.active {
+        color: var(--red);
+      }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+      .header-actions
+      .header-button.red {
+        display: none;
+      }
+
+
+      .search-button {
+        font-size: 0;
+
+        width: 42px;
+
+        padding: 0;
+      }
+
+
+      .search-button::before {
+        content: "⌕";
+
+        font-size: 20px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+        Sport<span>Room</span>
+      </a>
+
+
+      <nav class="nav">
+
+        <a href="index.html">
+          Главная
+        </a>
+
+        <a href="sports.html">
+          Виды спорта
+        </a>
+
+        <a
+          href="map.html"
+          class="active"
+        >
+          Карта
+        </a>
+
+        <a href="profile.html">
+          Профиль
+        </a>
+
+      </nav>
+
+
+      <div class="header-actions">
+
+        <a
+          href="login.html"
+          class="header-button"
+        >
+          Войти
+        </a>
+
+        <a
+          href="register.html"
+          class="header-button red"
+        >
+          Регистрация
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =====================================================
+       MAP
+       ===================================================== -->
+
+  <div id="map"></div>
+
+
+  <!-- =====================================================
+       SEARCH
+       ===================================================== -->
+
+  <div class="map-top">
+
+    <div class="search-box">
+
+      <div class="search-icon">
+        🔎
+      </div>
+
+
+      <input
+        id="searchInput"
+        type="search"
+        autocomplete="off"
+        placeholder="Найти спортзал, бассейн, стадион..."
+        enterkeyhint="search"
+      >
+
+
+      <button
+        class="search-button"
+        id="searchButton"
+        type="button"
+      >
+        Найти
+      </button>
+
+    </div>
+
+
+    <div class="categories">
+
+      <button
+        class="category active"
+        data-query="sports facilities"
+        data-icon="🏆"
+      >
+        🏆 Все
+      </button>
+
+
+      <button
+        class="category"
+        data-query="gym"
+        data-icon="🏋️"
+      >
+        🏋️ Спортзалы
+      </button>
+
+
+      <button
+        class="category"
+        data-query="stadium"
+        data-icon="🏟️"
+      >
+        🏟️ Стадионы
+      </button>
+
+
+      <button
+        class="category"
+        data-query="soccer football field"
+        data-icon="⚽"
+      >
+        ⚽ Футбол
+      </button>
+
+
+      <button
+        class="category"
+        data-query="basketball court"
+        data-icon="🏀"
+      >
+        🏀 Баскетбол
+      </button>
+
+
+      <button
+        class="category"
+        data-query="tennis court"
+        data-icon="🎾"
+      >
+        🎾 Теннис
+      </button>
+
+
+      <button
+        class="category"
+        data-query="swimming pool"
+        data-icon="🏊"
+      >
+        🏊 Бассейны
+      </button>
+
+
+      <button
+        class="category"
+        data-query="boxing martial arts"
+        data-icon="🥊"
+      >
+        🥊 Единоборства
+      </button>
+
+
+      <button
+        class="category"
+        data-query="golf"
+        data-icon="⛳"
+      >
+        ⛳ Гольф
+      </button>
+
+
+      <button
+        class="category"
+        data-query="cycling"
+        data-icon="🚴"
+      >
+        🚴 Велоспорт
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       LOADING
+       ===================================================== -->
+
+  <div
+    class="loading"
+    id="loading"
+  >
+
+    <div class="spinner"></div>
+
+    Ищем спортивные места...
+
+  </div>
+
+
+  <!-- =====================================================
+       RESULT COUNTER
+       ===================================================== -->
+
+  <div
+    class="result-counter"
+    id="resultCounter"
+  >
+    Спортивные места
+  </div>
+
+
+  <!-- =====================================================
+       CONTROLS
+       ===================================================== -->
+
+  <div class="map-controls">
+
+    <button
+      class="map-control location"
+      id="locationButton"
+      type="button"
+      title="Моё местоположение"
+      aria-label="Моё местоположение"
+    >
+      ◎
+    </button>
+
+
+    <button
+      class="map-control"
+      id="zoomIn"
+      type="button"
+      title="Увеличить"
+    >
+      +
+    </button>
+
+
+    <button
+      class="map-control"
+      id="zoomOut"
+      type="button"
+      title="Уменьшить"
+    >
+      −
+    </button>
+
+  </div>
+
+
+  <!-- =====================================================
+       PLACE CARD
+       ===================================================== -->
+
+  <section
+    class="place-card"
+    id="placeCard"
+  >
+
+    <button
+      class="place-close"
+      id="placeClose"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <div class="place-main">
+
+      <div
+        class="place-icon"
+        id="placeIcon"
+      >
+        🏆
+      </div>
+
+
+      <div class="place-info">
+
+        <div
+          class="place-name"
+          id="placeName"
+        >
+          Спортивное место
+        </div>
+
+
+        <div
+          class="place-address"
+          id="placeAddress"
+        >
+          Адрес
+        </div>
+
+
+        <div
+          class="place-rating"
+          id="placeRating"
+        ></div>
+
+      </div>
+
+    </div>
+
+
+    <div class="place-actions">
+
+      <button
+        class="place-action favorite"
+        id="favoriteButton"
+        type="button"
+      >
+        ♡ В избранное
+      </button>
+
+
+      <button
+        class="place-action primary"
+        id="routeButton"
+        type="button"
+      >
+        🧭 Маршрут
+      </button>
+
+
+      <button
+        class="place-action"
+        id="detailsButton"
+        type="button"
+      >
+        Подробнее
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       ERROR
+       ===================================================== -->
+
+  <div
+    class="error-box"
+    id="errorBox"
+  >
+
+    <div class="error-icon">
+      🗺️
+    </div>
+
+
+    <h2 id="errorTitle">
+      Не удалось загрузить карту
+    </h2>
+
+
+    <p id="errorText">
+      Проверь API Key и настройки Yandex Maps API.
+    </p>
+
+  </div>
+
+
+  <!-- =====================================================
+       MOBILE NAV
+       ===================================================== -->
+
+  <nav class="mobile-nav">
+
+    <a href="index.html">
+      <span>🏠</span>
+      Главная
+    </a>
+
+
+    <a href="sports.html">
+      <span>⚽</span>
+      Спорт
+    </a>
+
+
+    <a
+      href="map.html"
+      class="active"
+    >
+      <span>🗺️</span>
+      Карта
+    </a>
+
+
+    <a href="profile.html">
+      <span>👤</span>
+      Профиль
+    </a>
+
+  </nav>
+
+
+  <!-- =====================================================
+       SPORTROOM APPLICATION
+       ===================================================== -->
+
+  <script>
+
+    /* =====================================================
+       CONFIG
+       ===================================================== */
+
+    /*
+     * Если у тебя отдельный Search API key,
+     * вставь его сюда.
+     *
+     * Если Яндекс выдал один ключ для нужных
+     * сервисов — можешь оставить тот же ключ.
+     */
+
+    const YANDEX_SEARCH_API_KEY =
+      "ВСТАВЬ_ЯНДЕКС_SEARCH_API_KEY";
+
+
+    /*
+     * Auckland, New Zealand.
+     *
+     * Формат Яндекс:
+     *
+     * [longitude, latitude]
+     */
+
+    const DEFAULT_CENTER = [
+      174.7645,
+      -36.8509
+    ];
+
+
+    const DEFAULT_ZOOM = 12;
+
+
+    let map = null;
+
+    let markers = [];
+
+    let selectedPlace = null;
+
+    let userLocation = null;
+
+    let currentQuery =
+      "sports facilities";
+
+    let currentIcon =
+      "🏆";
+
+
+    /* =====================================================
+       DOM
+       ===================================================== */
+
+    const loading =
+      document.getElementById(
+        "loading"
+      );
+
+
+    const resultCounter =
+      document.getElementById(
+        "resultCounter"
+      );
+
+
+    const placeCard =
+      document.getElementById(
+        "placeCard"
+      );
+
+
+    const searchInput =
+      document.getElementById(
+        "searchInput"
+      );
+
+
+    const searchButton =
+      document.getElementById(
+        "searchButton"
+      );
+
+
+    /* =====================================================
+       UI HELPERS
+       ===================================================== */
+
+    function showLoading(
+      state
+    ) {
+
+      loading.classList.toggle(
+        "show",
+        state
+      );
+
+    }
+
+
+    function showError(
+      title,
+      text
+    ) {
+
+      document.getElementById(
+        "errorTitle"
+      ).textContent =
+        title;
+
+
+      document.getElementById(
+        "errorText"
+      ).textContent =
+        text;
+
+
+      document
+        .getElementById("errorBox")
+        .classList.add("show");
+
+    }
+
+
+    function hideError() {
+
+      document
+        .getElementById("errorBox")
+        .classList.remove("show");
+
+    }
+
+
+    function escapeHtml(
+      value
+    ) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+
+        return "";
+
+      }
+
+
+      return String(value)
+
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+
+        .replace(
+          /</g,
+          "&lt;"
+        )
+
+        .replace(
+          />/g,
+          "&gt;"
+        )
+
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    /* =====================================================
+       CREATE MARKER
+       ===================================================== */
+
+    function createMarker(
+      place
+    ) {
+
+      const {
+        YMapMarker
+      } = ymaps3;
+
+
+      const element =
+        document.createElement(
+          "button"
+        );
+
+
+      element.type =
+        "button";
+
+
+      element.className =
+        "sportroom-marker";
+
+
+      element.innerHTML =
+        currentIcon;
+
+
+      element.title =
+        place.name ||
+        "Спортивное место";
+
+
+      element.style.cssText = `
+
+        width:42px;
+        height:42px;
+
+        border-radius:50%;
+
+        border:3px solid white;
+
+        background:#ef4444;
+
+        color:white;
+
+        display:flex;
+
+        align-items:center;
+
+        justify-content:center;
+
+        font-size:21px;
+
+        box-shadow:
+          0 5px 15px rgba(0,0,0,.25);
+
+        cursor:pointer;
+
+        transform:
+          translate(-50%,-50%);
+
+        padding:0;
+
+      `;
+
+
+      element.addEventListener(
+        "click",
+        function(event) {
+
+          event.stopPropagation();
+
+          openPlace(
+            place
+          );
+
+        }
+      );
+
+
+      const marker =
+        new YMapMarker(
+          {
+            coordinates:
+              place.coordinates
+          },
+          element
+        );
+
+
+      map.addChild(
+        marker
+      );
+
+
+      markers.push(
+        marker
+      );
+
+    }
+
+
+    /* =====================================================
+       CLEAR MARKERS
+       ===================================================== */
+
+    function clearMarkers() {
+
+      for (
+        const marker of markers
+      ) {
+
+        try {
+
+          map.removeChild(
+            marker
+          );
+
+        } catch (error) {
+
+          console.warn(
+            error
+          );
+
+        }
+
+      }
+
+
+      markers = [];
+
+    }
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    async function searchSportsPlaces() {
+
+      if (!map) {
+        return;
+      }
+
+
+      showLoading(
+        true
+      );
+
+
+      hideError();
+
+
+      try {
+
+        /*
+         * Search API key.
+         */
+
+        const searchKey =
+          YANDEX_SEARCH_API_KEY;
+
+
+        if (
+          !searchKey ||
+          searchKey.includes(
+            "ВСТАВЬ"
+          )
+        ) {
+
+          throw new Error(
+            "SEARCH_KEY_MISSING"
+          );
+
+        }
+
+
+        /*
+         * Configure Search API.
+         */
+
+        ymaps3
+          .getDefaultConfig()
+          .setApikeys({
+
+            search:
+              searchKey
+
+          });
+
+
+        const camera =
+          map
+            .bounds
+            ?
+            null
+            :
+            null;
+
+
+        /*
+         * Получаем центр карты.
+         */
+
+        const location =
+          map.mapInAction
+            ? DEFAULT_CENTER
+            : DEFAULT_CENTER;
+
+
+        /*
+         * В JS API v3 поиск
+         * работает через ymaps3.search.
+         */
+
+        const response =
+          await ymaps3.search({
+
+            text:
+              currentQuery,
+
+            center:
+              map.center,
+
+            span:
+              [0.15, 0.10],
+
+            limit:
+              30,
+
+            strictBounds:
+              false
+
+          });
+
+
+        clearMarkers();
+
+
+        /*
+         * SearchResponse содержит
+         * результаты поиска.
+         */
+
+        const results =
+          extractSearchResults(
+            response
+          );
+
+
+        for (
+          const place
+          of results
+        ) {
+
+          if (
+            place.coordinates
+          ) {
+
+            createMarker(
+              place
+            );
+
+          }
+
+        }
+
+
+        resultCounter.textContent =
+          results.length
+            ? `${results.length} мест`
+            : "Ничего не найдено";
+
+
+      } catch (error) {
+
+        console.error(
+          "Yandex search error:",
+          error
+        );
+
+
+        clearMarkers();
+
+
+        if (
+          error.message ===
+          "SEARCH_KEY_MISSING"
+        ) {
+
+          showError(
+            "Нужен Search API Key",
+            "Для поиска организаций в Яндекс Maps JS API v3 нужен ключ Search API. Добавь его в YANDEX_SEARCH_API_KEY."
+          );
+
+        } else {
+
+          showError(
+            "Ошибка поиска",
+            "Проверь ключ Яндекс Search API и ограничения ключа."
+          );
+
+        }
+
+
+        resultCounter.textContent =
+          "Ошибка поиска";
+
+      } finally {
+
+        showLoading(
+          false
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       EXTRACT SEARCH RESULTS
+       ===================================================== */
+
+    function extractSearchResults(
+      response
+    ) {
+
+      if (
+        !response
+      ) {
+
+        return [];
+
+      }
+
+
+      /*
+       * Разные версии ответа могут
+       * использовать разные контейнеры.
+       */
+
+      let source = [];
+
+
+      if (
+        Array.isArray(
+          response
+        )
+      ) {
+
+        source =
+          response;
+
+      } else if (
+        Array.isArray(
+          response.results
+        )
+      ) {
+
+        source =
+          response.results;
+
+      } else if (
+        Array.isArray(
+          response.features
+        )
+      ) {
+
+        source =
+          response.features;
+
+      } else if (
+        Array.isArray(
+          response.items
+        )
+      ) {
+
+        source =
+          response.items;
+
+      }
+
+
+      return source
+        .map(
+          item => {
+
+            const coordinates =
+              item
+                ?.geometry
+                ?.coordinates ||
+              item
+                ?.properties
+                ?.geometry
+                ?.coordinates ||
+              item
+                ?.geometry
+                ?.coordinates;
+
+
+            if (
+              !coordinates ||
+              coordinates.length < 2
+            ) {
+
+              return null;
+
+            }
+
+
+            const properties =
+              item.properties ||
+              {};
+
+
+            return {
+
+              id:
+                item.id ||
+                item.uri ||
+                `${coordinates[0]}_${coordinates[1]}`,
+
+              name:
+                properties.name ||
+                item.name ||
+                "Спортивное место",
+
+              description:
+                properties.description ||
+                "",
+
+              coordinates:
+                coordinates,
+
+              raw:
+                item
+
+            };
+
+          }
+        )
+        .filter(
+          Boolean
+        );
+
+    }
+
+
+    /* =====================================================
+       SEARCH BY TEXT
+       ===================================================== */
+
+    async function searchByText() {
+
+      const query =
+        searchInput.value.trim();
+
+
+      if (!query) {
+
+        await searchSportsPlaces();
+
+        return;
+
+      }
+
+
+      currentQuery =
+        query;
+
+
+      await searchSportsPlaces();
+
+    }
+
+
+    /* =====================================================
+       PLACE CARD
+       ===================================================== */
+
+    function openPlace(
+      place
+    ) {
+
+      selectedPlace =
+        place;
+
+
+      document.getElementById(
+        "placeName"
+      ).textContent =
+        place.name ||
+        "Спортивное место";
+
+
+      document.getElementById(
+        "placeAddress"
+      ).textContent =
+        place.description ||
+        "Адрес доступен в Яндекс Картах";
+
+
+      document.getElementById(
+        "placeIcon"
+      ).textContent =
+        currentIcon;
+
+
+      document.getElementById(
+        "placeRating"
+      ).innerHTML =
+        `
+          <span class="stars">
+            ★★★★★
+          </span>
+
+          <span>
+            Яндекс Карты
+          </span>
+        `;
+
+
+      updateFavoriteButton();
+
+
+      placeCard.classList.add(
+        "show"
+      );
+
+    }
+
+
+    /* =====================================================
+       FAVORITES
+       ===================================================== */
+
+    function getFavorites() {
+
+      try {
+
+        return JSON.parse(
+          localStorage.getItem(
+            "sportroom_favorites"
+          ) || "[]"
+        );
+
+      } catch {
+
+        return [];
+
+      }
+
+    }
+
+
+    function saveFavorites(
+      favorites
+    ) {
+
+      localStorage.setItem(
+        "sportroom_favorites",
+        JSON.stringify(
+          favorites
+        )
+      );
+
+    }
+
+
+    function isFavorite() {
+
+      if (
+        !selectedPlace
+      ) {
+
+        return false;
+
+      }
+
+
+      const favorites =
+        getFavorites();
+
+
+      return favorites.some(
+        item =>
+          item.id ===
+          selectedPlace.id
+      );
+
+    }
+
+
+    function updateFavoriteButton() {
+
+      const button =
+        document.getElementById(
+          "favoriteButton"
+        );
+
+
+      if (
+        isFavorite()
+      ) {
+
+        button.classList.add(
+          "active"
+        );
+
+        button.textContent =
+          "♥ В избранном";
+
+      } else {
+
+        button.classList.remove(
+          "active"
+        );
+
+        button.textContent =
+          "♡ В избранное";
+
+      }
+
+    }
+
+
+    function toggleFavorite() {
+
+      if (
+        !selectedPlace
+      ) {
+
+        return;
+
+      }
+
+
+      const favorites =
+        getFavorites();
+
+
+      const index =
+        favorites.findIndex(
+          item =>
+            item.id ===
+            selectedPlace.id
+        );
+
+
+      if (
+        index >= 0
+      ) {
+
+        favorites.splice(
+          index,
+          1
+        );
+
+      } else {
+
+        favorites.push({
+
+          id:
+            selectedPlace.id,
+
+          name:
+            selectedPlace.name,
+
+          address:
+            selectedPlace.description,
+
+          coordinates:
+            selectedPlace.coordinates,
+
+          savedAt:
+            Date.now()
+
+        });
+
+      }
+
+
+      saveFavorites(
+        favorites
+      );
+
+
+      updateFavoriteButton();
+
+    }
+
+
+    /* =====================================================
+       ROUTE
+       ===================================================== */
+
+    function openRoute() {
+
+      if (
+        !selectedPlace ||
+        !selectedPlace.coordinates
+      ) {
+
+        return;
+
+      }
+
+
+      const [
+        lng,
+        lat
+      ] =
+        selectedPlace.coordinates;
+
+
+      /*
+       * Яндекс Карты:
+       * координаты в формате
+       * longitude,latitude
+       */
+
+      const url =
+        `https://yandex.com/maps/?rtext=~${lat},${lng}&rtt=auto`;
+
+
+      window.open(
+        url,
+        "_blank",
+        "noopener"
+      );
+
+    }
+
+
+    /* =====================================================
+       DETAILS
+       ===================================================== */
+
+    function openDetails() {
+
+      if (
+        !selectedPlace
+      ) {
+
+        return;
+
+      }
+
+
+      const [
+        lng,
+        lat
+      ] =
+        selectedPlace.coordinates;
+
+
+      const url =
+        `https://yandex.com/maps/?ll=${lng},${lat}&z=17&pt=${lng},${lat},pm2rdm`;
+
+
+      window.open(
+        url,
+        "_blank",
+        "noopener"
+      );
+
+    }
+
+
+    /* =====================================================
+       GEOLOCATION
+       ===================================================== */
+
+    function locateUser(
+      showMessage = true
+    ) {
+
+      if (
+        !navigator.geolocation
+      ) {
+
+        if (
+          showMessage
+        ) {
+
+          alert(
+            "Геолокация не поддерживается вашим браузером."
+          );
+
+        }
+
+
+        return;
+
+      }
+
+
+      navigator.geolocation.getCurrentPosition(
+
+        position => {
+
+          const lat =
+            position.coords.latitude;
+
+
+          const lng =
+            position.coords.longitude;
+
+
+          userLocation = [
+            lng,
+            lat
+          ];
+
+
+          if (!map) {
+            return;
+          }
+
+
+          /*
+           * Центрируем карту.
+           */
+
+          map.setLocation({
+
+            center:
+              userLocation,
+
+            zoom:
+              14,
+
+            duration:
+              500
+
+          });
+
+
+          /*
+           * Ищем спортивные места
+           * около пользователя.
+           */
+
+          searchSportsPlaces();
+
+        },
+
+
+        error => {
+
+          console.warn(
+            "Geolocation:",
+            error
+          );
+
+
+          if (
+            showMessage
+          ) {
+
+            alert(
+              "Не удалось определить местоположение. Разреши геолокацию в браузере."
+            );
+
+          }
+
+        },
+
+
+        {
+
+          enableHighAccuracy:
+            true,
+
+          timeout:
+            10000,
+
+          maximumAge:
+            120000
+
+        }
+
+      );
+
+    }
+
+
+    /* =====================================================
+       INIT MAP
+       ===================================================== */
+
+    async function initSportRoomMap() {
+
+      try {
+
+        hideError();
+
+
+        await ymaps3.ready;
+
+
+        const {
+          YMap,
+          YMapDefaultSchemeLayer,
+          YMapDefaultFeaturesLayer
+        } =
+          ymaps3;
+
+
+        map =
+          new YMap(
+
+            document.getElementById(
+              "map"
+            ),
+
+            {
+
+              location: {
+
+                center:
+                  DEFAULT_CENTER,
+
+                zoom:
+                  DEFAULT_ZOOM
+
+              },
+
+              behaviors: [
+
+                "drag",
+
+                "dblClick",
+
+                "pinchZoom",
+
+                "mouseRotate",
+
+                "mouseTilt"
+
+              ]
+
+            }
+
+          );
+
+
+        /*
+         * Основной слой карты.
+         */
+
+        map.addChild(
+
+          new YMapDefaultSchemeLayer()
+
+        );
+
+
+        /*
+         * Слой объектов.
+         */
+
+        map.addChild(
+
+          new YMapDefaultFeaturesLayer()
+
+        );
+
+
+        /*
+         * Первичный поиск.
+         */
+
+        await searchSportsPlaces();
+
+
+        /*
+         * Геолокация запускается
+         * автоматически только если
+         * браузер уже разрешил её.
+         */
+
+        if (
+          navigator.permissions
+        ) {
+
+          try {
+
+            const permission =
+              await navigator
+                .permissions
+                .query({
+                  name:
+                    "geolocation"
+                });
+
+
+            if (
+              permission.state ===
+              "granted"
+            ) {
+
+              locateUser(
+                false
+              );
+
+            }
+
+          } catch {
+
+            // Ничего не делаем.
+
+          }
+
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Yandex Maps init error:",
+          error
+        );
+
+
+        showError(
+          "Не удалось загрузить Яндекс Карты",
+          "Проверь API Key, HTTP Referer и настройки Яндекс Maps API."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       URL LOCATION
+       ===================================================== */
+
+    function applyUrlLocation() {
+
+      if (!map) {
+        return;
+      }
+
+
+      const params =
+        new URLSearchParams(
+          window.location.search
+        );
+
+
+      const lat =
+        parseFloat(
+          params.get("lat")
+        );
+
+
+      const lng =
+        parseFloat(
+          params.get("lng")
+        );
+
+
+      const zoom =
+        parseInt(
+          params.get("zoom")
+        );
+
+
+      if (
+        Number.isFinite(lat) &&
+        Number.isFinite(lng)
+      ) {
+
+        map.setLocation({
+
+          center: [
+            lng,
+            lat
+          ],
+
+          zoom:
+            Number.isFinite(zoom)
+              ? Math.min(
+                  Math.max(
+                    zoom,
+                    3
+                  ),
+                  20
+                )
+              : 15
+
+        });
+
+      }
+
+    }
+
+
+    /* =====================================================
+       EVENTS
+       ===================================================== */
+
+    searchButton.addEventListener(
+      "click",
+      searchByText
+    );
+
+
+    searchInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Enter"
+        ) {
+
+          event.preventDefault();
+
+          searchByText();
+
+        }
+
+      }
+    );
+
+
+    /*
+     * Категории.
+     */
+
+    document
+      .querySelectorAll(
+        ".category"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              document
+                .querySelectorAll(
+                  ".category"
+                )
+                .forEach(
+                  item =>
+                    item.classList.remove(
+                      "active"
+                    )
+                );
+
+
+              button.classList.add(
+                "active"
+              );
+
+
+              currentQuery =
+                button.dataset.query;
+
+
+              currentIcon =
+                button.dataset.icon ||
+                "🏆";
+
+
+              searchInput.value =
+                "";
+
+
+              await searchSportsPlaces();
+
+            }
+          );
+
+        }
+      );
+
+
+    /*
+     * Геолокация.
+     */
+
+    document
+      .getElementById(
+        "locationButton"
+      )
+      .addEventListener(
+        "click",
+        () =>
+          locateUser(
+            true
+          )
+      );
+
+
+    /*
+     * Zoom.
+     */
+
+    document
+      .getElementById(
+        "zoomIn"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!map) {
+            return;
+          }
+
+
+          const current =
+            map.zoom;
+
+
+          map.setLocation({
+
+            zoom:
+              Math.min(
+                current + 1,
+                20
+              )
+
+          });
+
+        }
+      );
+
+
+    document
+      .getElementById(
+        "zoomOut"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          if (!map) {
+            return;
+          }
+
+
+          const current =
+            map.zoom;
+
+
+          map.setLocation({
+
+            zoom:
+              Math.max(
+                current - 1,
+                3
+              )
+
+          });
+
+        }
+      );
+
+
+    /*
+     * Закрытие карточки.
+     */
+
+    document
+      .getElementById(
+        "placeClose"
+      )
+      .addEventListener(
+        "click",
+        () => {
+
+          placeCard.classList.remove(
+            "show"
+          );
+
+        }
+      );
+
+
+    /*
+     * Избранное.
+     */
+
+    document
+      .getElementById(
+        "favoriteButton"
+      )
+      .addEventListener(
+        "click",
+        toggleFavorite
+      );
+
+
+    /*
+     * Маршрут.
+     */
+
+    document
+      .getElementById(
+        "routeButton"
+      )
+      .addEventListener(
+        "click",
+        openRoute
+      );
+
+
+    /*
+     * Подробнее.
+     */
+
+    document
+      .getElementById(
+        "detailsButton"
+      )
+      .addEventListener(
+        "click",
+        openDetails
+      );
+
+
+    /*
+     * Escape.
+     */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Escape"
+        ) {
+
+          placeCard.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    initSportRoomMap()
+      .then(
+        () => {
+
+          applyUrlLocation();
+
+        }
+      )
+      .catch(
+        error => {
+
+          console.error(
+            error
+          );
+
+        }
+      );
+
+  </script>
+
+</body>
+</html>
